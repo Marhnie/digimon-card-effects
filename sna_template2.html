@@ -175,7 +175,7 @@ function legend(){const shown=CO.slice(0,8).map((g,k)=>`<button type="button" da
   $('legend').innerHTML=`<div style="font-weight:700;color:var(--muted)">대분류 · 누르면 강조 (거품 = 클러스터)</div>${shown}${CO.length>8?`<button type="button" data-c="other" aria-pressed="${focusC==='other'}"><i style="background:${COL.other}"></i>그 밖의 대분류 ${CO.length-8}개</button>`:''}`}
 function panel(){const p=$('panel');
   if(sel==null&&selC!=null){const c=C[selC];const mem=N.filter(n=>n.c===selC).sort((a,b)=>b.pr-a.pr);const nb=D.clinks.filter(l=>l[0]===selC||l[1]===selC).sort((a,b)=>b[2]-a[2]).slice(0,10);
-    p.innerHTML=`<div class="k">대분류 ${c.cc+1}: ${esc(CO[c.cc].name)}</div><h2>클러스터 #${c.id+1}</h2><div class="tx">${esc(c.name)}</div>
+    p.innerHTML=`<div class="k">대분류 ${c.cc+1}: ${esc(CO[c.cc].name)}</div><h2>클러스터 #${c.id+1}</h2><div class="tx">${esc(c.name)}</div>${c.auto&&c.auto!==c.name?`<div class="k">자동 요약: ${esc(c.auto)}</div>`:''}
       <div class="stats"><div><b>${c.n}</b><span>효과</span></div><div><b>${c.cards}</b><span>카드</span></div><div><b>${c.nqa}</b><span>Q&amp;A</span></div></div>
       <div class="k">많은 구조 그룹</div><div class="lst">${c.groups.map(g=>`<div style="background:var(--bg);border-radius:7px;padding:5px 8px;font-size:12.5px">${esc(g[0])} <b>${g[1]}</b></div>`).join('')}</div>
       <div class="k">가까운 클러스터 (사이 링크 강도 합, 크기 보정)</div><div class="lst">${nb.map(l=>{const o=C[l[0]===selC?l[1]:l[0]];return `<button type="button" data-cl="${o.id}"><span class="cno">#${o.id+1}</span>${esc(o.name)}<span class="sbar"><s><i style="width:${Math.min(100,l[2])}%"></i></s><b>${l[2]}</b></span></button>`}).join('')||'<div class="k">없음</div>'}</div>

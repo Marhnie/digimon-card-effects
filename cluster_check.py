@@ -54,6 +54,17 @@ if sys.argv[1] == 'fine':
     grid = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.5, 3.0, 4.0, 5.0]
     rows = sweep(G, grid, N, refs, null)
     json.dump({'N': N, 'E': G.number_of_edges(), 'rows': rows}, open('net/cc_fine.json', 'w'), indent=1)
+elif sys.argv[1] == 'coarse_node':
+    # coarse level taken from the effect graph itself at low resolution; purity = share of effects whose fine cluster's majority coarse group is their own
+    rf = float(sys.argv[2])
+    fine = labels(nx.community.louvain_communities(G, weight='weight', resolution=rf, seed=5), N); rows = []
+    for gc in [0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8]:
+        labs = [labels(nx.community.louvain_communities(G, weight='weight', resolution=gc, seed=s), N) for s in SEEDS[:6]]
+        c = labs[0]; pur = sum(collections.Counter(c[fine == f]).most_common(1)[0][1] for f in range(fine.max() + 1)) / N
+        Q = nx.community.modularity(G, [set(np.where(c == i)[0]) for i in range(c.max() + 1)], weight='weight')
+        row = {'res': gc, 'k': int(c.max() + 1), 'Q': float(Q), 'seed_AMI': stab(labs)[0], 'purity': float(pur)}
+        rows.append(row); print({k: (round(v, 3) if isinstance(v, float) else v) for k, v in row.items()}, flush=True)
+    json.dump({'RES_F': rf, 'rows': rows}, open('net/cc_coarse_node.json', 'w'), indent=1)
 else:
     rf = float(sys.argv[2])
     fine = sorted(nx.community.louvain_communities(G, weight='weight', resolution=rf, seed=5), key=len, reverse=True)

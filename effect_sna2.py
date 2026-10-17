@@ -18,7 +18,7 @@ TRIG_TM = {'등장 시', '진화 시', '소멸 시', '어택 시', '링크 시',
            '상대의 턴 종료 시', '서로의 턴 종료 시', '자신의 메인 페이즈 개시 시', '상대의 메인 페이즈 개시 시', '어택 종료 시', '이동 시'}
 def trig_keys(s):
     """trigger condition (15-5) and trigger-timing icon (15-16) on one axis: 【진화 시】 counts the same as 「~했을 때」"""
-    ks = ['【' + x + '】' for x in s.get('타이밍', []) if x in TRIG_TM] if s['분류'] in ('유발형', '즉시형') else []
+    ks = ['【' + x + '】' for x in s.get('타이밍', []) if x in TRIG_TM]   # any class: 【진화 시】【메인】 effects (기동형) also trigger on evolution
     return ks + ([s['유발 키']] if s.get('유발 키') else [])
 def toks(s):
     t = ['C_' + s['분류'], 'O_' + s['출처']] + ['T_' + x for x in s.get('타이밍', [])] + ['I_' + x for x in s.get('아이콘', [])]
@@ -51,6 +51,20 @@ for st in range(0, N, 1500):
         a = st + r; sims[r, a] = -1
         for b in np.argpartition(-sims[r], K)[:K]:
             if sims[r, b] >= 0.35: link(a, int(b), 's', 0.2 + 0.7 * (float(sims[r, b]) - 0.35) / 0.65)   # spread 0.35..1 -> 0.2..0.9
+# (s') identical wording: hundreds of copies of one text (《블로커》, 「【시큐리티】이 카드의 【메인】 효과를 발휘한다」 …) all tie at
+#      cosine 1, so top-K alone splits them into disconnected cliques; chain every copy to the next two copies (ring) so they stay one block
+def norm_text(x):
+    x = re.sub(r'\([^()]*\)', '', x); x = x.replace('〔', '[').replace('〕', ']').replace('S 어택', '시큐리티 어택')
+    return re.sub(r'[\s.・]', '', x)
+same_text = collections.defaultdict(list)
+for k, s in enumerate(nodes): same_text[(s['group'], norm_text(s['text']))].append(k)
+n_dup = 0
+for ks in same_text.values():
+    if len(ks) < 3: continue
+    n_dup += len(ks)
+    for i in range(len(ks)):
+        link(ks[i], ks[(i + 1) % len(ks)], 's', 0.9); link(ks[i], ks[(i + 2) % len(ks)], 's', 0.9)
+print('같은 문구 묶음', sum(len(v) >= 3 for v in same_text.values()), '개 ·', n_dup, '효과')
 # (p) same processing step — an effect links to others that perform the same action on the same kind of target with the same
 #     kind of filter in ANY of their steps; within a step key every effect gets its 10 closest step texts (others on other cards)
 step_rows = []
@@ -162,6 +176,17 @@ def describe(members, n_parts=3):
     return ' · '.join(k for k, _ in z.most_common(n_parts))
 fname = [describe(m) for m in fine]
 cname = [describe([k for f in mem for k in fine[f]], 2) for mem in coarse]
+# human names (cluster_names.json) replace the automatic ones when the cluster size still matches; auto name kept as 'auto'
+fauto, cauto = list(fname), list(cname)
+if os.path.exists('cluster_names.json'):
+    HN = json.load(open('cluster_names.json', encoding='utf-8')); hit = [0, 0]
+    for c_, mem in enumerate(fine):
+        v = HN['fine'].get(str(c_ + 1))
+        if v and v[1] == len(mem): fname[c_] = v[0]; hit[0] += 1
+    for c_, mem in enumerate(coarse):
+        v = HN['coarse'].get(str(c_ + 1))
+        if v and v[1] == sum(len(fine[f]) for f in mem): cname[c_] = v[0]; hit[1] += 1
+    print('사람 이름 적용: 세부', hit[0], '/', F, '· 대분류', hit[1], '/', len(coarse))
 print('소분류(클러스터)', F, ' 대분류', len(coarse))
 for c_ in range(min(12, len(coarse))): print(f'  대{c_ + 1}. {sum(len(fine[f]) for f in coarse[c_])}효과 · 소분류 {len(coarse[c_])}개 · {cname[c_]}')
 
@@ -222,7 +247,7 @@ for c_, mem in enumerate(fine):
     mem = list(mem); top = sorted(mem, key=lambda k: -pr[k])[:6]
     grp = collections.Counter(nodes[k]['group'] for k in mem).most_common(3)
     clusters.append({'id': c_, 'cc': int(ccomm[c_]), 'x': round(float(P[c_][0]), 4), 'y': round(float(P[c_][1]), 4), 'r': round(R[c_], 4), 'n': len(mem),
-                     'name': fname[c_], 'top': top, 'groups': [[g, n] for g, n in grp], 'nqa': sum(len(qa_by_node[k]) for k in mem),
+                     'name': fname[c_], 'auto': fauto[c_], 'top': top, 'groups': [[g, n] for g, n in grp], 'nqa': sum(len(qa_by_node[k]) for k in mem),
                      'cards': len({nodes[k]['card'] for k in mem})})
 clinks = sorted(([int(a), int(b), round(d['w'] * 100)] for a, b, d in CG.edges(data=True)), key=lambda x: -x[2])[:600]
 out = {
@@ -231,7 +256,7 @@ out = {
              'pr': round(pr[k] * N, 3), 'deg': deg[k], 'qa': [[cq(QI[j]['q'])[:160], cq(QI[j]['a'])[:120]] for j in qa_by_node[k][:4]], 'nqa': len(qa_by_node[k])}
             for k, s in enumerate(nodes)],
   'links': [[a, b, d['types'], d['strength'], ','.join(f'{k}{round(v * 100)}' for k, v in sorted(d['comp'].items()))] for a, b, d in G.edges(data=True)],
-  'clusters': clusters, 'clinks': clinks, 'coarse': [{'id': c_, 'name': cname[c_], 'n': sum(len(fine[f]) for f in mem), 'fine': sorted(int(f) for f in mem)} for c_, mem in enumerate(coarse)],
+  'clusters': clusters, 'clinks': clinks, 'coarse': [{'id': c_, 'name': cname[c_], 'auto': cauto[c_], 'n': sum(len(fine[f]) for f in mem), 'fine': sorted(int(f) for f in mem)} for c_, mem in enumerate(coarse)],
 }
 json.dump(out, open('net/effect_sna.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 import os; print('json KB', os.path.getsize('net/effect_sna.json') // 1024)
