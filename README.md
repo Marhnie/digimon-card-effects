@@ -6,6 +6,8 @@
 - Q&A 연결과 쟁점 그룹, 선례 기반 판정 + 선례가 없을 때 LLM 하이브리드
 - 효과 하나하나를 노드로 한 네트워크(SNA): 구조 유사·같은 유발 조건·같은 처리·같은 Q&A 쟁점·같은 카드·이름 언급 링크, 강도 0~100, 2단 Louvain 클러스터
 
+저장소: https://github.com/Marhnie/digimon-card-effects · 효과 네트워크 뷰어: https://claude.ai/artifact/Ajp5RDDZHM2uG7wiR1XrVg
+
 연구 기록·방법 초안은 [`paper/`](paper/)에 있습니다(`01_연구기록.md`가 실험 이력).
 
 ## 실행 환경
