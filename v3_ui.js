@@ -50,7 +50,7 @@ function addCard(no){
 function effRow(u,on){const tm=u.timing.length?`<span class="tm">${u.timing.map(t=>'【'+esc(t)+'】').join('')}</span>`:'';
   const body=u.timing.length?u.text.replace(/^(?:[\[{〔][^\]}〕]{1,8}[\]}〕]\s*)*(?:【[^】]+】\s*)+(?:[\[{〔][^\]}〕]{1,8}[\]}〕]\s*)*/,''):u.text;
   const tg=trigOf(u);
-  return `<label class="eff${on?' on':''}"><input type="radio" name="mainEff" value="${u.i}"${on?' checked':''}><span class="et">${tm}${esc(body)}${tg&&on?`<br><span style="font-size:12px;color:var(--muted)">${esc(tg.replace('유발 · ','유발 조건: '))}</span>`:''}</span></label>`}
+  return `<label class="eff${on?' on':''}"><input type="radio" name="mainEff" value="${u.i}"${on?' checked':''}><span class="et">${tm}${esc(body)}${on&&strOf(u)?`<br><span style="font-size:12px;color:var(--muted)">${esc(strLine(u))}</span>`:''}</span></label>`}
 function renderCards(){
   const el=$('cardsec');
   if(ST.pasteOpen){
@@ -163,6 +163,7 @@ function evidenceFor(){const u=mainUnit();const card=ST.cards[0]?ST.cards[0].no:
   ownQA().slice(0,10).forEach(q=>add(tagQ(q,'고른 카드의 Q&A')));
   patternQA(u,5,card).forEach(q=>add(tagQ(q,'같은 효과 패턴')));
   triggerQA(u,5,card).forEach(q=>add(tagQ(q,'같은 유발 조건')));
+  clusterQA(u,5,card).forEach(q=>add(tagQ(q,'같은 효과 무리')));
   u.rules.slice(0,6).forEach(n=>add(QIDX.byId['R'+n]));
   retrieveEv(card+' '+ST.q,card,14).filter(it=>it.id[0]==='R').slice(0,6).forEach(add);
   for(const x of extras()){const us=x.unit>=0?[U[x.unit]]:(byCard[x.no]||[]);
@@ -183,7 +184,8 @@ async function askClaude(){
 [카드] ${card?card.no+' '+cname(card.no):'(붙여 넣은 효과)'}
 [카드 텍스트]
 ${cardText}
-[질문 대상 효과] ${u.text}${extras().map(x=>`\n[함께 관련된 카드] ${x.no} ${cname(x.no)}\n  카드 텍스트: ${(byCard[x.no]||[]).map(v=>v.text).join(' / ')}${x.unit>=0?`\n  관련 효과: ${U[x.unit].text}`:''}`).join('')}
+[질문 대상 효과] ${u.text}
+[효과 구조(종합 룰 15장)] ${structText(u)}${extras().map(x=>`\n[함께 관련된 카드] ${x.no} ${cname(x.no)}\n  카드 텍스트: ${(byCard[x.no]||[]).map(v=>v.text).join(' / ')}${x.unit>=0?`\n  관련 효과: ${U[x.unit].text}`:''}`).join('')}
 [묻는 것] ${INT[ST.it].n}
 [상황 항목] ${[...ST.sl].map(i=>SLOT[i].g+':'+SLOT[i].n).join(', ')||'없음'}
 [질문] ${ST.q}
@@ -197,6 +199,24 @@ cite에는 [자료]에 실제로 있는 ID만 쓰세요.`;
   catch(e){if(e&&e.code==='cancelled'){ST.ai=null}else{const m={not_granted:'Claude 사용이 허락되지 않았습니다.',rate_limited:'요청이 많거나 사용량 한도에 닿았습니다. 잠시 뒤 다시 시도해 주세요.',invalid_json:'답을 읽지 못했습니다. 다시 시도해 주세요.',session_expired:'다시 로그인해 주세요.',sampling_disabled:'이 계정에서는 Claude를 쓸 수 없습니다.'}[e&&e.code]||'연결이 끊겼습니다. 다시 시도해 주세요.';ST.ai={err:m,ev}}}
   finally{ST.busy=false;ST.ctl=null;renderResult();updateGo()}
 }
+
+
+/* ---------- v4: rulebook structure (종합 룰 15장) + effect-network cluster ---------- */
+const STR=D.st||[],CLU=D.clu||[];const byClu={};U.forEach(u=>{const s=STR[u.i];if(s&&s[6]>=0)(byClu[s[6]]=byClu[s[6]]||[]).push(u)});
+const strOf=u=>u?STR[u.i]:null;
+const stepTxt=p=>`${p[0]||'(처리 미상)'}${p[2]?` → ${p[1]?p[1]+'의 ':''}${p[2]}`:''}${p[3]?` (${p[3]})`:''}`;
+function strLine(u){const s=strOf(u);if(!s)return '';return [s[0],s[1].length?'유발 조건: '+s[1].join(' / '):'',s[4][0]?'처리: '+stepTxt(s[4][0])+(s[4].length>1?` 외 ${s[4].length-1}단계`:''):''].filter(Boolean).join(' · ')}
+function structText(u){const s=strOf(u);if(!s)return '없음';const c=s[6]>=0?CLU[s[6]]:null;
+  return `분류(15-8): ${s[0]} / 타이밍: ${u.timing.length?u.timing.map(x=>'【'+x+'】').join(''):'없음'} / 유발 조건(15-5): ${s[1].join(', ')||'없음'} / 처리 조건(15-6): ${s[2].join(', ')||'없음'} / 임의 처리 조건(15-7): ${s[3].join(', ')||'없음'} / 처리 단계: ${s[4].map((p,k)=>`${k+1}) ${p[4]?'임의':'강제'}${p[5]?'·'+p[5]:''}${p[6]?'·'+p[6]:''} ${stepTxt(p)}`).join(' ')||'없음'}${c?` / 같은 효과 무리: ${c[0]} (대분류 ${c[1]+1} ${c[2]})`:''}`}
+function clusterQA(u,limit,exceptCard){const s=strOf(u);if(!s||s[6]<0)return [];const seen=new Set();
+  return (byClu[s[6]]||[]).filter(x=>x.card!==exceptCard&&x.i!==u.i).flatMap(x=>x.qa).filter(i=>!seen.has(i)&&seen.add(i)).map(i=>({i,s:simQ(ST.q,QA[i].q)})).sort((a,b)=>b.s-a.s).slice(0,limit).map(x=>QA[x.i])}
+function structHTML(u){const s=strOf(u);if(!s)return '<div class="empty">구조 정보가 없습니다.</div>';const c=s[6]>=0?CLU[s[6]]:null;
+  const row=(k,ref,v)=>`<tr><th>${k}${ref?`<span class="ref">${ref}</span>`:''}</th><td>${v}</td></tr>`;const none='<span class="no">없음</span>';
+  return `<table class="struct">${row('분류','15-8',esc(s[0]))}${row('타이밍·아이콘','15-14·15-16',u.timing.length?u.timing.map(x=>'【'+esc(x)+'】').join(''):none)}
+    ${row('유발 조건','15-5',s[1].length?s[1].map(esc).join('<br>'):none)}${row('처리 조건','15-6',s[2].length?s[2].map(esc).join('<br>'):none)}
+    ${row('임의 처리 조건','15-7',s[3].length?s[3].map(esc).join('<br>'):none)}
+    ${row('처리 단계','15-1-2',s[4].length?'<ol>'+s[4].map(p=>`<li><b>${p[4]?'임의':'강제'}${p[5]?' · '+esc(p[5]):''}${p[6]?' · '+esc(p[6]):''}</b> ${esc(stepTxt(p))}</li>`).join('')+'</ol>':none)}
+    ${row('구조 그룹','',esc(s[5]))}${c?row('같은 효과 무리','',`${esc(c[0])} <span class="no">· 대분류 ${c[1]+1} ${esc(c[2])} · 효과 ${c[3]}개</span>`):''}</table>`}
 
 /* ---------- result ---------- */
 const yn=a=>a?'네':'아니요';
@@ -231,7 +251,7 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
   return h}
 function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   const own=ownQA();
-  const tabs=[['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
+  const tabs=[['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
   if(!tabs.some(t=>t[0]===ST.tab))ST.tab=tabs[0][0];
   let body='';const myneg=ST.sl.has(NEGI)?1:0;
   if(ST.tab==='prec')body=R.list.length?R.list.slice(0,20).map(x=>itemQA(x.q,`<span>· ${TIERNAME[R.tier]}</span><span class="yn">답: ${yn(x.y)}</span>${x.q.neg!==myneg?'<span>(반대로 물은 질문이라 뒤집음)</span>':''}`)).join(''):'<div class="empty">묻는 것과 상황이 완전히 같은 선례가 없습니다. 상황 태그를 줄이면 찾을 수도 있습니다.</div>';
@@ -244,6 +264,9 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='trig'){const l=triggerQA(u,40,ST.cards[0]&&ST.cards[0].no);const t=trigOf(u);const n=(BY_TRIG[t]||[]).length;
     body=`<div class="empty" style="padding:0 2px">${esc(t.replace('유발 · ','유발 조건: '))} · 같은 조건으로 발동하는 효과 ${n}개</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 유발 조건 효과에 연결된 Q&amp;A가 없습니다.</div>')}
   else if(ST.tab==='combo')body=R.combo.length?R.combo.map(q=>itemQA(q,'')).join(''):'<div class="empty">함께 고른 카드 이름이 같이 나오는 Q&amp;A가 없습니다.</div>';
+  else if(ST.tab==='struct')body=structHTML(u);
+  else if(ST.tab==='clu'){const l=clusterQA(u,40,ST.cards[0]&&ST.cards[0].no);const c=CLU[strOf(u)[6]];
+    body=`<div class="empty" style="padding:0 2px">같은 효과 무리: ${esc(c[0])} · 효과 ${c[3]}개 (효과 네트워크 클러스터)</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 무리 효과에 연결된 Q&amp;A가 없습니다.</div>')}
   else if(ST.tab==='rule')body=u.rules.map(itemRule).join('')||'<div class="empty">연결된 룰 조항이 없습니다.</div>';
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');

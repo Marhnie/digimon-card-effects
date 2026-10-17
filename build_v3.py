@@ -10,7 +10,7 @@ ex=json.load(open('examples.json',encoding='utf-8')); nb=json.load(open('example
 E=[{'level':lv,'ask_card':x['ask_card'],'ask_name':x['ask_name'],'effect':x['effect'],'q':x['q'],'src':x['src'],'official':x['official']} for lv in ('확정','참고') for x in ex[lv]]+[{'level':'선례 없음','ask_card':x['ask_card'],'ask_name':x['ask_name'],'effect':x['effect'],'q':x['q']} for x in nb]
 ui=ui.replace('__EXQ__',json.dumps(E,ensure_ascii=False).replace('</','<\/'))
 head=open('v3_head.html',encoding='utf-8').read()
-data=open('test_data3.json',encoding='utf-8').read()
+data=open('test_data4.json',encoding='utf-8').read()
 html=head+'\n<script id="data" type="application/json">'+data+'</script>\n<script>\n(function(){\n'+logic+'\n'+render+'\n'+showpat+'\n'+ui+'\n})();\n</script>\n'
 open('card-effect-test.html','w',encoding='utf-8').write(html)
 print(len(html))

@@ -21,9 +21,9 @@ Python 3.11 · scikit-learn · numpy · scipy · networkx · openpyxl · python-
 5. 효과 네트워크: `effect_sna2.py` (해상도 `RES_F`·`RES_C` 환경 변수, `ONLY_GRAPH=1`이면 그래프만 `net/G.pkl`) → `net/effect_sna.json`, GEXF
    - 클러스터 검증: `cluster_check.py fine` / `cluster_check.py coarse <RES_F>`
    - 뷰어: `patch_viewer.py` → `sna_template2.html`, `__DATA__`에 `net/effect_sna.json`을 넣어 `effect-sna.html`
-6. 판정 도우미 뷰어: `build_v3.py` → `card-effect-test.html`
+6. 판정 도우미 뷰어: `build_v4data.py`(→ test_data4.json, 룰북 구조·클러스터) → `build_v3.py` → `card-effect-test.html`
 7. 평가: `eval_build.py`·`eval_score.py`(LLM 비교), `ml_yesno.py`, `q_intent.py`·`q_slots.py`·`form_accuracy.py`·`hybrid_est.py`, `sim_est_eval.py`·`grp_eval.py`
-8. 테스트: `node tests/tsna.js effect-sna.html`, `node tests/trev.js effect-review.html`
+8. 테스트: `node tests/t11.js`(판정 도우미), `node tests/tsna.js effect-sna.html`, `node tests/trev.js effect-review.html`
 
 ## 데이터 출처와 권리
 - 카드 텍스트·카드 Q&A: 디지몬 카드게임 한국 공식 사이트(digimoncard.co.kr) 공개 자료. 카드 텍스트와 게임 자료의 권리는 ©BANDAI 및 각 권리자에게 있습니다.
