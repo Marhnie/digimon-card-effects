@@ -1,0 +1,185 @@
+<title>카드 효과 SNA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&family=Do+Hyeon&display=swap">
+<style>
+/* Layout: controls row, then a canvas map (left) with a detail panel (right); stacks on phones */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --ink:#151b26; --muted:#5f6b7c; --faint:#8a95a5; --line:#dde2ea; --edge:#9aa6b6; --accent:#e2560f;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948; --other:#b4bcc8;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif; --f-body:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif; --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --edge:#5a6676; --accent:#ff7a3a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#4b5563; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --edge:#5a6676; --accent:#ff7a3a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#4b5563; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.55}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header .wrap{padding-block:18px 6px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h1{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0;line-height:1.1}
+h1 b{color:var(--accent);font-weight:400}
+.sub{color:var(--muted);font-size:13px}
+.bar .wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding-block:6px 10px;font-size:13px}
+.grp{display:inline-flex;gap:4px;align-items:center;flex-wrap:wrap;color:var(--muted)}
+.grp label{display:inline-flex;gap:4px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--surface);cursor:pointer;color:var(--ink)}
+.search{margin-left:auto;display:flex;gap:6px}
+.search input{width:min(260px,60vw);padding:6px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.main .wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px;padding-block:0 30px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:12px;position:relative;min-width:0;height:min(78vh,800px);overflow:hidden;touch-action:none}
+canvas{width:100%;height:100%;display:block;cursor:grab}
+.legend{position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);border-radius:9px;padding:6px 8px;display:grid;gap:1px;max-width:min(360px,72%);font-size:12px;max-height:60%;overflow:auto}
+.legend button{display:flex;gap:6px;align-items:center;border:0;background:none;padding:1px 3px;cursor:pointer;text-align:left;border-radius:4px}
+.legend button[aria-pressed="true"]{background:var(--bg);font-weight:700}
+.legend i{width:10px;height:10px;border-radius:50%;flex:none}
+.zoom{position:absolute;right:10px;top:10px;display:grid;gap:4px}
+.zoom button{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;font-size:16px}
+.hint{position:absolute;right:10px;bottom:8px;font-size:12px;color:var(--faint)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--surface);font-size:12.5px;padding:6px 9px;border-radius:7px;max-width:320px;line-height:1.45;display:none}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px;align-content:start;min-width:0;max-height:min(78vh,800px);overflow-y:auto}
+.panel h2{margin:0;font-size:16px}
+.k{font-size:12px;color:var(--muted)}
+.tx{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:13.5px;overflow-wrap:anywhere}
+.kv{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:3px 8px;font-size:13px}
+.kv b{color:var(--muted);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.stats div{background:var(--bg);border-radius:8px;padding:6px 8px}
+.stats b{display:block;font-family:var(--f-num);font-size:16px}
+.stats span{font-size:11.5px;color:var(--muted)}
+.lst{display:grid;gap:4px}
+.lst button{text-align:left;border:0;background:var(--bg);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:13px;overflow-wrap:anywhere}
+.lst button:hover{outline:1px solid var(--accent)}
+.lst .cno{font-family:var(--f-num);color:var(--accent);margin-right:6px}
+.lst .why{display:block;font-size:11.5px;color:var(--muted)}
+.qa{display:grid;gap:2px;background:var(--bg);border-radius:7px;padding:6px 8px;font-size:13px}
+.qa b{color:var(--accent);font-family:var(--f-num)}
+.lt{display:inline-block;font-size:11px;border-radius:4px;padding:0 5px;margin-right:3px;background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.sbar{display:flex;align-items:center;gap:6px;margin-top:3px}
+.sbar i{display:block;height:6px;border-radius:3px;background:var(--accent)}
+.sbar s{flex:1;max-width:120px;height:6px;border-radius:3px;background:var(--line);text-decoration:none;display:block;overflow:hidden}
+.sbar b{font-family:var(--f-num);font-size:12px;min-width:2.2em}
+table{border-collapse:collapse;font-size:12.5px;width:100%}td,th{border-bottom:1px solid var(--line);padding:3px 4px;text-align:left;vertical-align:top}td.n{font-family:var(--f-num);text-align:right}
+details summary{cursor:pointer;font-size:13px;color:var(--muted)}
+@media (max-width:900px){.main .wrap{grid-template-columns:minmax(0,1fr)}.stage{height:64vh}.panel{max-height:none}.search{margin-left:0;width:100%}.search input{flex:1}}
+</style>
+
+<header><div class="wrap"><h1>카드 효과 <b>SNA</b></h1><span class="sub" id="sub"></span></div></header>
+<div class="bar"><div class="wrap">
+  <div class="grp" role="group" aria-label="효과 분류">분류:
+    <label><input type="checkbox" data-cls="유발형" checked> 유발형</label><label><input type="checkbox" data-cls="상재형" checked> 상재형</label><label><input type="checkbox" data-cls="기동형" checked> 기동형</label><label><input type="checkbox" data-cls="즉시형" checked> 즉시형</label><label><input type="checkbox" data-cls="키워드 효과" checked> 키워드 효과</label></div>
+  <div class="grp"><label><input type="checkbox" id="showEdges"> 전체 링크 그리기</label></div>
+  <div class="grp"><label for="minS" style="border:0;background:none;padding:0">최소 링크 강도</label><input type="range" id="minS" min="0" max="90" step="5" value="30" style="width:140px" aria-describedby="minSv"><b id="minSv" style="font-family:var(--f-num);min-width:2.5em">30</b><span id="minSc" style="color:var(--faint)"></span></div>
+  <div class="search"><input id="find" list="cardopts" placeholder="카드 번호·이름 (예: EX8-005 고로몬)" aria-label="카드 찾기"><datalist id="cardopts"></datalist></div>
+</div></div>
+<div class="main"><div class="wrap">
+  <div class="stage" id="stage"><canvas id="cv" role="img" aria-label="카드 효과 네트워크"></canvas><div class="legend" id="legend"></div>
+    <div class="zoom"><button type="button" id="zin" aria-label="확대">+</button><button type="button" id="zout" aria-label="축소">−</button><button type="button" id="zfit" aria-label="전체 보기">⤢</button></div>
+    <div class="hint">끌어서 이동 · 휠/버튼으로 확대 · 점을 누르면 오른쪽에 자세히</div><div class="tip" id="tip"></div></div>
+  <aside class="panel" id="panel"></aside>
+</div></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('data').textContent);
+const $=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const N=D.nodes, L=D.links;
+const LT={s:'구조가 닮음',t:'같은 유발 조건',q:'같은 Q&A 쟁점',c:'같은 카드',m:'카드 이름 언급'};
+const adj=N.map(()=>[]);L.forEach(([a,b],i)=>{adj[a].push(i);adj[b].push(i)});
+let minS=30;
+const comp=s=>s?s.split(',').map(x=>({t:x[0],v:+x.slice(1)})):[];
+function countAbove(){let n=0;for(const l of L)if(l[3]>=minS)n++;return n}
+$('sub').textContent=`카드 효과 ${N.length.toLocaleString()}개를 노드로, 링크 ${L.length.toLocaleString()}개로 이은 지도 · 커뮤니티 ${D.comms.length}개 (진화 조건·〈룰〉 등 카드 정보는 효과가 아니라 제외)`;
+let COL=[];function palette(){COL=['--s1','--s2','--s3','--s4','--s5','--s6','--s7','--s8'].map(css);COL.other=css('--other')}
+const colorOf=c=>c<8?COL[c]:COL.other;
+let clsOnInit=0;let clsOn=new Set(['유발형','상재형','기동형','즉시형','키워드 효과']),focusC=null,sel=null,hl=null,showEdges=false;
+// world -> screen
+const cv=$('cv'),ctx=cv.getContext('2d');let W=0,H=0,dpr=1,view={s:1,x:0,y:0};
+const xs=N.map(n=>n.x),ys=N.map(n=>n.y);const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+function fit(){view.s=Math.min(W/(maxX-minX),H/(maxY-minY))*0.92;view.x=W/2-view.s*(minX+maxX)/2;view.y=H/2-view.s*(minY+maxY)/2}
+const sx=x=>x*view.s+view.x, sy=y=>y*view.s+view.y;
+function resize(){const r=$('stage').getBoundingClientRect();dpr=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+const visible=n=>clsOn.has(n.cls)&&(focusC==null||(focusC==='other'?n.c>=8:n.c===focusC));
+const rad=n=>Math.max(1.6,Math.min(7,1.2+Math.sqrt(n.deg)*0.55))*Math.min(2.2,Math.max(1,view.s/400));
+let raf=0;function draw(){cancelAnimationFrame(raf);raf=requestAnimationFrame(paint)}
+function paint(){
+  ctx.clearRect(0,0,W,H);
+  const nb=sel!=null?new Set(adj[sel].filter(i=>L[i][3]>=minS).map(i=>L[i][0]===sel?L[i][1]:L[i][0])):null;
+  // edges
+  ctx.lineWidth=0.6;
+  if(showEdges&&sel==null){ctx.strokeStyle=css('--edge');
+    for(const [lo,hi,al,lw] of [[minS,50,0.06,0.5],[Math.max(50,minS),75,0.14,0.8],[Math.max(75,minS),101,0.3,1.2]]){if(lo>=hi)continue;ctx.globalAlpha=al;ctx.lineWidth=lw;ctx.beginPath();
+      for(const [a,b,,s] of L){if(s<lo||s>=hi)continue;const A=N[a],B=N[b];if(!visible(A)||!visible(B))continue;ctx.moveTo(sx(A.x),sy(A.y));ctx.lineTo(sx(B.x),sy(B.y))}ctx.stroke()}ctx.globalAlpha=1}
+  if(sel!=null){for(const i of adj[sel]){const [a,b,t,s]=L[i];if(s<minS)continue;const A=N[a],B=N[b];ctx.strokeStyle=t.includes('q')?css('--s7'):t.includes('t')?css('--s2'):t.includes('m')?css('--s6'):css('--edge');ctx.lineWidth=0.6+2.6*s/100;ctx.globalAlpha=0.25+0.7*s/100;ctx.beginPath();ctx.moveTo(sx(A.x),sy(A.y));ctx.lineTo(sx(B.x),sy(B.y));ctx.stroke()}ctx.globalAlpha=1}
+  // nodes
+  for(const n of N){const on=visible(n);const dim=(nb&&!(nb.has(n.k)||n.k===sel))||(hl&&!hl.has(n.k));
+    if(!on&&!(nb&&nb.has(n.k)))continue;
+    ctx.globalAlpha=dim?0.08:1;ctx.fillStyle=colorOf(n.c);const r=rad(n);ctx.beginPath();ctx.arc(sx(n.x),sy(n.y),r,0,6.283);ctx.fill()}
+  ctx.globalAlpha=1;
+  const ring=k=>{const n=N[k];ctx.strokeStyle=css('--ink');ctx.lineWidth=2;ctx.beginPath();ctx.arc(sx(n.x),sy(n.y),rad(n)+3,0,6.283);ctx.stroke()};
+  if(sel!=null)ring(sel);if(hl)hl.forEach(ring);
+  // labels when zoomed in
+  if(view.s>1600||sel!=null){ctx.font='11px "IBM Plex Sans KR",sans-serif';ctx.fillStyle=css('--ink');ctx.strokeStyle=css('--surface');ctx.lineWidth=3;
+    const lab=sel!=null?[sel,...nb]:N.filter(n=>visible(n)&&sx(n.x)>0&&sx(n.x)<W&&sy(n.y)>0&&sy(n.y)<H).slice(0,160).map(n=>n.k);
+    for(const k of lab.slice(0,60)){const n=N[k];const t=n.card+' '+n.name;ctx.strokeText(t,sx(n.x)+5,sy(n.y)-5);ctx.fillText(t,sx(n.x)+5,sy(n.y)-5)}}
+}
+function hit(mx,my){let best=null,bd=1e9;for(const n of N){if(!visible(n))continue;const dx=sx(n.x)-mx,dy=sy(n.y)-my,d=dx*dx+dy*dy;const r=rad(n)+4;if(d<r*r&&d<bd){bd=d;best=n.k}}return best}
+// interaction
+let drag=null,moved=false;
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};moved=false;cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();
+  if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;view.x=drag.vx+dx;view.y=drag.vy+dy;draw();return}
+  const k=hit(e.clientX-r.left,e.clientY-r.top);const t=$('tip');
+  if(k==null){t.style.display='none';return}const n=N[k];
+  t.innerHTML=`<b>${esc(n.card)} ${esc(n.name)}</b> · ${esc(n.cls)}<br>${esc(n.text.length>110?n.text.slice(0,110)+'…':n.text)}`;t.style.display='block';
+  t.style.left=Math.min(e.clientX-r.left+12,W-330)+'px';t.style.top=(e.clientY-r.top+12)+'px'});
+cv.addEventListener('pointerup',e=>{const r=cv.getBoundingClientRect();if(!moved){const k=hit(e.clientX-r.left,e.clientY-r.top);select(k)}drag=null});
+cv.addEventListener('pointerleave',()=>{$('tip').style.display='none'});
+cv.addEventListener('wheel',e=>{e.preventDefault();const r=cv.getBoundingClientRect();zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?1.25:0.8)},{passive:false});
+function zoomAt(mx,my,f){view.x=mx-(mx-view.x)*f;view.y=my-(my-view.y)*f;view.s*=f;draw()}
+$('zin').onclick=()=>zoomAt(W/2,H/2,1.4);$('zout').onclick=()=>zoomAt(W/2,H/2,0.7);$('zfit').onclick=()=>{fit();draw()};
+function focusOn(ks){if(!ks.length)return;const X=ks.map(k=>N[k].x),Y=ks.map(k=>N[k].y);const cx=(Math.min(...X)+Math.max(...X))/2,cy=(Math.min(...Y)+Math.max(...Y))/2;
+  const span=Math.max(Math.max(...X)-Math.min(...X),Math.max(...Y)-Math.min(...Y),(maxX-minX)/25);view.s=Math.min(W,H)/span*0.7;view.x=W/2-cx*view.s;view.y=H/2-cy*view.s}
+function select(k){sel=k;draw();panel()}
+function legend(){const shown=D.comms.slice(0,8).map((nm,k)=>`<button type="button" data-c="${k}" aria-pressed="${focusC===k}"><i style="background:${colorOf(k)}"></i>${k+1}. ${esc(nm)} <span style="color:var(--faint)">${D.csize[k]}</span></button>`).join('');
+  $('legend').innerHTML=`<div style="font-weight:700;color:var(--muted)">효과 커뮤니티 · 누르면 강조</div>${shown}<button type="button" data-c="other" aria-pressed="${focusC==='other'}"><i style="background:${COL.other}"></i>그 밖의 커뮤니티 ${D.comms.length-8}개</button>`}
+function panel(){const p=$('panel');
+  if(sel==null){const top=N.slice().sort((a,b)=>b.pr-a.pr).slice(0,10);const tc={};L.forEach(l=>{for(const t of l[2])tc[t]=(tc[t]||0)+1});
+    p.innerHTML=`<h2>효과를 노드로 한 네트워크</h2><div class="k">노드 = 카드 효과 하나. 링크 = ${Object.entries(LT).map(([k,v])=>`${v} ${(tc[k]||0).toLocaleString()}`).join(' · ')}. <br>링크 강도(0~100) = 이유별 점수를 확률처럼 합친 값(1−∏(1−점수)). 이유가 여러 개면 강해집니다. 위 슬라이더로 약한 링크를 숨길 수 있습니다.</div>
+      <div class="stats"><div><b>${N.length.toLocaleString()}</b><span>효과(노드)</span></div><div><b>${countAbove().toLocaleString()}</b><span>링크(강도 ${minS} 이상)</span></div><div><b>${D.comms.length}</b><span>커뮤니티</span></div></div>
+      <div class="k">중심에 있는 효과 (PageRank)</div><div class="lst">${top.map(n=>`<button type="button" data-k="${n.k}"><span class="cno">${esc(n.card)}</span>${esc(n.name)} <span class="why">${esc(n.cls)} · 연결 ${n.deg} · ${esc(n.text.slice(0,50))}…</span></button>`).join('')}</div>
+      <details><summary>커뮤니티 표</summary><table><tr><th>#</th><th>커뮤니티(많이 나오는 요소)</th><th>효과</th></tr>${D.comms.map((c,k)=>`<tr><td class="n">${k+1}</td><td>${esc(c)}</td><td class="n">${D.csize[k]}</td></tr>`).join('')}</table></details>`;return}
+  const n=N[sel];const all=adj[sel].map(i=>{const [a,b,t,w,c]=L[i];return {o:N[a===sel?b:a],t,w,c:comp(c)}}).sort((x,y)=>y.w-x.w);const nbs=all.filter(x=>x.w>=minS);
+  const sameCard=N.filter(m=>m.card===n.card&&m.k!==n.k);
+  p.innerHTML=`<div class="k">커뮤니티 ${n.c+1}: ${esc(D.comms[n.c]||'')}</div><h2><span style="font-family:var(--f-num);color:var(--accent)">${esc(n.card)}</span> ${esc(n.name)}</h2>
+    <div class="tx">${esc(n.text)}</div>
+    <div class="kv"><b>분류</b><span>${esc(n.cls)} · ${esc(n.src)}</span>${n.tm.length?`<b>타이밍</b><span>${n.tm.map(t=>'【'+esc(t)+'】').join('')}</span>`:''}${n.trig?`<b>유발 조건</b><span>${esc(n.trig)}</span>`:''}<b>구조 그룹</b><span>${esc(n.grp)}</span></div>
+    <div class="stats"><div><b>${n.deg}</b><span>연결</span></div><div><b>${n.pr.toFixed(2)}</b><span>PageRank(평균=1)</span></div><div><b>${n.nqa}</b><span>Q&amp;A</span></div></div>
+    ${n.qa.length?`<div class="k">이 효과의 Q&amp;A</div>${n.qa.map(q=>`<div class="qa"><div><b>Q</b> ${esc(q[0])}</div><div><b>A</b> ${esc(q[1])}</div></div>`).join('')}`:''}
+    <div class="k">연결된 효과 ${nbs.length}개 (강도 ${minS} 이상 · 강한 순)${all.length>nbs.length?` · 약해서 숨긴 링크 ${all.length-nbs.length}개`:''}</div>
+    <div class="lst">${nbs.slice(0,40).map(x=>`<button type="button" data-k="${x.o.k}"><span class="cno">${esc(x.o.card)}</span>${esc(x.o.name)}
+      <span class="sbar"><s><i style="width:${x.w}%"></i></s><b>${x.w}</b>${x.c.map(c=>`<span class="lt">${LT[c.t]} ${c.v}</span>`).join('')}</span><span class="why">${esc(x.o.text.slice(0,70))}…</span></button>`).join('')||'<div class="k">이 강도 이상의 링크가 없습니다. 슬라이더를 낮춰 보세요.</div>'}</div>
+    ${sameCard.length?`<div class="k">같은 카드의 다른 효과</div><div class="lst">${sameCard.map(m=>`<button type="button" data-k="${m.k}">${esc(m.text.slice(0,70))}…</button>`).join('')}</div>`:''}
+    <button type="button" class="lst" style="border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;justify-self:start" data-k="">선택 해제</button>`}
+document.addEventListener('click',e=>{const c=e.target.closest('[data-c]');if(c){const k=c.dataset.c==='other'?'other':+c.dataset.c;focusC=focusC===k?null:k;legend();draw();return}
+  const b=e.target.closest('[data-k]');if(b){const k=b.dataset.k===''?null:+b.dataset.k;if(k!=null){const n=N[k];if(!visible(n)){focusC=null;legend()}focusOn([k,...adj[k].map(i=>L[i][0]===k?L[i][1]:L[i][0])].slice(0,40))}select(k)}});
+document.addEventListener('change',e=>{const c=e.target.closest('[data-cls]');if(c){if(c.checked)clsOn.add(c.dataset.cls);else clsOn.delete(c.dataset.cls);draw()}
+  if(e.target.id==='showEdges'){showEdges=e.target.checked;draw()}});
+$('minS').addEventListener('input',e=>{minS=+e.target.value;$('minSv').textContent=minS;$('minSc').textContent=`링크 ${countAbove().toLocaleString()}개`;draw();panel()});
+const cards=[...new Set(N.map(n=>n.card))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));const nameOf={};N.forEach(n=>nameOf[n.card]=n.name);
+$('cardopts').innerHTML=cards.map(c=>`<option value="${esc(c+' '+nameOf[c])}"></option>`).join('');
+$('find').addEventListener('change',()=>{const v=$('find').value.trim();if(!v){hl=null;draw();return}const code=v.split(/\s+/)[0].toUpperCase();
+  let ks=N.filter(n=>n.card===code).map(n=>n.k);if(!ks.length)ks=N.filter(n=>n.name.includes(v)).map(n=>n.k).slice(0,60);
+  hl=new Set(ks);if(ks.length){focusOn(ks);select(ks[0])}else draw()});
+const ro=new ResizeObserver(()=>{resize();fit();draw()});ro.observe($('stage'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{palette();legend();draw()});
+palette();resize();fit();legend();$('minSc').textContent=`링크 ${countAbove().toLocaleString()}개`;panel();draw();
+})();
+</script>

@@ -1,0 +1,201 @@
+<title>효과 분류 검수</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&family=Do+Hyeon&display=swap">
+<style>
+/* Layout: one effect at a time in a single column; progress bar on top; owner dashboard as a second view */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --ink:#151b26; --muted:#5f6b7c; --faint:#8a95a5; --line:#dde2ea; --accent:#e2560f; --accent-soft:#fdeadf;
+  --ok:#17794a; --ok-soft:#e1f3e9; --bad:#c0392b; --bad-soft:#fbe3e0; --na:#5f6b7c; --na-soft:#eceff3;
+  --hl-trig:#f6c26b; --hl-cond:#8cc3f2; --hl-cost:#c9a8f2;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif; --f-body:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif; --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --accent:#ff7a3a; --accent-soft:#3a2216;
+  --ok:#5fd39a; --ok-soft:#12301f; --bad:#ff8a7a; --bad-soft:#3a1714; --na:#9aa6b6; --na-soft:#1f2732;
+  --hl-trig:#7a5a12; --hl-cond:#1d4a73; --hl-cost:#4b2f73; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --accent:#ff7a3a; --accent-soft:#3a2216;
+  --ok:#5fd39a; --ok-soft:#12301f; --bad:#ff8a7a; --bad-soft:#3a1714; --na:#9aa6b6; --na-soft:#1f2732;
+  --hl-trig:#7a5a12; --hl-cond:#1d4a73; --hl-cost:#4b2f73; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header .wrap{padding-block:18px 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h1{font-family:var(--f-display);font-weight:400;font-size:26px;margin:0;line-height:1.1}
+h1 b{color:var(--accent);font-weight:400}
+.who{margin-left:auto;font-size:13px;color:var(--muted)}
+.tabs{display:flex;gap:6px}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 12px;cursor:pointer;font-size:13px}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+main .wrap{display:grid;gap:12px;padding-block:6px 80px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.bar select{padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prog{flex:1;min-width:160px;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.ch{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ch .num{font-family:var(--f-num);color:var(--faint);font-size:13px}
+.ch .cno{font-family:var(--f-num);color:var(--accent)}
+.ch .nm{font-weight:700;font-size:17px}
+.ch .src{font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:5px;padding:0 7px}
+.ch .done{margin-left:auto;font-size:12px;color:var(--ok);font-weight:700}
+.text{font-size:16.5px;line-height:1.75;background:var(--bg);border-radius:10px;padding:12px 14px;overflow-wrap:anywhere}
+.text mark{color:inherit;border-radius:3px;padding:0 1px}
+.m-trig{background:var(--hl-trig)}.m-cond{background:var(--hl-cond)}.m-cost{background:var(--hl-cost)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.legend .t::before{background:var(--hl-trig)}.legend .c::before{background:var(--hl-cond)}.legend .p::before{background:var(--hl-cost)}
+.rows{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:7.5em minmax(0,1fr) auto;gap:10px;align-items:start;padding:8px 10px;border-radius:10px;border:1px solid var(--line)}
+.row.x{border-color:var(--bad);background:var(--bad-soft)}
+.row .lab{font-weight:700;font-size:13.5px}
+.row .lab kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-right:4px;background:var(--surface);color:var(--muted);font-weight:500}
+.row .val{font-size:14px;overflow-wrap:anywhere;white-space:pre-line}
+.row .val .none{color:var(--faint)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:4px 10px;cursor:pointer;font-size:13px;color:var(--muted)}
+.seg button[data-v="O"][aria-pressed="true"]{background:var(--ok);color:var(--surface)}
+.seg button[data-v="X"][aria-pressed="true"]{background:var(--bad);color:var(--surface)}
+.seg button[data-v="NA"][aria-pressed="true"]{background:var(--na);color:var(--surface)}
+.gold{grid-column:2/4;display:flex;gap:6px;flex-wrap:wrap;font-size:13px}
+.gold button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 10px;cursor:pointer}
+.gold button[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.memo{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;padding:10px 22px;font-size:16px}
+.keys{font-size:12px;color:var(--faint)}
+.note{font-size:13px;color:var(--muted)}
+.warn{background:var(--bad-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.saved{font-size:12.5px;color:var(--ok)}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}td.n,th.n{font-family:var(--f-num);text-align:right}
+.dis{display:grid;gap:8px}
+.dis .it{background:var(--bg);border-radius:9px;padding:8px 10px;font-size:13.5px}
+@media (max-width:640px){.row{grid-template-columns:minmax(0,1fr)}.gold{grid-column:1}.btn.pri{width:100%}}
+</style>
+
+<header><div class="wrap"><h1>효과 분류 <b>검수</b></h1><div class="tabs" id="tabs"><button type="button" data-view="rev" aria-pressed="true">검수하기</button></div><span class="who" id="who"></span></div></header>
+<main><div class="wrap" id="app"></div></main>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('data').textContent);const IT=D.items;
+const $=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CLASSES=['유발형','상재형','기동형','즉시형','키워드 효과','카드 정보(효과 아님)'];
+// every reviewer does all 300 items, so any two reviewers can be cross-checked on every item
+const COMPS=[['cls','① 분류'],['trig','② 유발 조건'],['cond','③ 처리 조건'],['cost','④ 임의 처리 조건'],['proc','⑤ 처리']];
+let db=null,user=null,me=null,isOwner=false,mine={},view='rev',pos=0,draft=null,saving=false,status='';
+const inBatch=()=>IT;
+const isSimple=x=>x.cls==='키워드 효과'||x.cls==='카드 정보(효과 아님)';
+function defaults(x){const v={cls:'O'};for(const [k] of COMPS.slice(1))v[k]=isSimple(x)?'NA':'O';return {v,gold:'',memo:''}}
+function current(){return inBatch()[pos]}
+function loadDraft(){const x=current();if(!x)return;const s=mine[x.n];draft=s?{v:{...s.v},gold:s.gold||'',memo:s.memo||''}:defaults(x)}
+// highlight trigger / condition / cost spans in the original text (stored clauses have 「…」 masked as 「X」)
+function hl(text,x){const marks=[];const add=(clause,cls)=>{if(!clause)return;const pat=clause.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/「X」/g,'「[^」]*」').replace(/\s+/g,'\\s*');
+  try{const m=new RegExp(pat).exec(text);if(m)marks.push([m.index,m.index+m[0].length,cls])}catch(e){}};
+  add(x.tc,'m-trig');x.cond.forEach(c=>add(c,'m-cond'));x.cost.forEach(c=>add(c,'m-cost'));
+  marks.sort((a,b)=>a[0]-b[0]);let out='',at=0;for(const [s,e,c] of marks){if(s<at)continue;out+=esc(text.slice(at,s))+`<mark class="${c}">${esc(text.slice(s,e))}</mark>`;at=e}return out+esc(text.slice(at))}
+function stepsTxt(x){return x.steps.map((p,k)=>`${k+1}) [${p.opt?'임의':'강제'}${p.scope?'·'+p.scope:''}${p.dur?'·'+p.dur:''}] ${p.acts.join(' / ')||'?'}${p.tg?` → 대상: ${p.side?p.side+'의 ':''}${p.tg}`:''}${p.f&&p.f.length?` (${p.f.join(', ')})`:''}`).join('\n')}
+function valHTML(k,x){const none='<span class="none">(없음)</span>';
+  if(k==='cls')return `<b>${esc(x.cls)}</b>${x.sub?` <span class="note">(${esc(x.sub)})</span>`:''}${x.tm.length?`<br><span class="note">타이밍 ${x.tm.map(t=>'【'+esc(t)+'】').join('')}${x.ic.length?' · 아이콘 '+x.ic.map(i=>'['+esc(i)+']').join(''):''}</span>`:''}`;
+  if(k==='trig')return x.tk||x.tc?esc(x.tk||x.tc):none;
+  if(k==='cond')return x.cond.length?x.cond.map(esc).join('\n'):none;
+  if(k==='cost')return x.cost.length?x.cost.map(esc).join('\n'):none;
+  return x.steps.length?esc(stepsTxt(x)):none}
+function render(){if(view==='dash'){dash();return}
+  const list=inBatch();const done=list.filter(x=>mine[x.n]).length;const x=current();
+  const app=$('app');
+  let warn='';if(!db)warn=`<div class="warn">저장 공간에 연결하지 못했습니다. claude.ai에서 이 페이지를 열어 주세요. 지금 입력은 이 브라우저에만 임시 저장됩니다.</div>`;
+  else if(status==='readonly')warn=`<div class="warn">이 페이지에 저장할 권한이 없습니다. 페이지 주인에게 「참여자(Contributor)」 이상으로 공유해 달라고 요청하세요.</div>`;
+  app.innerHTML=`${warn}${done===0&&pos===0?'<div class="note">각자 300문항을 모두 검수합니다. 다른 사람의 답은 보이지 않고, 끝나면 서로의 판정을 교차 비교합니다. 중간에 닫아도 저장한 데까지 이어서 할 수 있습니다.</div>':''}<div class="bar"><span>진행</span>
+    <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${list.length}" aria-valuenow="${done}"><i style="width:${list.length?done/list.length*100:0}%"></i></div><span>${done} / ${list.length} 완료</span>
+    <button class="btn" type="button" id="nextUn">다음 미검수 →</button></div>
+    ${x?card(x):'<div class="card">이 묶음은 비어 있습니다.</div>'}`;
+  bind()}
+function card(x){const saved=mine[x.n];
+  return `<section class="card" aria-label="검수 대상"><div class="ch"><span class="num">#${x.n}</span><span class="cno">${esc(x.card)}</span><span class="nm">${esc(x.name)}</span><span class="src">${esc(x.src)}</span>${saved?'<span class="done">✓ 저장됨</span>':''}</div>
+    <div class="text">${hl(x.text,x)}</div>
+    <div class="legend"><span class="t">유발 조건</span><span class="c">처리 조건</span><span class="p">임의 처리 조건</span></div>
+    <div class="rows">${COMPS.map(([k,lab],i)=>{const v=draft.v[k];const hide=isSimple(x)&&k!=='cls';if(hide)return '';
+      return `<div class="row${v==='X'?' x':''}"><div class="lab"><kbd>${i+1}</kbd>${lab}</div><div class="val">${valHTML(k,x)}</div>
+        <div class="seg" role="group" aria-label="${lab} 판정">${['O','X','NA'].map(o=>`<button type="button" data-k="${k}" data-v="${o}" aria-pressed="${v===o}">${o==='NA'?'해당없음':o==='O'?'맞음':'틀림'}</button>`).join('')}</div>
+        ${k==='cls'&&v==='X'?`<div class="gold" role="group" aria-label="정답 분류"><span class="note">정답 분류:</span>${CLASSES.filter(c=>c!==x.cls).map(c=>`<button type="button" data-gold="${c}" aria-pressed="${draft.gold===c}">${esc(c)}</button>`).join('')}</div>`:''}</div>`}).join('')}</div>
+    <input class="memo" id="memo" placeholder="메모 (선택) — 어디가 틀렸는지 짧게" value="${esc(draft.memo)}" aria-label="메모">
+    <div class="nav"><button class="btn" type="button" id="prev">← 이전</button><button class="btn pri" type="button" id="save">${Object.values(draft.v).includes('X')?'저장하고 다음':'모두 맞음 · 다음'} <span class="keys">Enter</span></button><button class="btn" type="button" id="skip">건너뛰기 →</button><span class="saved" id="savedmsg"></span></div>
+    <div class="keys">단축키: Enter 저장·다음 · 1~5 해당 항목 맞음↔틀림 · Shift+1~5 해당없음 · ←/→ 이동 · 분류가 틀림이면 정답 분류를 누르세요</div></section>`}
+function bind(){
+  $('nextUn').onclick=()=>{const l=inBatch();const k=l.findIndex((x,i)=>i>pos&&!mine[x.n]);const j=k>=0?k:l.findIndex(x=>!mine[x.n]);if(j>=0){pos=j;loadDraft();render()}};
+  if(!current())return;
+  $('prev').onclick=()=>go(-1);$('skip').onclick=()=>go(1);$('save').onclick=save;$('memo').oninput=e=>{draft.memo=e.target.value};
+}
+function go(d){const l=inBatch();pos=Math.max(0,Math.min(l.length-1,pos+d));loadDraft();render();window.scrollTo(0,0)}
+async function save(){const x=current();if(!x||saving)return;
+  if(draft.v.cls==='X'&&!draft.gold){const g=document.querySelector('.gold');if(g)g.style.outline='2px solid var(--bad)';return}
+  const rec={n:x.n,i:x.i,v:draft.v,gold:draft.v.cls==='X'?draft.gold:'',memo:draft.memo.trim(),auto:x.cls,at:new Date().toISOString()};
+  mine[x.n]=rec;saving=true;
+  try{if(db&&me){await db.doc(`rv/${me}/items/${x.n}`).set(rec);await db.doc(`rv/${me}`).set({count:Object.keys(mine).length,at:rec.at})}else{try{localStorage.setItem('rv-local',JSON.stringify(mine))}catch(_){}}}
+  catch(e){if(e&&e.code==='invalid_argument'){status='readonly'}delete mine[x.n]}
+  saving=false;const l=inBatch();const nxt=l.findIndex((y,i)=>i>pos&&!mine[y.n]);pos=nxt>=0?nxt:Math.min(l.length-1,pos+1);loadDraft();render();window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){draft.v[b.dataset.k]=b.dataset.v;if(b.dataset.k==='cls'&&b.dataset.v!=='X')draft.gold='';render();return}
+  const g=e.target.closest('[data-gold]');if(g){draft.gold=g.dataset.gold;render();return}
+  const t=e.target.closest('[data-view]');if(t){view=t.dataset.view;document.querySelectorAll('[data-view]').forEach(z=>z.setAttribute('aria-pressed',z===t));render()}});
+document.addEventListener('keydown',e=>{if(view!=='rev'||!current()||!draft)return;if(e.target.tagName==='INPUT'&&e.key!=='Enter')return;if(e.target.tagName==='SELECT')return;
+  const x=current();
+  if(e.key==='Enter'){e.preventDefault();save();return}
+  if(e.key==='ArrowLeft'){go(-1);return}if(e.key==='ArrowRight'){go(1);return}
+  const m=e.code&&e.code.match(/^Digit([1-5])$/);if(m){const k=COMPS[+m[1]-1][0];if(isSimple(x)&&k!=='cls')return;e.preventDefault();draft.v[k]=e.shiftKey?'NA':(draft.v[k]==='X'?'O':'X');if(k==='cls'&&draft.v[k]!=='X')draft.gold='';render()}});
+
+/* ---------- owner dashboard ---------- */
+let all={},names={};
+async function loadAll(){if(!db)return;const rs=await db.collection('rv').get();all={};
+  for(const d of rs.docs){const its=await db.collection(`rv/${d.id}/items`).get();all[d.id]={};its.docs.forEach(x=>{const v=x.data();all[d.id][v.n]=v})}
+  try{const ps=await user.profiles(Object.keys(all));for(const id in ps)names[id]=ps[id].name||''}catch(e){}}
+function kappa(a,b){const n=a.length;if(!n)return null;const cats=[...new Set([...a,...b])];let po=0;for(let i=0;i<n;i++)if(a[i]===b[i])po++;po/=n;let pe=0;for(const c of cats)pe+=(a.filter(v=>v===c).length/n)*(b.filter(v=>v===c).length/n);return pe===1?1:(po-pe)/(1-pe)}
+async function dash(){const app=$('app');app.innerHTML='<div class="card">불러오는 중…</div>';await loadAll();
+  const rv=Object.keys(all);const nm=id=>names[id]||('검수자 '+(rv.indexOf(id)+1));
+  const label=(r)=>r.v.cls==='O'?r.auto:r.gold;    // the reviewer's class answer
+  // per item: all reviewers' answers
+  const byItem={};rv.forEach(id=>Object.values(all[id]).forEach(r=>{(byItem[r.n]=byItem[r.n]||[]).push({id,r})}));
+  const rows=rv.map(id=>{const rs=Object.values(all[id]);const c=rs.filter(r=>r.v.cls!=='NA');return `<tr><td>${esc(nm(id))}</td><td class="n">${rs.length} / 300</td><td class="n">${Math.round(rs.length/3)}%</td><td class="n">${c.length?Math.round(c.filter(r=>r.v.cls==='O').length/c.length*100)+'%':'—'}</td></tr>`}).join('');
+  // Fleiss' kappa on the class answer over items every reviewer has done (needs >= 2 reviewers)
+  let fleiss='';if(rv.length>=2){const items=[];for(let n=1;n<=300;n++){const a=rv.map(id=>all[id][n]).filter(Boolean);if(a.length===rv.length)items.push(a.map(label))}
+    if(items.length){const m=rv.length,cats=[...new Set(items.flat())];let Pbar=0;const pj={};cats.forEach(c=>pj[c]=0);
+      for(const a of items){let s=0;for(const c of cats){const k=a.filter(v=>v===c).length;s+=k*(k-1);pj[c]+=k}Pbar+=s/(m*(m-1))}Pbar/=items.length;
+      let Pe=0;for(const c of cats){const p=pj[c]/(items.length*m);Pe+=p*p}const fk=Pe===1?1:(Pbar-Pe)/(1-Pe);
+      fleiss=`<div class="note">전원이 공통으로 끝낸 ${items.length}문항 기준 Fleiss' κ = <b>${fk.toFixed(2)}</b> (검수자 ${m}명, 관측 일치 ${Math.round(Pbar*100)}%)</div>`}}
+  // pairwise kappa on the class answer, common items
+  let kap=[];for(let i=0;i<rv.length;i++)for(let j=i+1;j<rv.length;j++){const a=[],b=[];for(let n=1;n<=300;n++){const x=all[rv[i]][n],y=all[rv[j]][n];if(x&&y){a.push(label(x));b.push(label(y))}}
+    const k=kappa(a,b);if(k!=null)kap.push(`<tr><td>${esc(nm(rv[i]))} · ${esc(nm(rv[j]))}</td><td class="n">${a.length}</td><td class="n">${Math.round(a.filter((v,t)=>v===b[t]).length/a.length*100)}%</td><td class="n">${k.toFixed(2)}</td></tr>`)}
+  // majority accuracy per component and disagreements
+  const comp={};COMPS.forEach(([k])=>comp[k]={o:0,x:0});const dis=[];
+  for(const n in byItem){const arr=byItem[n];for(const [k] of COMPS){const vs=arr.map(a=>a.r.v[k]).filter(v=>v!=='NA');if(!vs.length)continue;const o=vs.filter(v=>v==='O').length,x=vs.length-o;if(o>x)comp[k].o++;else if(x>o)comp[k].x++;else comp[k].x++;
+      if(o&&x)dis.push({n:+n,k})}}
+  const it=n=>IT.find(x=>x.n===n);
+  const accRows=COMPS.map(([k,l])=>{const c=comp[k];const t=c.o+c.x;return `<tr><td>${l}</td><td class="n">${t}</td><td class="n">${t?Math.round(c.o/t*1000)/10+'%':'—'}</td></tr>`}).join('');
+  app.innerHTML=`<section class="card"><h2 style="margin:0;font-size:17px">검수 현황 (주인만 보임)</h2>
+    <div class="note">검수자는 서로의 답을 볼 수 없습니다. 검수자 목록은 저장을 한 번 이상 한 사람입니다.</div>
+    <table><tr><th>검수자</th><th class="n">완료</th><th class="n">진행률</th><th class="n">분류 맞음 비율</th></tr>${rows||'<tr><td colspan="4">아직 저장된 검수가 없습니다.</td></tr>'}</table></section>
+    <section class="card"><h2 style="margin:0;font-size:17px">검수자 간 일치도 (분류)</h2>${fleiss}<div class="note">쌍별: 두 사람이 모두 본 문항에서 각자 답한 분류(맞음이면 자동 분류, 틀림이면 고른 정답)를 비교한 Cohen's κ.</div>
+    <table><tr><th>검수자 쌍</th><th class="n">공통 문항</th><th class="n">일치</th><th class="n">κ</th></tr>${kap.join('')||'<tr><td colspan="4">두 명 이상이 같은 문항을 검수하면 계산됩니다.</td></tr>'}</table></section>
+    <section class="card"><h2 style="margin:0;font-size:17px">자동 분해 정확도 (문항별 다수결)</h2><table><tr><th>항목</th><th class="n">판정된 문항</th><th class="n">맞음</th></tr>${accRows}</table>
+    <div class="note">표본은 분류별 층화(드문 분류를 많이) — 모집단 추정은 Claude에게 집계를 요청하면 분포 가중으로 계산합니다.</div></section>
+    <section class="card"><h2 style="margin:0;font-size:17px">의견이 갈린 문항 ${dis.length}건</h2><div class="dis">${dis.slice(0,80).map(d=>{const x=it(d.n);const arr=byItem[d.n];return `<div class="it"><b>#${d.n}</b> <span class="note">${COMPS.find(c=>c[0]===d.k)[1]}</span> · ${esc(x.card)} ${esc(x.name)}<br>${esc(x.text.slice(0,120))}…<br>${arr.map(a=>`${esc(nm(a.id))}: ${a.r.v[d.k]}${d.k==='cls'&&a.r.v.cls==='X'?' → '+esc(a.r.gold):''}${a.r.memo?' 「'+esc(a.r.memo)+'」':''}`).join(' · ')}</div>`}).join('')||'<div class="note">없음</div>'}</div></section>`}
+
+/* ---------- start ---------- */
+loadDraft();render();
+(async()=>{
+  db=window.claude&&window.claude.use?await window.claude.use('db'):null;user=window.claude&&window.claude.use?await window.claude.use('user'):null;
+  if(user){try{me=await user.id();isOwner=await user.isOwner();const p=await user.me();$('who').textContent=(p&&p.name?p.name:'')+(isOwner?' · 페이지 주인':'')}catch(e){}}
+  if(isOwner){$('tabs').insertAdjacentHTML('beforeend','<button type="button" data-view="dash" aria-pressed="false">검수 현황</button>')}
+  if(db&&me){try{const rs=await db.collection(`rv/${me}/items`).get();rs.docs.forEach(d=>{const v=d.data();mine[v.n]=v})}catch(e){}}
+  else{try{mine=JSON.parse(localStorage.getItem('rv-local')||'{}')}catch(e){}}
+  const l=inBatch();const j=l.findIndex(x=>!mine[x.n]);pos=j>=0?j:0;loadDraft();render();
+})();
+})();
+</script>

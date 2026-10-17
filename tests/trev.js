@@ -1,0 +1,20 @@
+const {JSDOM}=require('jsdom');const fs=require('fs');
+const html=fs.readFileSync(process.argv[2],'utf8');const errs=[];const store={};
+const mkdb=()=>({doc:p=>({set:async v=>{store[p]=v},get:async()=>({exists:!!store[p],data:()=>store[p]})}),collection:p=>({get:async()=>{const pre=p+'/';const docs=Object.keys(store).filter(k=>k.startsWith(pre)&&!k.slice(pre.length).includes('/')).map(k=>({id:k.slice(pre.length),data:()=>store[k]}));return {docs}}})});
+const dom=new JSDOM('<!doctype html><html><head></head><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){w.scrollTo=()=>{};w.addEventListener('error',e=>errs.push(e.message));
+ const db=mkdb();w.claude={use:async n=>n==='db'?db:n==='user'?{id:async()=>'u1',isOwner:async()=>true,me:async()=>({name:'테스터'}),profiles:async ids=>Object.fromEntries(ids.map(i=>[i,{name:'이름'+i}]))}:null}}});
+const w=dom.window,d=w.document,$=i=>d.getElementById(i);const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const key=(k,shift)=>d.dispatchEvent(new w.KeyboardEvent('keydown',{key:k,code:/^[1-5]$/.test(k)?'Digit'+k:k,shiftKey:!!shift,bubbles:true}));
+(async()=>{await sleep(200);
+ console.log('head',d.querySelector('.ch').textContent.replace(/\s+/g,' '),'| marks',d.querySelectorAll('.text mark').length,'| rows',d.querySelectorAll('.row').length);
+ console.log('bar',d.querySelector('.bar').textContent.replace(/\s+/g,' ').slice(0,80));
+ key('Enter');await sleep(50);console.log('after enter: saved',Object.keys(store),'| now',d.querySelector('.ch .num').textContent);
+ key('1');console.log('cls X ->',d.querySelector('.row.x .lab').textContent,'gold buttons',d.querySelectorAll('[data-gold]').length);
+ key('Enter');await sleep(50);console.log('blocked without gold (still #2)',d.querySelector('.ch .num').textContent);
+ d.querySelector('[data-gold]').click();key('3',true);key('Enter');await sleep(50);
+ console.log('saved',Object.keys(store).length,JSON.stringify(store['rv/u1/items/2']).slice(0,160));
+ // second reviewer writes the same items for kappa
+ store['rv/u2']={count:2};store['rv/u2/items/1']={n:1,v:{cls:'O',trig:'O',cond:'X',cost:'O',proc:'O'},gold:'',auto:'유발형',memo:''};store['rv/u2/items/2']={n:2,v:{cls:'O',trig:'O',cond:'O',cost:'O',proc:'O'},gold:'',auto:store['rv/u1/items/2'].auto,memo:''};
+ d.querySelector('[data-view=dash]').click();await sleep(300);
+ console.log('dash',$('app').textContent.replace(/\s+/g,' ').slice(0,600));
+ console.log('errors',errs)})();

@@ -1,0 +1,3387 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-10-17">
+    <creator>NetworkX 3.6.1</creator>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <attributes mode="static" class="edge">
+      <attribute id="4" title="pmi" type="double" />
+    </attributes>
+    <attributes mode="static" class="node">
+      <attribute id="0" title="kind" type="string" />
+      <attribute id="1" title="name" type="string" />
+      <attribute id="2" title="count" type="long" />
+      <attribute id="3" title="comm" type="long" />
+    </attributes>
+    <nodes>
+      <node id="종류:특수 진화 조건:진화" label="종류:특수 진화 조건:진화">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="특수 진화 조건:진화" />
+          <attvalue for="2" value="838" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:퇴화" label="키워드:퇴화">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="퇴화" />
+          <attvalue for="2" value="152" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:등장 시" label="타이밍:등장 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="등장 시" />
+          <attvalue for="2" value="1055" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:진화 시" label="타이밍:진화 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="진화 시" />
+          <attvalue for="2" value="1172" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:퇴화" label="행동:퇴화">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="퇴화" />
+          <attvalue for="2" value="152" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:연계" label="키워드:연계">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="연계" />
+          <attvalue for="2" value="76" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="타이밍:자신의 턴" label="타이밍:자신의 턴">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="자신의 턴" />
+          <attvalue for="2" value="1042" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:추가 어택" label="행동:추가 어택">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="추가 어택" />
+          <attvalue for="2" value="171" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:키워드 부여" label="행동:키워드 부여">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="키워드 부여" />
+          <attvalue for="2" value="561" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="위치:진화원 효과" label="위치:진화원 효과">
+        <attvalues>
+          <attvalue for="0" value="위치" />
+          <attvalue for="1" value="진화원 효과" />
+          <attvalue for="2" value="1748" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="종류:키워드 능력" label="종류:키워드 능력">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="키워드 능력" />
+          <attvalue for="2" value="782" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:S 어택" label="키워드:S 어택">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="S 어택" />
+          <attvalue for="2" value="310" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:패로 회수" label="행동:패로 회수">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="패로 회수" />
+          <attvalue for="2" value="722" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:서로의 턴" label="타이밍:서로의 턴">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="서로의 턴" />
+          <attvalue for="2" value="738" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:진화" label="행동:진화">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="진화" />
+          <attvalue for="2" value="503" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:돌진" label="키워드:돌진">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="돌진" />
+          <attvalue for="2" value="64" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:진화 조건 무시" label="행동:진화 조건 무시">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="진화 조건 무시" />
+          <attvalue for="2" value="50" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:재기동" label="키워드:재기동">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="재기동" />
+          <attvalue for="2" value="112" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:DP 증가" label="행동:DP 증가">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="DP 증가" />
+          <attvalue for="2" value="605" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:소멸" label="행동:소멸">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="소멸" />
+          <attvalue for="2" value="932" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:효과 무시·내성" label="행동:효과 무시·내성">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="효과 무시·내성" />
+          <attvalue for="2" value="48" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:상대의 턴" label="타이밍:상대의 턴">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="상대의 턴" />
+          <attvalue for="2" value="225" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:시큐리티 제거" label="행동:시큐리티 제거">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="시큐리티 제거" />
+          <attvalue for="2" value="206" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:파기" label="행동:파기">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="파기" />
+          <attvalue for="2" value="572" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:진화원에 놓기" label="행동:진화원에 놓기">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="진화원에 놓기" />
+          <attvalue for="2" value="354" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:어택 시" label="타이밍:어택 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="어택 시" />
+          <attvalue for="2" value="724" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:코스트 감소" label="행동:코스트 감소">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="코스트 감소" />
+          <attvalue for="2" value="293" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="종류:특수 진화 조건:조그레스" label="종류:특수 진화 조건:조그레스">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="특수 진화 조건:조그레스" />
+          <attvalue for="2" value="49" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="행동:효과 부여" label="행동:효과 부여">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="효과 부여" />
+          <attvalue for="2" value="63" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:등장" label="행동:등장">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="등장" />
+          <attvalue for="2" value="1174" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="종류:카드 고유 룰" label="종류:카드 고유 룰">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="카드 고유 룰" />
+          <attvalue for="2" value="123" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="타이밍:어택 종료 시" label="타이밍:어택 종료 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="어택 종료 시" />
+          <attvalue for="2" value="70" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:시큐리티 추가" label="행동:시큐리티 추가">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="시큐리티 추가" />
+          <attvalue for="2" value="156" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:덱 위 확인" label="행동:덱 위 확인">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="덱 위 확인" />
+          <attvalue for="2" value="365" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:덱으로 되돌림" label="행동:덱으로 되돌림">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="덱으로 되돌림" />
+          <attvalue for="2" value="475" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:자신의 턴 종료 시" label="타이밍:자신의 턴 종료 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="자신의 턴 종료 시" />
+          <attvalue for="2" value="110" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="행동:레스트" label="행동:레스트">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="레스트" />
+          <attvalue for="2" value="298" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:블래스트 진화" label="키워드:블래스트 진화">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="블래스트 진화" />
+          <attvalue for="2" value="73" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="타이밍:카운터" label="타이밍:카운터">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="카운터" />
+          <attvalue for="2" value="76" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="행동:상한·수치 변경" label="행동:상한·수치 변경">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="상한·수치 변경" />
+          <attvalue for="2" value="71" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:드로우" label="행동:드로우">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="드로우" />
+          <attvalue for="2" value="414" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:DP 감소" label="행동:DP 감소">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="DP 감소" />
+          <attvalue for="2" value="308" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="타이밍:시큐리티" label="타이밍:시큐리티">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="시큐리티" />
+          <attvalue for="2" value="773" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="행동:블록 금지" label="행동:블록 금지">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="블록 금지" />
+          <attvalue for="2" value="41" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:진화원 제거" label="행동:진화원 제거">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="진화원 제거" />
+          <attvalue for="2" value="219" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:소멸 시" label="타이밍:소멸 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="소멸 시" />
+          <attvalue for="2" value="411" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="행동:액티브" label="행동:액티브">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="액티브" />
+          <attvalue for="2" value="269" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:관통" label="키워드:관통">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="관통" />
+          <attvalue for="2" value="140" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:속공" label="키워드:속공">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="속공" />
+          <attvalue for="2" value="84" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:머티리얼 세이브" label="키워드:머티리얼 세이브">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="머티리얼 세이브" />
+          <attvalue for="2" value="13" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="종류:디지크로스" label="종류:디지크로스">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="디지크로스" />
+          <attvalue for="2" value="78" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="종류:유발 효과(타이밍 표시 없음)" label="종류:유발 효과(타이밍 표시 없음)">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="유발 효과(타이밍 표시 없음)" />
+          <attvalue for="2" value="108" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:볼텍스" label="키워드:볼텍스">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="볼텍스" />
+          <attvalue for="2" value="8" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:빙장" label="키워드:빙장">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="빙장" />
+          <attvalue for="2" value="9" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:오버플로우" label="키워드:오버플로우">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="오버플로우" />
+          <attvalue for="2" value="68" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:메모리 감소" label="행동:메모리 감소">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="메모리 감소" />
+          <attvalue for="2" value="110" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:메모리 증가" label="행동:메모리 증가">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="메모리 증가" />
+          <attvalue for="2" value="564" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="타이밍:상대의 턴 종료 시" label="타이밍:상대의 턴 종료 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="상대의 턴 종료 시" />
+          <attvalue for="2" value="36" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:진격" label="키워드:진격">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="진격" />
+          <attvalue for="2" value="29" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:블로커" label="키워드:블로커">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="블로커" />
+          <attvalue for="2" value="406" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:아머 퍼지" label="키워드:아머 퍼지">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="아머 퍼지" />
+          <attvalue for="2" value="41" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="종류:상시·기타 문장" label="종류:상시·기타 문장">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="상시·기타 문장" />
+          <attvalue for="2" value="204" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="행동:다른 효과 발휘" label="행동:다른 효과 발휘">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="다른 효과 발휘" />
+          <attvalue for="2" value="234" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="행동:어택 금지" label="행동:어택 금지">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="어택 금지" />
+          <attvalue for="2" value="59" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:효과 발휘 금지" label="행동:효과 발휘 금지">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="효과 발휘 금지" />
+          <attvalue for="2" value="54" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="행동:어택 대상 변경" label="행동:어택 대상 변경">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="어택 대상 변경" />
+          <attvalue for="2" value="119" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:색 조건 무시" label="행동:색 조건 무시">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="색 조건 무시" />
+          <attvalue for="2" value="98" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="타이밍:메인" label="타이밍:메인">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="메인" />
+          <attvalue for="2" value="644" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:배틀 에어리어에 놓기" label="행동:배틀 에어리어에 놓기">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="배틀 에어리어에 놓기" />
+          <attvalue for="2" value="191" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="위치:시큐리티 효과" label="위치:시큐리티 효과">
+        <attvalues>
+          <attvalue for="0" value="위치" />
+          <attvalue for="1" value="시큐리티 효과" />
+          <attvalue for="2" value="676" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="키워드:스케이프고트" label="키워드:스케이프고트">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="스케이프고트" />
+          <attvalue for="2" value="12" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:소멸 내성" label="행동:소멸 내성">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="소멸 내성" />
+          <attvalue for="2" value="178" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:재밍" label="키워드:재밍">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="재밍" />
+          <attvalue for="2" value="91" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:토큰" label="행동:토큰">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="토큰" />
+          <attvalue for="2" value="46" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="타이밍:자신의 턴 개시 시" label="타이밍:자신의 턴 개시 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="자신의 턴 개시 시" />
+          <attvalue for="2" value="102" />
+          <attvalue for="3" value="4" />
+        </attvalues>
+      </node>
+      <node id="행동:셔플" label="행동:셔플">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="셔플" />
+          <attvalue for="2" value="18" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:옵션 사용" label="행동:옵션 사용">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="옵션 사용" />
+          <attvalue for="2" value="55" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="행동:치환(대신)" label="행동:치환(대신)">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="치환(대신)" />
+          <attvalue for="2" value="44" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:딜레이" label="키워드:딜레이">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="딜레이" />
+          <attvalue for="2" value="98" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:자신의 메인 페이즈 개시 시" label="타이밍:자신의 메인 페이즈 개시 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="자신의 메인 페이즈 개시 시" />
+          <attvalue for="2" value="171" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:메모리 설정" label="행동:메모리 설정">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="메모리 설정" />
+          <attvalue for="2" value="74" />
+          <attvalue for="3" value="4" />
+        </attvalues>
+      </node>
+      <node id="행동:취급 변경" label="행동:취급 변경">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="취급 변경" />
+          <attvalue for="2" value="105" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:세이브" label="키워드:세이브">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="세이브" />
+          <attvalue for="2" value="134" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="키워드:마인드 링크" label="키워드:마인드 링크">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="마인드 링크" />
+          <attvalue for="2" value="9" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="타이밍:서로의 턴 종료 시" label="타이밍:서로의 턴 종료 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="서로의 턴 종료 시" />
+          <attvalue for="2" value="13" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="키워드:방벽" label="키워드:방벽">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="방벽" />
+          <attvalue for="2" value="43" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:불굴" label="키워드:불굴">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="불굴" />
+          <attvalue for="2" value="24" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:리커버리" label="키워드:리커버리">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="리커버리" />
+          <attvalue for="2" value="57" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:되돌림·이탈 내성" label="행동:되돌림·이탈 내성">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="되돌림·이탈 내성" />
+          <attvalue for="2" value="81" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:액티브 금지" label="행동:액티브 금지">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="액티브 금지" />
+          <attvalue for="2" value="73" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:길동무" label="키워드:길동무">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="길동무" />
+          <attvalue for="2" value="94" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:덱" label="키워드:덱">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="덱" />
+          <attvalue for="2" value="35" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="행동:시큐리티 공개·확인" label="행동:시큐리티 공개·확인">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="시큐리티 공개·확인" />
+          <attvalue for="2" value="22" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:디지버스트" label="키워드:디지버스트">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="디지버스트" />
+          <attvalue for="2" value="45" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:흡수 진화" label="키워드:흡수 진화">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="흡수 진화" />
+          <attvalue for="2" value="13" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:디코이" label="키워드:디코이">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="디코이" />
+          <attvalue for="2" value="10" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:카드 효과 획득" label="행동:카드 효과 획득">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="카드 효과 획득" />
+          <attvalue for="2" value="14" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:회피" label="키워드:회피">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="회피" />
+          <attvalue for="2" value="17" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:파티션" label="키워드:파티션">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="파티션" />
+          <attvalue for="2" value="13" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:충돌" label="키워드:충돌">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="충돌" />
+          <attvalue for="2" value="33" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="키워드:블래스트 조그레스" label="키워드:블래스트 조그레스">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="블래스트 조그레스" />
+          <attvalue for="2" value="7" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="키워드:오버클럭" label="키워드:오버클럭">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="오버클럭" />
+          <attvalue for="2" value="8" />
+          <attvalue for="3" value="2" />
+        </attvalues>
+      </node>
+      <node id="종류:링크" label="종류:링크">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="링크" />
+          <attvalue for="2" value="35" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="종류:특수 진화 조건:어플 합체" label="종류:특수 진화 조건:어플 합체">
+        <attvalues>
+          <attvalue for="0" value="종류" />
+          <attvalue for="1" value="특수 진화 조건:어플 합체" />
+          <attvalue for="2" value="18" />
+          <attvalue for="3" value="3" />
+        </attvalues>
+      </node>
+      <node id="타이밍:링크 시" label="타이밍:링크 시">
+        <attvalues>
+          <attvalue for="0" value="타이밍" />
+          <attvalue for="1" value="링크 시" />
+          <attvalue for="2" value="17" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+      <node id="행동:링크" label="행동:링크">
+        <attvalues>
+          <attvalue for="0" value="행동" />
+          <attvalue for="1" value="링크" />
+          <attvalue for="2" value="21" />
+          <attvalue for="3" value="1" />
+        </attvalues>
+      </node>
+      <node id="키워드:트레이닝" label="키워드:트레이닝">
+        <attvalues>
+          <attvalue for="0" value="키워드" />
+          <attvalue for="1" value="트레이닝" />
+          <attvalue for="2" value="19" />
+          <attvalue for="3" value="0" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:블로커" id="0" weight="39">
+        <attvalues>
+          <attvalue for="4" value="0.02" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="행동:코스트 감소" id="1" weight="39">
+        <attvalues>
+          <attvalue for="4" value="0.35" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:돌진" id="2" weight="21">
+        <attvalues>
+          <attvalue for="4" value="1.25" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:아머 퍼지" id="3" weight="14">
+        <attvalues>
+          <attvalue for="4" value="1.29" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:불굴" id="4" weight="11">
+        <attvalues>
+          <attvalue for="4" value="1.59" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:세이브" id="5" weight="23">
+        <attvalues>
+          <attvalue for="4" value="0.6" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:회피" id="6" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.14" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="행동:취급 변경" id="7" weight="10">
+        <attvalues>
+          <attvalue for="4" value="0.02" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:연계" id="8" weight="25">
+        <attvalues>
+          <attvalue for="4" value="1.25" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:방벽" id="9" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.22" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:충돌" id="10" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.07" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:속공" id="11" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.02" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:빙장" id="12" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.78" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:진화" target="키워드:트레이닝" id="13" weight="19">
+        <attvalues>
+          <attvalue for="4" value="2.37" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="타이밍:등장 시" id="14" weight="59">
+        <attvalues>
+          <attvalue for="4" value="1.19" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="타이밍:진화 시" id="15" weight="68">
+        <attvalues>
+          <attvalue for="4" value="1.23" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="행동:퇴화" id="16" weight="152">
+        <attvalues>
+          <attvalue for="4" value="4.07" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="행동:소멸" id="17" weight="26">
+        <attvalues>
+          <attvalue for="4" value="0.49" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="행동:효과 무시·내성" id="18" weight="11">
+        <attvalues>
+          <attvalue for="4" value="2.6" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="행동:파기" id="19" weight="36">
+        <attvalues>
+          <attvalue for="4" value="1.31" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="타이밍:메인" id="20" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.44" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="타이밍:어택 시" id="21" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.26" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="타이밍:소멸 시" id="22" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.25" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:퇴화" target="행동:진화원에 놓기" id="23" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.28" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="타이밍:진화 시" id="24" weight="512">
+        <attvalues>
+          <attvalue for="4" value="1.31" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:퇴화" id="25" weight="59">
+        <attvalues>
+          <attvalue for="4" value="1.19" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:패로 회수" id="26" weight="280">
+        <attvalues>
+          <attvalue for="4" value="1.19" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:덱 위 확인" id="27" weight="224">
+        <attvalues>
+          <attvalue for="4" value="1.65" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:덱으로 되돌림" id="28" weight="225">
+        <attvalues>
+          <attvalue for="4" value="1.39" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:레스트" id="29" weight="83">
+        <attvalues>
+          <attvalue for="4" value="0.86" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:상한·수치 변경" id="30" weight="22">
+        <attvalues>
+          <attvalue for="4" value="0.96" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:드로우" id="31" weight="79">
+        <attvalues>
+          <attvalue for="4" value="0.48" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:시큐리티 추가" id="32" weight="43">
+        <attvalues>
+          <attvalue for="4" value="0.85" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:파기" id="33" weight="128">
+        <attvalues>
+          <attvalue for="4" value="0.64" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:진화원 제거" id="34" weight="31">
+        <attvalues>
+          <attvalue for="4" value="0.18" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:효과 무시·내성" id="35" weight="13">
+        <attvalues>
+          <attvalue for="4" value="0.83" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:키워드 부여" id="36" weight="78">
+        <attvalues>
+          <attvalue for="4" value="0.16" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:소멸" id="37" weight="183">
+        <attvalues>
+          <attvalue for="4" value="0.51" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:DP 감소" id="38" weight="59">
+        <attvalues>
+          <attvalue for="4" value="0.48" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:효과 부여" id="39" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.83" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:진화원에 놓기" id="40" weight="77">
+        <attvalues>
+          <attvalue for="4" value="0.61" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:토큰" id="41" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.1" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="키워드:속공" id="42" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.1" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="키워드:리커버리" id="43" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.87" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:어택 금지" id="44" weight="15">
+        <attvalues>
+          <attvalue for="4" value="0.77" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:치환(대신)" id="45" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.3" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="키워드:덱" id="46" weight="12">
+        <attvalues>
+          <attvalue for="4" value="1.07" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:액티브 금지" id="47" weight="36">
+        <attvalues>
+          <attvalue for="4" value="1.43" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:셔플" id="48" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.19" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:시큐리티 공개·확인" id="49" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.99" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:효과 발휘 금지" id="50" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.23" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:옵션 사용" id="51" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.08" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:되돌림·이탈 내성" id="52" weight="10">
+        <attvalues>
+          <attvalue for="4" value="0.04" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:등장 시" target="행동:링크" id="53" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.04" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:퇴화" id="54" weight="68">
+        <attvalues>
+          <attvalue for="4" value="1.23" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:패로 회수" id="55" weight="113">
+        <attvalues>
+          <attvalue for="4" value="0.18" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:소멸" id="56" weight="249">
+        <attvalues>
+          <attvalue for="4" value="0.71" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:효과 무시·내성" id="57" weight="21">
+        <attvalues>
+          <attvalue for="4" value="1.2" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:진화원에 놓기" id="58" weight="74">
+        <attvalues>
+          <attvalue for="4" value="0.47" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:추가 어택" id="59" weight="41">
+        <attvalues>
+          <attvalue for="4" value="0.6" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:효과 부여" id="60" weight="22">
+        <attvalues>
+          <attvalue for="4" value="0.98" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:덱으로 되돌림" id="61" weight="86">
+        <attvalues>
+          <attvalue for="4" value="0.32" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:레스트" id="62" weight="127">
+        <attvalues>
+          <attvalue for="4" value="1.18" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:상한·수치 변경" id="63" weight="30">
+        <attvalues>
+          <attvalue for="4" value="1.17" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:시큐리티 추가" id="64" weight="48">
+        <attvalues>
+          <attvalue for="4" value="0.85" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:등장" id="65" weight="193">
+        <attvalues>
+          <attvalue for="4" value="0.23" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:파기" id="66" weight="184">
+        <attvalues>
+          <attvalue for="4" value="0.9" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:블록 금지" id="67" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.52" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:진화원 제거" id="68" weight="71">
+        <attvalues>
+          <attvalue for="4" value="0.9" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:액티브" id="69" weight="56">
+        <attvalues>
+          <attvalue for="4" value="0.46" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:키워드 부여" id="70" weight="88">
+        <attvalues>
+          <attvalue for="4" value="0.18" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:DP 감소" id="71" weight="79">
+        <attvalues>
+          <attvalue for="4" value="0.67" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="키워드:진격" id="72" weight="17">
+        <attvalues>
+          <attvalue for="4" value="1.5" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:진화 조건 무시" id="73" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.2" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:토큰" id="74" weight="13">
+        <attvalues>
+          <attvalue for="4" value="0.77" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:셔플" id="75" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.22" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:시큐리티 제거" id="76" weight="38">
+        <attvalues>
+          <attvalue for="4" value="0.34" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:치환(대신)" id="77" weight="13">
+        <attvalues>
+          <attvalue for="4" value="0.81" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:덱 위 확인" id="78" weight="56">
+        <attvalues>
+          <attvalue for="4" value="0.16" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="키워드:속공" id="79" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.09" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="키워드:리커버리" id="80" weight="19">
+        <attvalues>
+          <attvalue for="4" value="0.93" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:어택 금지" id="81" weight="13">
+        <attvalues>
+          <attvalue for="4" value="0.52" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:액티브 금지" id="82" weight="44">
+        <attvalues>
+          <attvalue for="4" value="1.53" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:시큐리티 공개·확인" id="83" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.73" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:효과 발휘 금지" id="84" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.44" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="키워드:덱" id="85" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.67" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:옵션 사용" id="86" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.8" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:되돌림·이탈 내성" id="87" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.12" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:진화 시" target="행동:링크" id="88" weight="11">
+        <attvalues>
+          <attvalue for="4" value="1.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="행동:소멸" id="89" weight="26">
+        <attvalues>
+          <attvalue for="4" value="0.49" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="행동:효과 무시·내성" id="90" weight="11">
+        <attvalues>
+          <attvalue for="4" value="2.6" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="행동:파기" id="91" weight="36">
+        <attvalues>
+          <attvalue for="4" value="1.31" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="타이밍:메인" id="92" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.44" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="타이밍:어택 시" id="93" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.26" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="타이밍:소멸 시" id="94" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.25" />
+        </attvalues>
+      </edge>
+      <edge source="행동:퇴화" target="행동:진화원에 놓기" id="95" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.28" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="타이밍:자신의 턴" id="96" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.59" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="행동:추가 어택" id="97" weight="10">
+        <attvalues>
+          <attvalue for="4" value="1.93" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="행동:키워드 부여" id="98" weight="43">
+        <attvalues>
+          <attvalue for="4" value="2.2" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="위치:진화원 효과" id="99" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.13" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="종류:키워드 능력" id="100" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.05" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="키워드:S 어택" id="101" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.97" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="타이밍:서로의 턴" id="102" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.24" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:연계" target="행동:진화" id="103" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.34" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:추가 어택" id="104" weight="47">
+        <attvalues>
+          <attvalue for="4" value="0.86" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:키워드 부여" id="105" weight="179">
+        <attvalues>
+          <attvalue for="4" value="1.01" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:진화" id="106" weight="68">
+        <attvalues>
+          <attvalue for="4" value="0.15" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="위치:진화원 효과" id="107" weight="509">
+        <attvalues>
+          <attvalue for="4" value="0.92" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:DP 증가" id="108" weight="234">
+        <attvalues>
+          <attvalue for="4" value="1.2" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:S 어택" id="109" weight="79">
+        <attvalues>
+          <attvalue for="4" value="0.78" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:DP 감소" id="110" weight="48">
+        <attvalues>
+          <attvalue for="4" value="0.29" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:드로우" id="111" weight="74">
+        <attvalues>
+          <attvalue for="4" value="0.43" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:메모리 증가" id="112" weight="151">
+        <attvalues>
+          <attvalue for="4" value="0.83" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:코스트 감소" id="113" weight="111">
+        <attvalues>
+          <attvalue for="4" value="1.18" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:효과 발휘 금지" id="114" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.56" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:관통" id="115" weight="32">
+        <attvalues>
+          <attvalue for="4" value="0.67" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:어택 금지" id="116" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.02" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:속공" id="117" weight="25">
+        <attvalues>
+          <attvalue for="4" value="0.94" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="행동:블록 금지" id="118" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.92" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:재밍" id="119" weight="21">
+        <attvalues>
+          <attvalue for="4" value="0.68" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:디지버스트" id="120" weight="14">
+        <attvalues>
+          <attvalue for="4" value="0.98" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:충돌" id="121" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.26" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴" target="키워드:딜레이" id="122" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="행동:키워드 부여" id="123" weight="42">
+        <attvalues>
+          <attvalue for="4" value="1.36" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="행동:효과 부여" id="124" weight="16">
+        <attvalues>
+          <attvalue for="4" value="2.59" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="종류:키워드 능력" id="125" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.29" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="키워드:속공" id="126" weight="34">
+        <attvalues>
+          <attvalue for="4" value="3.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="키워드:진격" id="127" weight="16">
+        <attvalues>
+          <attvalue for="4" value="3.36" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="타이밍:메인" id="128" weight="23">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="행동:DP 증가" id="129" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.04" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="행동:레스트" id="130" weight="13">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="타이밍:자신의 턴 종료 시" id="131" weight="23">
+        <attvalues>
+          <attvalue for="4" value="2.39" />
+        </attvalues>
+      </edge>
+      <edge source="행동:추가 어택" target="키워드:관통" id="132" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="위치:진화원 효과" id="133" weight="160">
+        <attvalues>
+          <attvalue for="4" value="0.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:S 어택" id="134" weight="227">
+        <attvalues>
+          <attvalue for="4" value="2.46" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:DP 증가" id="135" weight="63">
+        <attvalues>
+          <attvalue for="4" value="0.51" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:관통" id="136" weight="66">
+        <attvalues>
+          <attvalue for="4" value="2.02" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:블로커" id="137" weight="139">
+        <attvalues>
+          <attvalue for="4" value="1.7" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="타이밍:서로의 턴" id="138" weight="59">
+        <attvalues>
+          <attvalue for="4" value="0.24" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:액티브" id="139" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.17" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="타이밍:상대의 턴" id="140" weight="53">
+        <attvalues>
+          <attvalue for="4" value="1.32" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:어택 대상 변경" id="141" weight="29">
+        <attvalues>
+          <attvalue for="4" value="1.36" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:재기동" id="142" weight="37">
+        <attvalues>
+          <attvalue for="4" value="1.66" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:재밍" id="143" weight="37">
+        <attvalues>
+          <attvalue for="4" value="1.87" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:방벽" id="144" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="타이밍:메인" id="145" weight="59">
+        <attvalues>
+          <attvalue for="4" value="0.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:돌진" id="146" weight="15">
+        <attvalues>
+          <attvalue for="4" value="1.32" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:속공" id="147" weight="53">
+        <attvalues>
+          <attvalue for="4" value="2.31" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:소멸 내성" id="148" weight="28">
+        <attvalues>
+          <attvalue for="4" value="0.92" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:디지버스트" id="149" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.57" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:길동무" id="150" weight="26">
+        <attvalues>
+          <attvalue for="4" value="1.48" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:취급 변경" id="151" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.19" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:치환(대신)" id="152" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.78" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="타이밍:자신의 턴 종료 시" id="153" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="행동:효과 발휘 금지" id="154" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.39" />
+        </attvalues>
+      </edge>
+      <edge source="행동:키워드 부여" target="키워드:충돌" id="155" weight="15">
+        <attvalues>
+          <attvalue for="4" value="1.98" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="종류:키워드 능력" id="156" weight="276">
+        <attvalues>
+          <attvalue for="4" value="0.59" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:S 어택" id="157" weight="83">
+        <attvalues>
+          <attvalue for="4" value="0.31" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:재기동" id="158" weight="45">
+        <attvalues>
+          <attvalue for="4" value="0.72" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:서로의 턴" id="159" weight="251">
+        <attvalues>
+          <attvalue for="4" value="0.55" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:DP 증가" id="160" weight="348">
+        <attvalues>
+          <attvalue for="4" value="1.08" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:상대의 턴" id="161" weight="107">
+        <attvalues>
+          <attvalue for="4" value="0.89" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:시큐리티 제거" id="162" weight="63">
+        <attvalues>
+          <attvalue for="4" value="0.45" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:자신의 턴 종료 시" id="163" weight="27">
+        <attvalues>
+          <attvalue for="4" value="0.23" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:어택 시" id="164" weight="350">
+        <attvalues>
+          <attvalue for="4" value="0.9" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:드로우" id="165" weight="144">
+        <attvalues>
+          <attvalue for="4" value="0.58" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:DP 감소" id="166" weight="104">
+        <attvalues>
+          <attvalue for="4" value="0.55" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:소멸 시" id="167" weight="112">
+        <attvalues>
+          <attvalue for="4" value="0.33" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:관통" id="168" weight="50">
+        <attvalues>
+          <attvalue for="4" value="0.6" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:소멸" id="169" weight="212">
+        <attvalues>
+          <attvalue for="4" value="0.15" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:오버플로우" id="170" weight="68">
+        <attvalues>
+          <attvalue for="4" value="1.63" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:메모리 감소" id="171" weight="68">
+        <attvalues>
+          <attvalue for="4" value="1.15" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:어택 대상 변경" id="172" weight="30">
+        <attvalues>
+          <attvalue for="4" value="0.25" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:메모리 증가" id="173" weight="159">
+        <attvalues>
+          <attvalue for="4" value="0.37" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:재밍" id="174" weight="37">
+        <attvalues>
+          <attvalue for="4" value="0.73" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:소멸 내성" id="175" weight="69">
+        <attvalues>
+          <attvalue for="4" value="0.68" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:액티브" id="176" weight="58">
+        <attvalues>
+          <attvalue for="4" value="0.1" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:어택 종료 시" id="177" weight="34">
+        <attvalues>
+          <attvalue for="4" value="0.91" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:방벽" id="178" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.64" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:길동무" id="179" weight="41">
+        <attvalues>
+          <attvalue for="4" value="0.8" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:디지버스트" id="180" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.31" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:상대의 턴 종료 시" id="181" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.13" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:토큰" id="182" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.0" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:카드 효과 획득" id="183" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.94" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="행동:되돌림·이탈 내성" id="184" weight="26">
+        <attvalues>
+          <attvalue for="4" value="0.5" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="키워드:충돌" id="185" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.21" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="종류:링크" id="186" weight="32">
+        <attvalues>
+          <attvalue for="4" value="1.54" />
+        </attvalues>
+      </edge>
+      <edge source="위치:진화원 효과" target="타이밍:링크 시" id="187" weight="17">
+        <attvalues>
+          <attvalue for="4" value="1.63" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:S 어택" id="188" weight="69">
+        <attvalues>
+          <attvalue for="4" value="0.93" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:돌진" id="189" weight="25">
+        <attvalues>
+          <attvalue for="4" value="1.5" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:재기동" id="190" weight="66">
+        <attvalues>
+          <attvalue for="4" value="1.91" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:관통" id="191" weight="63">
+        <attvalues>
+          <attvalue for="4" value="1.64" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:소멸" id="192" weight="106">
+        <attvalues>
+          <attvalue for="4" value="0.26" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:속공" id="193" weight="20">
+        <attvalues>
+          <attvalue for="4" value="1.0" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:머티리얼 세이브" id="194" weight="11">
+        <attvalues>
+          <attvalue for="4" value="2.27" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:볼텍스" id="195" weight="7">
+        <attvalues>
+          <attvalue for="4" value="2.3" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:오버플로우" id="196" weight="67">
+        <attvalues>
+          <attvalue for="4" value="2.42" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:메모리 감소" id="197" weight="67">
+        <attvalues>
+          <attvalue for="4" value="1.94" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:블로커" id="198" weight="198">
+        <attvalues>
+          <attvalue for="4" value="1.72" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:아머 퍼지" id="199" weight="23">
+        <attvalues>
+          <attvalue for="4" value="1.86" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:스케이프고트" id="200" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.74" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:소멸 내성" id="201" weight="89">
+        <attvalues>
+          <attvalue for="4" value="1.74" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:재밍" id="202" weight="46">
+        <attvalues>
+          <attvalue for="4" value="1.75" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:어택 대상 변경" id="203" weight="50">
+        <attvalues>
+          <attvalue for="4" value="1.57" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:방벽" id="204" weight="30">
+        <attvalues>
+          <attvalue for="4" value="2.08" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:시큐리티 제거" id="205" weight="22">
+        <attvalues>
+          <attvalue for="4" value="0.2" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:길동무" id="206" weight="58">
+        <attvalues>
+          <attvalue for="4" value="1.95" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:흡수 진화" id="207" weight="10">
+        <attvalues>
+          <attvalue for="4" value="2.17" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:디코이" id="208" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.74" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:회피" id="209" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.68" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:불굴" id="210" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.34" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:파티션" id="211" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.66" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="키워드:충돌" id="212" weight="13">
+        <attvalues>
+          <attvalue for="4" value="1.5" />
+        </attvalues>
+      </edge>
+      <edge source="종류:키워드 능력" target="행동:토큰" id="213" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.8" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="행동:DP 증가" id="214" weight="26">
+        <attvalues>
+          <attvalue for="4" value="0.21" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="키워드:관통" id="215" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="행동:효과 발휘 금지" id="216" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.98" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="행동:DP 감소" id="217" weight="15">
+        <attvalues>
+          <attvalue for="4" value="0.34" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="타이밍:어택 시" id="218" weight="31">
+        <attvalues>
+          <attvalue for="4" value="0.21" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="타이밍:메인" id="219" weight="28">
+        <attvalues>
+          <attvalue for="4" value="0.23" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:S 어택" target="행동:시큐리티 추가" id="220" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.26" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:덱 위 확인" id="221" weight="300">
+        <attvalues>
+          <attvalue for="4" value="2.32" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:덱으로 되돌림" id="222" weight="264">
+        <attvalues>
+          <attvalue for="4" value="1.93" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:파기" id="223" weight="94">
+        <attvalues>
+          <attvalue for="4" value="0.71" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="타이밍:소멸 시" id="224" weight="35">
+        <attvalues>
+          <attvalue for="4" value="0.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="타이밍:메인" id="225" weight="97">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:배틀 에어리어에 놓기" id="226" weight="48">
+        <attvalues>
+          <attvalue for="4" value="1.13" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="위치:시큐리티 효과" id="227" weight="127">
+        <attvalues>
+          <attvalue for="4" value="0.84" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="타이밍:시큐리티" id="228" weight="143">
+        <attvalues>
+          <attvalue for="4" value="0.83" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:치환(대신)" id="229" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.52" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="키워드:리커버리" id="230" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.67" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:시큐리티 추가" id="231" weight="22">
+        <attvalues>
+          <attvalue for="4" value="0.56" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="키워드:덱" id="232" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.57" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:셔플" id="233" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.7" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:시큐리티 공개·확인" id="234" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:진화원 제거" id="235" weight="36">
+        <attvalues>
+          <attvalue for="4" value="0.71" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="키워드:디지버스트" id="236" weight="11">
+        <attvalues>
+          <attvalue for="4" value="1.11" />
+        </attvalues>
+      </edge>
+      <edge source="행동:패로 회수" target="행동:상한·수치 변경" id="237" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.04" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:DP 증가" id="238" weight="153">
+        <attvalues>
+          <attvalue for="4" value="1.12" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:메모리 증가" id="239" weight="59">
+        <attvalues>
+          <attvalue for="4" value="0.24" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:액티브" id="240" weight="47">
+        <attvalues>
+          <attvalue for="4" value="0.75" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:소멸" id="241" weight="93">
+        <attvalues>
+          <attvalue for="4" value="0.19" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:효과 무시·내성" id="242" weight="15">
+        <attvalues>
+          <attvalue for="4" value="1.33" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:효과 발휘 금지" id="243" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.3" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:시큐리티 제거" id="244" weight="46">
+        <attvalues>
+          <attvalue for="4" value="0.99" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:되돌림·이탈 내성" id="245" weight="60">
+        <attvalues>
+          <attvalue for="4" value="2.19" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:소멸 내성" id="246" weight="42">
+        <attvalues>
+          <attvalue for="4" value="1.05" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:시큐리티 추가" id="247" weight="21">
+        <attvalues>
+          <attvalue for="4" value="0.49" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:상한·수치 변경" id="248" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.43" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:카드 효과 획득" id="249" weight="14">
+        <attvalues>
+          <attvalue for="4" value="2.49" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="키워드:리커버리" id="250" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.4" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="키워드:딜레이" id="251" weight="24">
+        <attvalues>
+          <attvalue for="4" value="1.09" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:서로의 턴" target="행동:토큰" id="252" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.46" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="행동:진화 조건 무시" id="253" weight="50">
+        <attvalues>
+          <attvalue for="4" value="2.88" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="타이밍:어택 시" id="254" weight="48">
+        <attvalues>
+          <attvalue for="4" value="0.16" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="행동:코스트 감소" id="255" weight="87">
+        <attvalues>
+          <attvalue for="4" value="1.66" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="타이밍:자신의 턴 종료 시" id="256" weight="42">
+        <attvalues>
+          <attvalue for="4" value="1.91" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="키워드:블래스트 진화" id="257" weight="73">
+        <attvalues>
+          <attvalue for="4" value="2.88" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="타이밍:카운터" id="258" weight="76">
+        <attvalues>
+          <attvalue for="4" value="2.88" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="타이밍:메인" id="259" weight="77">
+        <attvalues>
+          <attvalue for="4" value="0.75" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="행동:취급 변경" id="260" weight="23">
+        <attvalues>
+          <attvalue for="4" value="1.36" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="행동:진화원에 놓기" id="261" weight="37">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="행동:시큐리티 추가" id="262" weight="10">
+        <attvalues>
+          <attvalue for="4" value="0.13" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="키워드:딜레이" id="263" weight="22">
+        <attvalues>
+          <attvalue for="4" value="1.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="키워드:흡수 진화" id="264" weight="10">
+        <attvalues>
+          <attvalue for="4" value="2.61" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="종류:상시·기타 문장" id="265" weight="26">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="종류:특수 진화 조건:조그레스" id="266" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.93" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="키워드:블래스트 조그레스" id="267" weight="7">
+        <attvalues>
+          <attvalue for="4" value="2.88" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화" target="종류:특수 진화 조건:어플 합체" id="268" weight="18">
+        <attvalues>
+          <attvalue for="4" value="2.88" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:돌진" target="행동:어택 대상 변경" id="269" weight="13">
+        <attvalues>
+          <attvalue for="4" value="2.72" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:돌진" target="행동:DP 증가" id="270" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.14" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:돌진" target="키워드:관통" id="271" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.79" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화 조건 무시" target="타이밍:메인" id="272" weight="24">
+        <attvalues>
+          <attvalue for="4" value="1.9" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화 조건 무시" target="행동:진화원에 놓기" id="273" weight="17">
+        <attvalues>
+          <attvalue for="4" value="2.15" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:재기동" target="행동:DP 증가" id="274" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.37" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:재기동" target="키워드:블로커" id="275" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.32" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:재기동" target="타이밍:메인" id="276" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.11" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:재기동" target="행동:액티브" id="277" weight="22">
+        <attvalues>
+          <attvalue for="4" value="1.88" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:재기동" target="타이밍:상대의 턴" id="278" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.16" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="행동:효과 무시·내성" id="279" weight="10">
+        <attvalues>
+          <attvalue for="4" value="1.12" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="타이밍:상대의 턴" id="280" weight="30">
+        <attvalues>
+          <attvalue for="4" value="0.68" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="키워드:관통" id="281" weight="25">
+        <attvalues>
+          <attvalue for="4" value="0.97" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="키워드:디지버스트" id="282" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.5" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="행동:되돌림·이탈 내성" id="283" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.09" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 증가" target="타이밍:링크 시" id="284" weight="17">
+        <attvalues>
+          <attvalue for="4" value="2.69" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="타이밍:어택 시" id="285" weight="117">
+        <attvalues>
+          <attvalue for="4" value="0.44" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="키워드:관통" id="286" weight="64">
+        <attvalues>
+          <attvalue for="4" value="1.48" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:상한·수치 변경" id="287" weight="33">
+        <attvalues>
+          <attvalue for="4" value="1.49" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="타이밍:상대의 턴 종료 시" id="288" weight="15">
+        <attvalues>
+          <attvalue for="4" value="1.39" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:소멸 내성" id="289" weight="19">
+        <attvalues>
+          <attvalue for="4" value="0.02" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:시큐리티 제거" id="290" weight="44">
+        <attvalues>
+          <attvalue for="4" value="0.72" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:파기" id="291" weight="92">
+        <attvalues>
+          <attvalue for="4" value="0.43" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:치환(대신)" id="292" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.42" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:토큰" id="293" weight="13">
+        <attvalues>
+          <attvalue for="4" value="1.0" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="종류:유발 효과(타이밍 표시 없음)" id="294" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.41" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="타이밍:자신의 턴 종료 시" id="295" weight="15">
+        <attvalues>
+          <attvalue for="4" value="0.27" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="키워드:길동무" id="296" weight="62">
+        <attvalues>
+          <attvalue for="4" value="1.84" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="타이밍:어택 종료 시" id="297" weight="20">
+        <attvalues>
+          <attvalue for="4" value="1.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:되돌림·이탈 내성" id="298" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.86" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="타이밍:메인" id="299" weight="125">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="행동:효과 부여" id="300" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.52" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="키워드:디코이" id="301" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.9" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="키워드:리커버리" id="302" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.41" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸" target="키워드:오버클럭" id="303" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.79" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="행동:파기" id="304" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.11" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="키워드:블로커" id="305" weight="47">
+        <attvalues>
+          <attvalue for="4" value="1.53" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="행동:어택 대상 변경" id="306" weight="43">
+        <attvalues>
+          <attvalue for="4" value="2.66" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="행동:액티브" id="307" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.17" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="행동:메모리 증가" id="308" weight="18">
+        <attvalues>
+          <attvalue for="4" value="0.24" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:상대의 턴" target="행동:진화원 제거" id="309" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.78" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:파기" id="310" weight="129">
+        <attvalues>
+          <attvalue for="4" value="2.28" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="타이밍:어택 시" id="311" weight="38">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:시큐리티 추가" id="312" weight="17">
+        <attvalues>
+          <attvalue for="4" value="1.55" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="키워드:방벽" id="313" weight="22">
+        <attvalues>
+          <attvalue for="4" value="3.1" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:소멸 내성" id="314" weight="22">
+        <attvalues>
+          <attvalue for="4" value="1.68" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:DP 감소" id="315" weight="19">
+        <attvalues>
+          <attvalue for="4" value="0.98" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:액티브" id="316" weight="17">
+        <attvalues>
+          <attvalue for="4" value="1.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="타이밍:자신의 턴 종료 시" id="317" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.86" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="타이밍:어택 종료 시" id="318" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.6" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="행동:되돌림·이탈 내성" id="319" weight="11">
+        <attvalues>
+          <attvalue for="4" value="1.77" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 제거" target="키워드:리커버리" id="320" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.67" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="타이밍:어택 시" id="321" weight="99">
+        <attvalues>
+          <attvalue for="4" value="0.76" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:드로우" id="322" weight="62">
+        <attvalues>
+          <attvalue for="4" value="0.85" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:블록 금지" id="323" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.98" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:진화원 제거" id="324" weight="151">
+        <attvalues>
+          <attvalue for="4" value="2.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:덱으로 되돌림" id="325" weight="43">
+        <attvalues>
+          <attvalue for="4" value="0.35" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:덱 위 확인" id="326" weight="75">
+        <attvalues>
+          <attvalue for="4" value="1.17" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:시큐리티 추가" id="327" weight="14">
+        <attvalues>
+          <attvalue for="4" value="0.34" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="타이밍:메인" id="328" weight="76">
+        <attvalues>
+          <attvalue for="4" value="0.61" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:배틀 에어리어에 놓기" id="329" weight="14">
+        <attvalues>
+          <attvalue for="4" value="0.14" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="타이밍:소멸 시" id="330" weight="45">
+        <attvalues>
+          <attvalue for="4" value="0.54" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:상한·수치 변경" id="331" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.28" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:어택 금지" id="332" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.46" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="키워드:디지버스트" id="333" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.55" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="타이밍:상대의 턴 종료 시" id="334" weight="8">
+        <attvalues>
+          <attvalue for="4" value="1.24" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:치환(대신)" id="335" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.16" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="행동:효과 부여" id="336" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.4" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="타이밍:자신의 턴 종료 시" id="337" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.13" />
+        </attvalues>
+      </edge>
+      <edge source="행동:파기" target="키워드:리커버리" id="338" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.65" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="키워드:머티리얼 세이브" id="339" weight="8">
+        <attvalues>
+          <attvalue for="4" value="2.74" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="타이밍:메인" id="340" weight="79">
+        <attvalues>
+          <attvalue for="4" value="1.13" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="키워드:세이브" id="341" weight="44">
+        <attvalues>
+          <attvalue for="4" value="2.11" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:코스트 감소" id="342" weight="21">
+        <attvalues>
+          <attvalue for="4" value="0.59" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="타이밍:자신의 메인 페이즈 개시 시" id="343" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.92" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="키워드:마인드 링크" id="344" weight="8">
+        <attvalues>
+          <attvalue for="4" value="3.11" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:덱 위 확인" id="345" weight="23">
+        <attvalues>
+          <attvalue for="4" value="0.46" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="타이밍:자신의 턴 종료 시" id="346" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.47" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:되돌림·이탈 내성" id="347" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.44" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="타이밍:소멸 시" id="348" weight="40">
+        <attvalues>
+          <attvalue for="4" value="0.9" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="종류:디지크로스" id="349" weight="47">
+        <attvalues>
+          <attvalue for="4" value="2.72" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:상한·수치 변경" id="350" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.58" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:진화원 제거" id="351" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.32" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원에 놓기" target="행동:시큐리티 추가" id="352" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.58" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:드로우" id="353" weight="88">
+        <attvalues>
+          <attvalue for="4" value="0.96" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:DP 감소" id="354" weight="83">
+        <attvalues>
+          <attvalue for="4" value="1.2" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:액티브" id="355" weight="53">
+        <attvalues>
+          <attvalue for="4" value="0.89" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:덱으로 되돌림" id="356" weight="47">
+        <attvalues>
+          <attvalue for="4" value="0.2" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:치환(대신)" id="357" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.34" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="키워드:세이브" id="358" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.01" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:메모리 감소" id="359" weight="24">
+        <attvalues>
+          <attvalue for="4" value="0.99" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:레스트" id="360" weight="31">
+        <attvalues>
+          <attvalue for="4" value="0.25" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:진화원 제거" id="361" weight="46">
+        <attvalues>
+          <attvalue for="4" value="0.95" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:효과 발휘 금지" id="362" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.32" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 시" target="행동:옵션 사용" id="363" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.12" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="종류:유발 효과(타이밍 표시 없음)" id="364" weight="42">
+        <attvalues>
+          <attvalue for="4" value="2.47" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="타이밍:메인" id="365" weight="46">
+        <attvalues>
+          <attvalue for="4" value="0.78" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="행동:등장" id="366" weight="39">
+        <attvalues>
+          <attvalue for="4" value="0.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="키워드:세이브" id="367" weight="10">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="키워드:딜레이" id="368" weight="15">
+        <attvalues>
+          <attvalue for="4" value="1.54" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="종류:상시·기타 문장" id="369" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="타이밍:자신의 메인 페이즈 개시 시" id="370" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.07" />
+        </attvalues>
+      </edge>
+      <edge source="행동:코스트 감소" target="행동:배틀 에어리어에 놓기" id="371" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.56" />
+        </attvalues>
+      </edge>
+      <edge source="종류:특수 진화 조건:조그레스" target="키워드:파티션" id="372" weight="7">
+        <attvalues>
+          <attvalue for="4" value="4.59" />
+        </attvalues>
+      </edge>
+      <edge source="행동:효과 부여" target="행동:메모리 감소" id="373" weight="15">
+        <attvalues>
+          <attvalue for="4" value="2.96" />
+        </attvalues>
+      </edge>
+      <edge source="행동:효과 부여" target="타이밍:메인" id="374" weight="25">
+        <attvalues>
+          <attvalue for="4" value="1.71" />
+        </attvalues>
+      </edge>
+      <edge source="행동:효과 부여" target="행동:메모리 증가" id="375" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.23" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:어택 종료 시" id="376" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.27" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:시큐리티" id="377" weight="403">
+        <attvalues>
+          <attvalue for="4" value="1.38" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:메인" id="378" weight="100">
+        <attvalues>
+          <attvalue for="4" value="0.17" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="위치:시큐리티 효과" id="379" weight="324">
+        <attvalues>
+          <attvalue for="4" value="1.29" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:덱 위 확인" id="380" weight="48">
+        <attvalues>
+          <attvalue for="4" value="0.0" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:토큰" id="381" weight="34">
+        <attvalues>
+          <attvalue for="4" value="1.73" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:소멸 시" id="382" weight="148">
+        <attvalues>
+          <attvalue for="4" value="1.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:서로의 턴 종료 시" id="383" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.66" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="키워드:딜레이" id="384" weight="25">
+        <attvalues>
+          <attvalue for="4" value="0.66" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:상한·수치 변경" id="385" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.54" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="타이밍:상대의 턴 종료 시" id="386" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.84" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:셔플" id="387" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.75" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:시큐리티 공개·확인" id="388" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.55" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="행동:효과 발휘 금지" id="389" weight="21">
+        <attvalues>
+          <attvalue for="4" value="1.09" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="키워드:불굴" id="390" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:등장" target="키워드:파티션" id="391" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.41" />
+        </attvalues>
+      </edge>
+      <edge source="종류:카드 고유 룰" target="행동:취급 변경" id="392" weight="39">
+        <attvalues>
+          <attvalue for="4" value="3.3" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 종료 시" target="행동:시큐리티 추가" id="393" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.41" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 종료 시" target="행동:액티브" id="394" weight="23">
+        <attvalues>
+          <attvalue for="4" value="2.39" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:어택 종료 시" target="행동:메모리 증가" id="395" weight="10">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="행동:셔플" id="396" weight="15">
+        <attvalues>
+          <attvalue for="4" value="3.87" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="타이밍:메인" id="397" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.07" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="키워드:리커버리" id="398" weight="57">
+        <attvalues>
+          <attvalue for="4" value="4.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="키워드:덱" id="399" weight="35">
+        <attvalues>
+          <attvalue for="4" value="4.05" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="행동:시큐리티 공개·확인" id="400" weight="14">
+        <attvalues>
+          <attvalue for="4" value="3.6" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="타이밍:소멸 시" id="401" weight="19">
+        <attvalues>
+          <attvalue for="4" value="0.97" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="행동:DP 감소" id="402" weight="11">
+        <attvalues>
+          <attvalue for="4" value="0.72" />
+        </attvalues>
+      </edge>
+      <edge source="행동:시큐리티 추가" target="타이밍:자신의 턴 종료 시" id="403" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.96" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱 위 확인" target="행동:덱으로 되돌림" id="404" weight="275">
+        <attvalues>
+          <attvalue for="4" value="2.65" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱 위 확인" target="타이밍:메인" id="405" weight="60">
+        <attvalues>
+          <attvalue for="4" value="0.82" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱 위 확인" target="행동:배틀 에어리어에 놓기" id="406" weight="47">
+        <attvalues>
+          <attvalue for="4" value="1.8" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱 위 확인" target="타이밍:소멸 시" id="407" weight="18">
+        <attvalues>
+          <attvalue for="4" value="0.07" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:레스트" id="408" weight="16">
+        <attvalues>
+          <attvalue for="4" value="0.01" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:상한·수치 변경" id="409" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.28" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:진화원 제거" id="410" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.54" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="타이밍:메인" id="411" weight="73">
+        <attvalues>
+          <attvalue for="4" value="0.76" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:배틀 에어리어에 놓기" id="412" weight="42">
+        <attvalues>
+          <attvalue for="4" value="1.42" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:치환(대신)" id="413" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.76" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="행동:되돌림·이탈 내성" id="414" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.62" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="타이밍:자신의 턴 종료 시" id="415" weight="8">
+        <attvalues>
+          <attvalue for="4" value="0.31" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="키워드:딜레이" id="416" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.3" />
+        </attvalues>
+      </edge>
+      <edge source="행동:덱으로 되돌림" target="타이밍:자신의 턴 개시 시" id="417" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.1" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴 종료 시" target="행동:액티브" id="418" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.0" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="행동:액티브" id="419" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.8" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="키워드:관통" id="420" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.25" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="키워드:세이브" id="421" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.7" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="타이밍:소멸 시" id="422" weight="21">
+        <attvalues>
+          <attvalue for="4" value="0.43" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="행동:액티브 금지" id="423" weight="54">
+        <attvalues>
+          <attvalue for="4" value="3.1" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="타이밍:메인" id="424" weight="36">
+        <attvalues>
+          <attvalue for="4" value="0.52" />
+        </attvalues>
+      </edge>
+      <edge source="행동:레스트" target="행동:효과 발휘 금지" id="425" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.02" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:블래스트 진화" target="타이밍:카운터" id="426" weight="73">
+        <attvalues>
+          <attvalue for="4" value="4.77" />
+        </attvalues>
+      </edge>
+      <edge source="행동:상한·수치 변경" target="타이밍:메인" id="427" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.31" />
+        </attvalues>
+      </edge>
+      <edge source="행동:상한·수치 변경" target="타이밍:소멸 시" id="428" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.76" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="행동:메모리 증가" id="429" weight="47">
+        <attvalues>
+          <attvalue for="4" value="0.59" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="타이밍:자신의 메인 페이즈 개시 시" id="430" weight="22">
+        <attvalues>
+          <attvalue for="4" value="1.02" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="타이밍:소멸 시" id="431" weight="28">
+        <attvalues>
+          <attvalue for="4" value="0.39" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="타이밍:메인" id="432" weight="40">
+        <attvalues>
+          <attvalue for="4" value="0.29" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="행동:배틀 에어리어에 놓기" id="433" weight="17">
+        <attvalues>
+          <attvalue for="4" value="0.65" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="키워드:세이브" id="434" weight="12">
+        <attvalues>
+          <attvalue for="4" value="0.66" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="타이밍:상대의 턴 종료 시" id="435" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.1" />
+        </attvalues>
+      </edge>
+      <edge source="행동:드로우" target="종류:유발 효과(타이밍 표시 없음)" id="436" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.18" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 감소" target="타이밍:메인" id="437" weight="37">
+        <attvalues>
+          <attvalue for="4" value="0.51" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 감소" target="행동:효과 발휘 금지" id="438" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.17" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 감소" target="타이밍:소멸 시" id="439" weight="15">
+        <attvalues>
+          <attvalue for="4" value="0.06" />
+        </attvalues>
+      </edge>
+      <edge source="행동:DP 감소" target="키워드:리커버리" id="440" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.12" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:시큐리티" target="위치:시큐리티 효과" id="441" weight="676">
+        <attvalues>
+          <attvalue for="4" value="2.45" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:시큐리티" target="행동:배틀 에어리어에 놓기" id="442" weight="75">
+        <attvalues>
+          <attvalue for="4" value="1.51" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:시큐리티" target="행동:다른 효과 발휘" id="443" weight="143">
+        <attvalues>
+          <attvalue for="4" value="1.96" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:시큐리티" target="행동:어택 금지" id="444" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.32" />
+        </attvalues>
+      </edge>
+      <edge source="행동:블록 금지" target="행동:진화원 제거" id="445" weight="8">
+        <attvalues>
+          <attvalue for="4" value="2.07" />
+        </attvalues>
+      </edge>
+      <edge source="행동:블록 금지" target="타이밍:메인" id="446" weight="10">
+        <attvalues>
+          <attvalue for="4" value="1.22" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원 제거" target="행동:어택 금지" id="447" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.42" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원 제거" target="타이밍:메인" id="448" weight="55">
+        <attvalues>
+          <attvalue for="4" value="1.25" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원 제거" target="키워드:디지버스트" id="449" weight="26">
+        <attvalues>
+          <attvalue for="4" value="3.16" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원 제거" target="행동:다른 효과 발휘" id="450" weight="27">
+        <attvalues>
+          <attvalue for="4" value="1.55" />
+        </attvalues>
+      </edge>
+      <edge source="행동:진화원 제거" target="행동:치환(대신)" id="451" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.72" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:소멸 시" target="행동:메모리 증가" id="452" weight="33">
+        <attvalues>
+          <attvalue for="4" value="0.24" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:소멸 시" target="키워드:세이브" id="453" weight="56">
+        <attvalues>
+          <attvalue for="4" value="2.21" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:소멸 시" target="행동:토큰" id="454" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.04" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:소멸 시" target="키워드:리커버리" id="455" weight="9">
+        <attvalues>
+          <attvalue for="4" value="1.23" />
+        </attvalues>
+      </edge>
+      <edge source="행동:액티브" target="키워드:블로커" id="456" weight="15">
+        <attvalues>
+          <attvalue for="4" value="0.2" />
+        </attvalues>
+      </edge>
+      <edge source="행동:액티브" target="타이밍:메인" id="457" weight="28">
+        <attvalues>
+          <attvalue for="4" value="0.37" />
+        </attvalues>
+      </edge>
+      <edge source="행동:액티브" target="행동:어택 대상 변경" id="458" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.33" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:속공" target="키워드:블로커" id="459" weight="5">
+        <attvalues>
+          <attvalue for="4" value="0.27" />
+        </attvalues>
+      </edge>
+      <edge source="종류:디지크로스" target="키워드:세이브" id="460" weight="9">
+        <attvalues>
+          <attvalue for="4" value="2.04" />
+        </attvalues>
+      </edge>
+      <edge source="종류:유발 효과(타이밍 표시 없음)" target="행동:색 조건 무시" id="461" weight="5">
+        <attvalues>
+          <attvalue for="4" value="1.44" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:오버플로우" target="행동:메모리 감소" id="462" weight="68">
+        <attvalues>
+          <attvalue for="4" value="4.4" />
+        </attvalues>
+      </edge>
+      <edge source="행동:메모리 증가" target="타이밍:자신의 턴 개시 시" id="463" weight="18">
+        <attvalues>
+          <attvalue for="4" value="1.03" />
+        </attvalues>
+      </edge>
+      <edge source="행동:메모리 증가" target="키워드:딜레이" id="464" weight="32">
+        <attvalues>
+          <attvalue for="4" value="1.64" />
+        </attvalues>
+      </edge>
+      <edge source="행동:메모리 증가" target="타이밍:메인" id="465" weight="48">
+        <attvalues>
+          <attvalue for="4" value="0.17" />
+        </attvalues>
+      </edge>
+      <edge source="행동:메모리 증가" target="행동:다른 효과 발휘" id="466" weight="20">
+        <attvalues>
+          <attvalue for="4" value="0.3" />
+        </attvalues>
+      </edge>
+      <edge source="행동:메모리 증가" target="타이밍:자신의 메인 페이즈 개시 시" id="467" weight="95">
+        <attvalues>
+          <attvalue for="4" value="2.18" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:블로커" target="행동:어택 대상 변경" id="468" weight="70">
+        <attvalues>
+          <attvalue for="4" value="2.56" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:블로커" target="키워드:길동무" id="469" weight="9">
+        <attvalues>
+          <attvalue for="4" value="0.75" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:블로커" target="행동:토큰" id="470" weight="6">
+        <attvalues>
+          <attvalue for="4" value="1.05" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:블로커" target="키워드:충돌" id="471" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.54" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:아머 퍼지" target="행동:소멸 내성" id="472" weight="14">
+        <attvalues>
+          <attvalue for="4" value="2.84" />
+        </attvalues>
+      </edge>
+      <edge source="종류:상시·기타 문장" target="행동:색 조건 무시" id="473" weight="91">
+        <attvalues>
+          <attvalue for="4" value="3.71" />
+        </attvalues>
+      </edge>
+      <edge source="종류:상시·기타 문장" target="행동:옵션 사용" id="474" weight="28">
+        <attvalues>
+          <attvalue for="4" value="3.1" />
+        </attvalues>
+      </edge>
+      <edge source="종류:상시·기타 문장" target="행동:취급 변경" id="475" weight="27">
+        <attvalues>
+          <attvalue for="4" value="2.42" />
+        </attvalues>
+      </edge>
+      <edge source="종류:상시·기타 문장" target="행동:어택 대상 변경" id="476" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.79" />
+        </attvalues>
+      </edge>
+      <edge source="행동:다른 효과 발휘" target="키워드:딜레이" id="477" weight="29">
+        <attvalues>
+          <attvalue for="4" value="2.42" />
+        </attvalues>
+      </edge>
+      <edge source="행동:다른 효과 발휘" target="타이밍:메인" id="478" weight="55">
+        <attvalues>
+          <attvalue for="4" value="1.18" />
+        </attvalues>
+      </edge>
+      <edge source="행동:다른 효과 발휘" target="위치:시큐리티 효과" id="479" weight="143">
+        <attvalues>
+          <attvalue for="4" value="2.09" />
+        </attvalues>
+      </edge>
+      <edge source="행동:다른 효과 발휘" target="키워드:디지버스트" id="480" weight="26">
+        <attvalues>
+          <attvalue for="4" value="3.09" />
+        </attvalues>
+      </edge>
+      <edge source="행동:어택 금지" target="위치:시큐리티 효과" id="481" weight="6">
+        <attvalues>
+          <attvalue for="4" value="0.3" />
+        </attvalues>
+      </edge>
+      <edge source="행동:효과 발휘 금지" target="타이밍:메인" id="482" weight="12">
+        <attvalues>
+          <attvalue for="4" value="1.13" />
+        </attvalues>
+      </edge>
+      <edge source="행동:색 조건 무시" target="행동:옵션 사용" id="483" weight="30">
+        <attvalues>
+          <attvalue for="4" value="3.91" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="행동:배틀 에어리어에 놓기" id="484" weight="104">
+        <attvalues>
+          <attvalue for="4" value="2.02" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="키워드:딜레이" id="485" weight="52">
+        <attvalues>
+          <attvalue for="4" value="2.0" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="키워드:마인드 링크" id="486" weight="8">
+        <attvalues>
+          <attvalue for="4" value="2.51" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="행동:액티브 금지" id="487" weight="7">
+        <attvalues>
+          <attvalue for="4" value="0.29" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="키워드:디지버스트" id="488" weight="25">
+        <attvalues>
+          <attvalue for="4" value="2.04" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:메인" target="행동:치환(대신)" id="489" weight="19">
+        <attvalues>
+          <attvalue for="4" value="1.79" />
+        </attvalues>
+      </edge>
+      <edge source="행동:배틀 에어리어에 놓기" target="위치:시큐리티 효과" id="490" weight="75">
+        <attvalues>
+          <attvalue for="4" value="1.65" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸 내성" target="키워드:재밍" id="491" weight="64">
+        <attvalues>
+          <attvalue for="4" value="3.56" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸 내성" target="키워드:방벽" id="492" weight="22">
+        <attvalues>
+          <attvalue for="4" value="3.25" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸 내성" target="키워드:디코이" id="493" weight="7">
+        <attvalues>
+          <attvalue for="4" value="3.56" />
+        </attvalues>
+      </edge>
+      <edge source="행동:소멸 내성" target="키워드:회피" id="494" weight="10">
+        <attvalues>
+          <attvalue for="4" value="3.39" />
+        </attvalues>
+      </edge>
+      <edge source="행동:토큰" target="키워드:오버클럭" id="495" weight="5">
+        <attvalues>
+          <attvalue for="4" value="4.8" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴 개시 시" target="행동:메모리 설정" id="496" weight="71">
+        <attvalues>
+          <attvalue for="4" value="4.43" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 턴 개시 시" target="키워드:딜레이" id="497" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.83" />
+        </attvalues>
+      </edge>
+      <edge source="행동:셔플" target="행동:시큐리티 공개·확인" id="498" weight="16">
+        <attvalues>
+          <attvalue for="4" value="5.89" />
+        </attvalues>
+      </edge>
+      <edge source="행동:셔플" target="키워드:리커버리" id="499" weight="7">
+        <attvalues>
+          <attvalue for="4" value="4.11" />
+        </attvalues>
+      </edge>
+      <edge source="타이밍:자신의 메인 페이즈 개시 시" target="키워드:세이브" id="500" weight="7">
+        <attvalues>
+          <attvalue for="4" value="1.0" />
+        </attvalues>
+      </edge>
+      <edge source="키워드:리커버리" target="행동:시큐리티 공개·확인" id="501" weight="7">
+        <attvalues>
+          <attvalue for="4" value="3.91" />
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>

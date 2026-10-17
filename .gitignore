@@ -1,0 +1,24 @@
+node_modules/
+__pycache__/
+*.log
+out/
+
+# regenerable / superseded intermediates
+net/*.pkl
+units.json
+units2.json
+test_data.json
+test_data2.json
+list.html
+
+# built viewers (rebuild from *_template.html + data)
+effect-sna.html
+card-effect-test.html
+
+# old snapshot copy — the repository root is now the reproduction set
+paper/repro/
+
+# duplicates of net/ (old folder, paper copies)
+network/
+paper/results/*.gexf
+paper/results/effect_sna.json

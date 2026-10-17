@@ -1,0 +1,12 @@
+const {JSDOM}=require('jsdom');const fs=require('fs');
+const html=fs.readFileSync('card-effect-test.html','utf8');const errs=[];
+const dom=new JSDOM('<!doctype html><html><head></head><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.addEventListener('error',e=>errs.push(e.message));w.claude={use:async()=>null}}});
+const w=dom.window,d=w.document,$=i=>d.getElementById(i);
+const type=(el,v)=>{el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}))};const key=(el,k)=>el.dispatchEvent(new w.KeyboardEvent('keydown',{key:k,bubbles:true}));
+setTimeout(()=>{type($('cardq'),'EX5-021');key($('cardq'),'Enter');
+ const r=d.querySelector('input[name=mainEff]');r.checked=true;r.dispatchEvent(new w.Event('change',{bubbles:true}));
+ type($('askq'),'이 카드의 효과로 육성 에어리어에 디지몬을 등장시켰을 때, 그 디지몬의 【등장 시】 효과는 발휘되나요?');$('go').click();
+ setTimeout(()=>{console.log('badge',(d.querySelector('.verdict .badge')||{}).textContent,'| ans',(d.querySelector('.verdict .ans')||{}).textContent);
+  const t=[...d.querySelectorAll('.tabs button')].find(b=>b.dataset.tab==='sim');t.click();
+  console.log('groups',d.querySelectorAll('.grp').length,'| first',(d.querySelector('.grp-h')||{}).textContent.replace(/\s+/g,' '));
+  console.log('errors',errs)},300)},300);

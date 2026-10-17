@@ -1,0 +1,197 @@
+<title>카드 효과 네트워크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&family=Do+Hyeon&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+/* Layout: header + controls row; network canvas (left, flexible) beside a detail panel (right); stacks on phones */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --ink:#151b26; --muted:#5f6b7c; --faint:#8a95a5; --line:#dde2ea; --link:#b9c2cf; --accent:#e2560f;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948; --other:#a7b0bd;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif; --f-body:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif; --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --link:#3a4554; --accent:#ff7a3a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#56606d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1319; --surface:#161d26; --ink:#e6eaf0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#27303c; --link:#3a4554; --accent:#ff7a3a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --other:#56606d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.55}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1400px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header .wrap{padding-block:18px 8px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h1{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0;line-height:1.1}
+h1 b{color:var(--accent);font-weight:400}
+.sub{color:var(--muted);font-size:13px}
+.bar .wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding-block:6px 10px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:6px 14px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface);font-weight:700}
+.tog{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.tog label{display:inline-flex;gap:4px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--surface);cursor:pointer}
+.search{position:relative;margin-left:auto;min-width:0}
+.search input{width:min(280px,70vw);padding:6px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.main .wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:12px;padding-block:0 30px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:12px;position:relative;min-width:0;height:min(76vh,760px);overflow:hidden}
+.stage svg{width:100%;height:100%;display:block;cursor:grab}
+.legend{position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);border-radius:9px;padding:6px 8px;display:grid;gap:2px;max-width:min(320px,70%);font-size:12px}
+.legend button{display:flex;gap:6px;align-items:center;border:0;background:none;padding:1px 2px;cursor:pointer;text-align:left;border-radius:4px}
+.legend button[aria-pressed="true"]{background:var(--bg);font-weight:700}
+.legend i{width:10px;height:10px;border-radius:50%;flex:none}
+.hint{position:absolute;right:10px;bottom:8px;font-size:12px;color:var(--faint)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--surface);font-size:12.5px;padding:6px 9px;border-radius:7px;max-width:300px;line-height:1.45;opacity:0;transition:opacity .1s}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px;align-content:start;min-width:0;max-height:min(76vh,760px);overflow-y:auto}
+.panel h2{margin:0;font-size:16px}
+.panel .k{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.stats div{background:var(--bg);border-radius:8px;padding:6px 8px}
+.stats b{display:block;font-family:var(--f-num);font-size:16px}
+.stats span{font-size:11.5px;color:var(--muted)}
+.lst{display:grid;gap:4px}
+.lst button,.lst div{text-align:left;border:0;background:var(--bg);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:13px;overflow-wrap:anywhere}
+.lst button:hover{outline:1px solid var(--accent)}
+.lst .w{font-family:var(--f-num);color:var(--muted);font-size:11.5px;margin-left:6px}
+.qa{display:grid;gap:2px;background:var(--bg);border-radius:7px;padding:6px 8px;font-size:13px}
+.qa b{color:var(--accent);font-family:var(--f-num)}
+.cards{display:flex;flex-wrap:wrap;gap:4px}
+.cards span{font-size:12px;background:var(--bg);border-radius:5px;padding:1px 6px}
+.cards span em{font-style:normal;font-family:var(--f-num);color:var(--accent);margin-right:4px}
+.empty{color:var(--muted);font-size:13.5px}
+details.tbl summary{cursor:pointer;font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;font-size:12.5px;width:100%}
+td,th{border-bottom:1px solid var(--line);padding:3px 4px;text-align:left;vertical-align:top}
+td.n{font-family:var(--f-num);text-align:right}
+@media (max-width:900px){.main .wrap{grid-template-columns:minmax(0,1fr)}.stage{height:62vh}.panel{max-height:none}.search{margin-left:0;width:100%}.search input{width:100%}}
+</style>
+
+<header><div class="wrap"><h1>카드 효과 <b>네트워크</b></h1><span class="sub">카드 3,852종의 효과 8,936개를 효과 요소·효과 패턴으로 잇고, 커뮤니티(효과 계열)를 찾은 지도</span></div></header>
+<div class="bar"><div class="wrap">
+  <div class="seg" role="group" aria-label="네트워크 선택"><button type="button" data-view="A" aria-pressed="true">효과 요소 네트워크</button><button type="button" data-view="B" aria-pressed="false">효과 패턴 네트워크</button></div>
+  <div class="tog" id="btog" hidden>링크:<label><input type="checkbox" data-lt="e" checked> 요소가 닮음</label><label><input type="checkbox" data-lt="q" checked> 같은 Q&amp;A 쟁점</label><label><input type="checkbox" data-lt="c" checked> 같은 카드에 수록</label></div>
+  <div class="search"><input id="find" placeholder="노드 찾기 (예: 소멸, 블로커, 등장 시)" aria-label="노드 찾기" list="nodelist"><datalist id="nodelist"></datalist></div>
+</div></div>
+<div class="main"><div class="wrap">
+  <div class="stage" id="stage"><svg id="svg" role="img" aria-label="카드 효과 네트워크 그래프"></svg><div class="legend" id="legend"></div><div class="hint">끌어서 이동 · 휠로 확대 · 노드를 누르면 오른쪽에 자세히</div><div class="tip" id="tip"></div></div>
+  <aside class="panel" id="panel"></aside>
+</div></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const B=JSON.parse(document.getElementById('data').textContent);
+const $=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const SLOTS=['--s1','--s2','--s3','--s4','--s5','--s6','--s7','--s8'];
+const colorOf=k=>k<8?css(SLOTS[k]):css('--other');   // fixed order; communities past 8 fold into "기타"
+const KIND_ORDER=['타이밍','행동','키워드','종류','위치'];
+let view='A',colorBy='comm',focusComm=null,sel=null,sim=null,LT={e:true,q:true,c:true};
+
+function elemCommNames(){const m={};B.A.nodes.forEach(n=>{(m[n.comm]=m[n.comm]||[]).push(n)});
+  return Object.keys(m).sort((a,b)=>a-b).map(k=>m[k].sort((x,y)=>y.count-x.count).slice(0,3).map(n=>n.name).join(' · '))}
+const A_NAMES=elemCommNames();
+
+function graphData(){
+  if(view==='A')return {nodes:B.A.nodes.map(n=>({...n,r:4+Math.sqrt(n.count)/3.2})),links:B.A.links.map(l=>({...l,source:l.s,target:l.t}))};
+  const links=B.B.links.filter(l=>(LT.e&&l.e)||(LT.q&&l.q)||(LT.c&&l.c)).map(l=>({...l,source:l.s,target:l.t}));
+  return {nodes:B.B.nodes.map(n=>({...n,name:'#'+n.p,r:3+Math.sqrt(n.size)*1.1})),links};
+}
+function legend(){
+  const names=view==='A'?A_NAMES:B.B.comms;const nodes=view==='A'?B.A.nodes:B.B.nodes;
+  const counts={};nodes.forEach(n=>counts[n.comm]=(counts[n.comm]||0)+1);
+  const shown=names.slice(0,8).map((nm,k)=>`<button type="button" data-comm="${k}" aria-pressed="${focusComm===k}"><i style="background:${colorOf(k)}"></i>계열 ${k+1}: ${esc(nm)} <span style="color:var(--faint)">${counts[k]||0}</span></button>`).join('');
+  const rest=names.length>8?`<button type="button" data-comm="other" aria-pressed="${focusComm==='other'}"><i style="background:${colorOf(99)}"></i>기타 계열 ${names.length-8}개</button>`:'';
+  $('legend').innerHTML=`<div style="font-weight:700;color:var(--muted)">효과 계열 (커뮤니티) · 누르면 강조</div>${shown}${rest}`;
+}
+const svg=d3.select('#svg');const gRoot=svg.append('g');const gL=gRoot.append('g');const gN=gRoot.append('g');const gT=gRoot.append('g');
+svg.call(d3.zoom().scaleExtent([0.2,6]).on('zoom',e=>gRoot.attr('transform',e.transform)));
+let NODES=[],LINKS=[],adj=new Map();
+function draw(){
+  if(sim)sim.stop();
+  const {nodes,links}=graphData();NODES=nodes;LINKS=links;
+  adj=new Map(nodes.map(n=>[n.id,new Map()]));links.forEach(l=>{adj.get(l.source).set(l.target,l);adj.get(l.target).set(l.source,l)});
+  const W=$('stage').clientWidth,H=$('stage').clientHeight;
+  const maxW=d3.max(links,l=>l.w)||1;
+  const ln=gL.selectAll('line').data(links).join('line').attr('stroke',css('--link')).attr('stroke-width',l=>view==='A'?0.6+2.4*Math.sqrt(l.w/maxW):0.6+1.6*(l.w/maxW)).attr('stroke-opacity',0.55);
+  const nd=gN.selectAll('circle').data(nodes,d=>d.id).join('circle').attr('r',d=>d.r).attr('fill',d=>colorOf(d.comm)).attr('stroke',css('--surface')).attr('stroke-width',1.5).style('cursor','pointer')
+    .on('mouseenter',(e,d)=>tip(e,d)).on('mousemove',(e,d)=>tip(e,d)).on('mouseleave',()=>{$('tip').style.opacity=0})
+    .on('click',(e,d)=>{select(d.id)}).call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.2).restart();d.fx=d.x;d.fy=d.y}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}));
+  // labels: every node in the element map; only the largest patterns in the pattern map
+  const labelled=view==='A'?nodes:nodes.slice().sort((a,b)=>b.size-a.size).slice(0,28);
+  const tx=gT.selectAll('text').data(labelled,d=>d.id).join('text').text(d=>view==='A'?d.name:(d.types.split(' / ')[0]+(d.sub?' '+d.sub:'')).slice(0,22))
+    .attr('font-size',view==='A'?11:10).attr('fill',css('--ink')).attr('paint-order','stroke').attr('stroke',css('--surface')).attr('stroke-width',3).attr('pointer-events','none').attr('text-anchor','middle');
+  sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(d=>d.id).distance(view==='A'?70:28).strength(l=>view==='A'?Math.min(1,0.15+l.pmi/4):0.35))
+    .force('charge',d3.forceManyBody().strength(view==='A'?-160:-22)).force('center',d3.forceCenter(W/2,H/2)).force('collide',d3.forceCollide(d=>d.r+2))
+    .force('x',d3.forceX(W/2).strength(0.04)).force('y',d3.forceY(H/2).strength(0.05))
+    .on('tick',()=>{ln.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);nd.attr('cx',d=>d.x).attr('cy',d=>d.y);tx.attr('x',d=>d.x).attr('y',d=>d.y-d.r-3)});
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){sim.stop();for(let i=0;i<300;i++)sim.tick();sim.on('tick')()}
+  legend();emphasize();
+  $('nodelist').innerHTML=nodes.map(n=>`<option value="${esc(view==='A'?n.name:'#'+n.p+' '+n.types)}"></option>`).join('');
+  panel();
+}
+function tip(e,d){const t=$('tip');const r=$('stage').getBoundingClientRect();
+  t.innerHTML=view==='A'?`<b>${esc(d.name)}</b> · ${esc(d.kind)}<br>효과 ${d.count.toLocaleString()}개 · 연결 ${adj.get(d.id).size}`:`<b>패턴 #${d.p}</b> ${esc(d.types)} ${esc(d.sub)}<br>효과 ${d.size} · 카드 ${d.cards} · Q&amp;A ${d.qa}<br><span style="opacity:.8">${esc(d.label)}</span>`;
+  t.style.left=Math.min(e.clientX-r.left+12,r.width-310)+'px';t.style.top=(e.clientY-r.top+12)+'px';t.style.opacity=1}
+function emphasize(){
+  const nb=sel?new Set([sel,...adj.get(sel).keys()]):null;
+  const inComm=d=>focusComm==null||(focusComm==='other'?d.comm>=8:d.comm===focusComm);
+  gN.selectAll('circle').attr('opacity',d=>(nb?nb.has(d.id):inComm(d))?1:0.12).attr('stroke',d=>d.id===sel?css('--ink'):css('--surface')).attr('stroke-width',d=>d.id===sel?2.5:1.5);
+  gL.selectAll('line').attr('stroke-opacity',l=>nb?((l.source.id===sel||l.target.id===sel)?0.9:0.04):(focusComm==null?0.55:(inComm(l.source)&&inComm(l.target)?0.6:0.05)))
+    .attr('stroke',l=>nb&&(l.source.id===sel||l.target.id===sel)?css('--accent'):css('--link'));
+  gT.selectAll('text').attr('opacity',d=>(nb?nb.has(d.id):inComm(d))?1:0.15);
+}
+function select(id){sel=id;emphasize();panel()}
+function panel(){
+  const p=$('panel');
+  if(!sel){
+    const nodes=view==='A'?B.A.nodes:B.B.nodes;const links=view==='A'?B.A.links:B.B.links;
+    const top=view==='A'?nodes.slice().sort((a,b)=>b.btw-a.btw).slice(0,8):nodes.slice().sort((a,b)=>b.pr-a.pr).slice(0,8);
+    p.innerHTML=`<h2>${view==='A'?'효과 요소 네트워크':'효과 패턴 네트워크'}</h2>
+      <div class="k">${view==='A'?'노드 = 타이밍·행동·키워드·효과 종류. 링크 = 한 효과 안에서 우연보다 자주 함께 쓰임(PMI>0, 5회 이상). 굵을수록 자주 함께 나옵니다.':'노드 = 효과 패턴(효과 3개 이상). 링크 = 요소가 닮음 · 같은 Q&amp;A 쟁점을 공유 · 같은 카드에 함께 수록(3장 이상). 위 체크로 링크 종류를 고를 수 있습니다.'}</div>
+      <div class="stats"><div><b>${nodes.length}</b><span>노드</span></div><div><b>${links.length.toLocaleString()}</b><span>링크</span></div><div><b>${(view==='A'?A_NAMES:B.B.comms).length}</b><span>효과 계열</span></div></div>
+      <div class="k">${view==='A'?'다리 역할이 큰 요소 (매개 중심성)':'중심에 있는 패턴 (PageRank)'}</div>
+      <div class="lst">${top.map(n=>`<button type="button" data-go="${esc(n.id)}">${view==='A'?esc(n.name)+` <span class="w">${n.kind}</span>`:'#'+n.p+' '+esc(n.types)+' '+esc(n.sub)}<span class="w">${view==='A'?n.btw.toFixed(2):n.pr.toFixed(1)}</span></button>`).join('')}</div>
+      <details class="tbl"><summary>표로 보기 (전체 노드)</summary>${table()}</details>`;
+    return}
+  const d=NODES.find(n=>n.id===sel);const nb=[...adj.get(sel).entries()].map(([k,l])=>({n:NODES.find(x=>x.id===k),l})).sort((a,b)=>b.l.w-a.l.w);
+  if(view==='A'){
+    p.innerHTML=`<div class="k">${esc(d.kind)} · 계열 ${d.comm+1}</div><h2>${esc(d.name)}</h2>
+      <div class="stats"><div><b>${d.count.toLocaleString()}</b><span>효과</span></div><div><b>${nb.length}</b><span>연결</span></div><div><b>${d.btw.toFixed(2)}</b><span>매개 중심성</span></div></div>
+      <div class="k">함께 쓰이는 요소 (공동 출현 수 · PMI)</div>
+      <div class="lst">${nb.map(x=>`<button type="button" data-go="${esc(x.n.id)}">${esc(x.n.name)} <span class="w">${x.n.kind} · ${x.l.w}회 · PMI ${x.l.pmi}</span></button>`).join('')}</div>
+      <button type="button" class="lst" style="border:0;background:none;padding:0;color:var(--muted);text-decoration:underline;cursor:pointer;justify-self:start" data-go="">선택 해제</button>`;
+  }else{
+    const why=l=>[l.e?`요소 닮음 ${Math.round(l.e*100)}%`:'',l.q?`Q&A 쟁점 ${l.q}개 공유`:'',l.c?`같은 카드 ${l.c}장`:''].filter(Boolean).join(' · ');
+    p.innerHTML=`<div class="k">패턴 #${d.p} · 계열 ${d.comm+1}: ${esc(B.B.comms[d.comm]||'')}</div><h2>${esc(d.types)} ${esc(d.sub)}</h2>
+      <div style="font-size:13.5px;background:var(--bg);border-radius:8px;padding:8px 10px">${esc(d.label)}</div>
+      <div class="stats"><div><b>${d.size}</b><span>효과</span></div><div><b>${d.cards}</b><span>카드</span></div><div><b>${d.qa}</b><span>Q&amp;A</span></div></div>
+      <div class="k">연결된 패턴 (${nb.length})</div>
+      <div class="lst">${nb.slice(0,14).map(x=>`<button type="button" data-go="${esc(x.n.id)}">#${x.n.p} ${esc(x.n.types)} ${esc(x.n.sub)}<span class="w">${why(x.l)}</span></button>`).join('')||'<div class="empty">현재 링크 조건에서 연결 없음</div>'}</div>
+      <div class="k">이 패턴의 Q&amp;A</div>
+      ${d.qaList.length?d.qaList.map(q=>`<div class="qa"><div><b>Q</b> ${esc(q[1])}</div><div><b>A</b> ${esc(q[2])}</div><div style="font-size:11.5px;color:var(--muted)">${esc(q[0])}</div></div>`).join(''):'<div class="empty">연결된 Q&amp;A 없음</div>'}
+      <div class="k">관련 종합 룰 조항</div><div class="lst">${d.rules.map(r=>`<div>${esc(r[0])} ${esc(r[1])}</div>`).join('')}</div>
+      <div class="k">카드 (${d.cards})</div><div class="cards">${d.cardList.map(c=>`<span><em>${esc(c[0])}</em>${esc(c[1])}</span>`).join('')}</div>
+      <button type="button" style="border:0;background:none;padding:0;color:var(--muted);text-decoration:underline;cursor:pointer;justify-self:start" data-go="">선택 해제</button>`;
+  }
+}
+function table(){const nodes=(view==='A'?B.A.nodes:B.B.nodes).slice().sort((a,b)=>view==='A'?b.count-a.count:b.size-a.size);
+  return view==='A'?`<table><tr><th>요소</th><th>종류</th><th>효과</th><th>계열</th></tr>${nodes.map(n=>`<tr><td>${esc(n.name)}</td><td>${n.kind}</td><td class="n">${n.count}</td><td class="n">${n.comm+1}</td></tr>`).join('')}</table>`
+  :`<table><tr><th>패턴</th><th>유형</th><th>효과</th><th>카드</th><th>Q&amp;A</th><th>계열</th></tr>${nodes.map(n=>`<tr><td>#${n.p}</td><td>${esc(n.types)} ${esc(n.sub)}</td><td class="n">${n.size}</td><td class="n">${n.cards}</td><td class="n">${n.qa}</td><td class="n">${n.comm+1}</td></tr>`).join('')}</table>`}
+
+document.addEventListener('click',e=>{
+  const v=e.target.closest('[data-view]');if(v){view=v.dataset.view;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b===v));$('btog').hidden=view!=='B';sel=null;focusComm=null;draw();return}
+  const c=e.target.closest('[data-comm]');if(c){const k=c.dataset.comm==='other'?'other':+c.dataset.comm;focusComm=focusComm===k?null:k;sel=null;legend();emphasize();panel();return}
+  const g=e.target.closest('[data-go]');if(g){select(g.dataset.go||null);return}
+});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-lt]');if(t){LT[t.dataset.lt]=t.checked;sel=null;draw()}});
+$('find').addEventListener('change',()=>{const v=$('find').value.trim();if(!v)return;
+  const n=NODES.find(n=>view==='A'?n.name===v:('#'+n.p+' '+n.types)===v)||NODES.find(n=>(view==='A'?n.name:'#'+n.p+' '+n.types+' '+n.label).includes(v));
+  if(n){select(n.id)}});
+svg.on('click',e=>{if(e.target.tagName==='svg'){sel=null;emphasize();panel()}});
+window.addEventListener('resize',()=>{if(sim){sim.force('center',d3.forceCenter($('stage').clientWidth/2,$('stage').clientHeight/2)).alpha(0.3).restart()}});
+draw();
+})();
+</script>
