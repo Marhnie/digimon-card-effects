@@ -20,8 +20,8 @@ function open(claude,errs){const ls={};return new JSDOM('<!doctype html><html><h
  const wb=B.window,db_=wb.document;await sleep(300);
  db_.querySelector('[data-view=dash]').click();await sleep(300);
  db_.getElementById('impName').value='김검수';db_.getElementById('impCode').value=code;db_.getElementById('impGo').click();await sleep(1500);
- const ids=Object.keys(store).filter(k=>/^rv\/import-[^/]+$/.test(k));
+ const ids=Object.keys(store).filter(k=>/^rv\w*\/import-[^/]+$/.test(k));
  console.log('imported docs',ids,ids.map(k=>JSON.stringify(store[k])));
- const items=Object.keys(store).filter(k=>/^rv\/import-[^/]+\/items\//.test(k));console.log('items',items.length,JSON.stringify(store[items.find(k=>k.endsWith('/2'))]||{}).slice(0,160));
+ const items=Object.keys(store).filter(k=>/^rv\w*\/import-[^/]+\/items\//.test(k));console.log('items',items.length,JSON.stringify(store[items.find(k=>k.endsWith('/2'))]||{}).slice(0,160));
  console.log('dash shows name',db_.getElementById('app').textContent.includes('김검수'));
  console.log('errors',errs)})();

@@ -78,13 +78,13 @@ table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px
 @media (max-width:640px){.row{grid-template-columns:minmax(0,1fr)}.gold{grid-column:1}.btn.pri{width:100%}}
 </style>
 
-<header><div class="wrap"><h1>효과 분류 <b>검수</b></h1><div class="tabs" id="tabs"><button type="button" data-view="rev" aria-pressed="true">검수하기</button></div><span class="who" id="who"></span></div></header>
+<header><div class="wrap"><h1>효과 분류 <b>검수</b><span id="subt" style="font-size:.6em;margin-left:8px"></span></h1><div class="tabs" id="tabs"><button type="button" data-view="rev" aria-pressed="true">검수하기</button></div><span class="who" id="who"></span></div></header>
 <main><div class="wrap" id="app"></div></main>
 
 <script id="data" type="application/json">__DATA__</script>
 <script>
 (function(){
-const D=JSON.parse(document.getElementById('data').textContent);const IT=D.items;
+const D=JSON.parse(document.getElementById('data').textContent);const RV=D.rv||'rv',TOT=D.items.length,NS=D.items.map(x=>x.n);const IT=D.items;
 const $=i=>document.getElementById(i);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CLASSES=['유발형','상재형','기동형','즉시형','키워드 효과','카드 정보(효과 아님)'];
@@ -103,17 +103,18 @@ function hl(text,x){const marks=[];const add=(clause,cls)=>{if(!clause)return;co
   marks.sort((a,b)=>a[0]-b[0]);let out='',at=0;for(const [s,e,c] of marks){if(s<at)continue;out+=esc(text.slice(at,s))+`<mark class="${c}">${esc(text.slice(s,e))}</mark>`;at=e}return out+esc(text.slice(at))}
 function stepsTxt(x){return x.steps.map((p,k)=>`${k+1}) [${p.opt?'임의':'강제'}${p.scope?'·'+p.scope:''}${p.dur?'·'+p.dur:''}] ${p.acts.join(' / ')||'?'}${p.tg?` → 대상: ${p.side?p.side+'의 ':''}${p.tg}`:''}${p.f&&p.f.length?` (${p.f.join(', ')})`:''}`).join('\n')}
 function valHTML(k,x){const none='<span class="none">(없음)</span>';
-  if(k==='cls')return `<b>${esc(x.cls)}</b>${x.sub?` <span class="note">(${esc(x.sub)})</span>`:''}${x.tm.length?`<br><span class="note">타이밍 ${x.tm.map(t=>'【'+esc(t)+'】').join('')}${x.ic.length?' · 아이콘 '+x.ic.map(i=>'['+esc(i)+']').join(''):''}</span>`:''}`;
+  if(k==='cls')return `${x.pre?`<span class="note">앞의 진화 조건(카드 정보): ${esc(x.pre)}</span><br>`:''}<b>${esc(x.cls)}</b>${x.sub?` <span class="note">(${esc(x.sub)})</span>`:''}${x.tm.length?`<br><span class="note">타이밍 ${x.tm.map(t=>'【'+esc(t)+'】').join('')}${x.ic.length?' · 아이콘 '+x.ic.map(i=>'['+esc(i)+']').join(''):''}</span>`:''}`;
   if(k==='trig')return x.tk||x.tc?esc(x.tk||x.tc):none;
   if(k==='cond')return x.cond.length?x.cond.map(esc).join('\n'):none;
   if(k==='cost')return x.cost.length?x.cost.map(esc).join('\n'):none;
-  return x.steps.length?esc(stepsTxt(x)):none}
+  const ex=(x.extra||[]).map(e=>`\n부가 효과(${e.cls}${e.cond?', '+e.cond:''}): `+stepsTxt(e).replace(/\n/g,' · ')).join('');
+  return x.steps.length||ex?esc((x.steps.length?stepsTxt(x):'(없음)')+ex):none}
 function render(){if(view==='dash'){dash();return}
   const list=inBatch();const done=list.filter(x=>mine[x.n]).length;const x=current();
   const app=$('app');
   let warn='';if(!db)warn=`<div class="warn">로그인이 안 되어 답이 서버에 저장되지 않습니다. 오른쪽 위 「로그인」을 눌러 claude.ai 계정으로 로그인해 주세요(카카오톡 안에서 열었다면 크롬·삼성 인터넷으로 열기). 지금 입력한 답은 이 브라우저에 임시 저장되고, 로그인하면 자동으로 올라갑니다. 로그인할 수 없으면 다 끝낸 뒤 「결과 복사」를 눌러 나온 코드를 페이지 주인에게 보내 주세요.</div>`;
   else if(status==='readonly')warn=`<div class="warn">이 페이지에 저장할 권한이 없습니다. 페이지 주인에게 「참여자(Contributor)」 이상으로 공유해 달라고 요청하세요.</div>`;
-  app.innerHTML=`${warn}${done===0&&pos===0?'<div class="note">각자 300문항을 모두 검수합니다. 다른 사람의 답은 보이지 않고, 끝나면 서로의 판정을 교차 비교합니다. 중간에 닫아도 저장한 데까지 이어서 할 수 있습니다.</div>':''}<div class="bar"><span>진행</span>
+  app.innerHTML=`${warn}${done===0&&pos===0?(D.intro?'<div class="note">'+esc(D.intro)+'</div>':'')+'<div class="note">각자 '+TOT+'문항을 모두 검수합니다. 다른 사람의 답은 보이지 않고, 끝나면 서로의 판정을 교차 비교합니다. 중간에 닫아도 저장한 데까지 이어서 할 수 있습니다.</div>':''}<div class="bar"><span>진행</span>
     <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${list.length}" aria-valuenow="${done}"><i style="width:${list.length?done/list.length*100:0}%"></i></div><span>${done} / ${list.length} 완료</span>
     <button class="btn" type="button" id="nextUn">다음 미검수 →</button>${done?'<button class="btn" type="button" id="exportBtn">결과 복사</button>':''}</div>
     <div id="exportBox"></div>
@@ -141,7 +142,7 @@ async function save(){const x=current();if(!x||saving)return;
   if(draft.v.cls==='X'&&!draft.gold){const g=document.querySelector('.gold');if(g)g.style.outline='2px solid var(--bad)';return}
   const rec={n:x.n,i:x.i,v:draft.v,gold:draft.v.cls==='X'?draft.gold:'',memo:draft.memo.trim(),auto:x.cls,at:new Date().toISOString()};
   mine[x.n]=rec;saving=true;
-  try{if(db&&me){await db.doc(`rv/${me}/items/${x.n}`).set(rec);await db.doc(`rv/${me}`).set({count:Object.keys(mine).length,at:rec.at})}else{try{localStorage.setItem('rv-local',JSON.stringify(mine))}catch(_){}}}
+  try{if(db&&me){await db.doc(`${RV}/${me}/items/${x.n}`).set(rec);await db.doc(`${RV}/${me}`).set({count:Object.keys(mine).length,at:rec.at})}else{try{localStorage.setItem(RV+'-local',JSON.stringify(mine))}catch(_){}}}
   catch(e){if(e&&e.code==='invalid_argument'){status='readonly'}delete mine[x.n]}
   saving=false;const l=inBatch();const nxt=l.findIndex((y,i)=>i>pos&&!mine[y.n]);pos=nxt>=0?nxt:Math.min(l.length-1,pos+1);loadDraft();render();window.scrollTo(0,0)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){draft.v[b.dataset.k]=b.dataset.v;if(b.dataset.k==='cls'&&b.dataset.v!=='X')draft.gold='';render();return}
@@ -176,14 +177,14 @@ async function doImport(){const msg=$('impMsg');const name=$('impName').value.tr
   if(!db){msg.textContent='로그인해야 가져올 수 있습니다.';return}
   const id='import-'+Array.from(new TextEncoder().encode(name)).reduce((h,c)=>(h*31+c)>>>0,7).toString(36);
   $('impGo').disabled=true;let ok=0;
-  for(const r of recs){for(let tries=0;tries<5;tries++){try{await db.doc(`rv/${id}/items/${r.n}`).set(r);ok++;break}
+  for(const r of recs){for(let tries=0;tries<5;tries++){try{await db.doc(`${RV}/${id}/items/${r.n}`).set(r);ok++;break}
       catch(e){if(e&&e.code==='resource_exhausted'){await new Promise(z=>setTimeout(z,1500*(tries+1)));continue}msg.textContent=`${ok}개 저장 후 멈춤: ${e&&e.message||e}`;$('impGo').disabled=false;return}}
     if(ok%20===0)msg.textContent=`저장 중… ${ok} / ${recs.length}`}
-  try{await db.doc(`rv/${id}`).set({name,count:ok,at:new Date().toISOString(),imported:true})}catch(e){}
+  try{await db.doc(`${RV}/${id}`).set({name,count:ok,at:new Date().toISOString(),imported:true})}catch(e){}
   msg.textContent=`「${name}」의 답 ${ok}개를 저장했습니다. 현황표에 반영합니다.`;$('impGo').disabled=false;setTimeout(()=>dash(),800)}
 
-async function loadAll(){if(!db)return;const rs=await db.collection('rv').get();all={};
-  for(const d of rs.docs){const meta=d.data()||{};if(meta.name)names[d.id]=meta.name;const its=await db.collection(`rv/${d.id}/items`).get();all[d.id]={};its.docs.forEach(x=>{const v=x.data();all[d.id][v.n]=v})}
+async function loadAll(){if(!db)return;const rs=await db.collection(RV).get();all={};
+  for(const d of rs.docs){const meta=d.data()||{};if(meta.name)names[d.id]=meta.name;const its=await db.collection(`${RV}/${d.id}/items`).get();all[d.id]={};its.docs.forEach(x=>{const v=x.data();all[d.id][v.n]=v})}
   try{const ps=await user.profiles(Object.keys(all));for(const id in ps)names[id]=ps[id].name||names[id]||''}catch(e){}}
 function kappa(a,b){const n=a.length;if(!n)return null;const cats=[...new Set([...a,...b])];let po=0;for(let i=0;i<n;i++)if(a[i]===b[i])po++;po/=n;let pe=0;for(const c of cats)pe+=(a.filter(v=>v===c).length/n)*(b.filter(v=>v===c).length/n);return pe===1?1:(po-pe)/(1-pe)}
 async function dash(){const app=$('app');app.innerHTML='<div class="card">불러오는 중…</div>';await loadAll();
@@ -191,15 +192,15 @@ async function dash(){const app=$('app');app.innerHTML='<div class="card">불러
   const label=(r)=>r.v.cls==='O'?r.auto:r.gold;    // the reviewer's class answer
   // per item: all reviewers' answers
   const byItem={};rv.forEach(id=>Object.values(all[id]).forEach(r=>{(byItem[r.n]=byItem[r.n]||[]).push({id,r})}));
-  const rows=rv.map(id=>{const rs=Object.values(all[id]);const c=rs.filter(r=>r.v.cls!=='NA');return `<tr><td>${esc(nm(id))}</td><td class="n">${rs.length} / 300</td><td class="n">${Math.round(rs.length/3)}%</td><td class="n">${c.length?Math.round(c.filter(r=>r.v.cls==='O').length/c.length*100)+'%':'—'}</td></tr>`}).join('');
+  const rows=rv.map(id=>{const rs=Object.values(all[id]);const c=rs.filter(r=>r.v.cls!=='NA');return `<tr><td>${esc(nm(id))}</td><td class="n">${rs.length} / ${TOT}</td><td class="n">${Math.round(rs.length/TOT*100)}%</td><td class="n">${c.length?Math.round(c.filter(r=>r.v.cls==='O').length/c.length*100)+'%':'—'}</td></tr>`}).join('');
   // Fleiss' kappa on the class answer over items every reviewer has done (needs >= 2 reviewers)
-  let fleiss='';if(rv.length>=2){const items=[];for(let n=1;n<=300;n++){const a=rv.map(id=>all[id][n]).filter(Boolean);if(a.length===rv.length)items.push(a.map(label))}
+  let fleiss='';if(rv.length>=2){const items=[];for(const n of NS){const a=rv.map(id=>all[id][n]).filter(Boolean);if(a.length===rv.length)items.push(a.map(label))}
     if(items.length){const m=rv.length,cats=[...new Set(items.flat())];let Pbar=0;const pj={};cats.forEach(c=>pj[c]=0);
       for(const a of items){let s=0;for(const c of cats){const k=a.filter(v=>v===c).length;s+=k*(k-1);pj[c]+=k}Pbar+=s/(m*(m-1))}Pbar/=items.length;
       let Pe=0;for(const c of cats){const p=pj[c]/(items.length*m);Pe+=p*p}const fk=Pe===1?1:(Pbar-Pe)/(1-Pe);
       fleiss=`<div class="note">전원이 공통으로 끝낸 ${items.length}문항 기준 Fleiss' κ = <b>${fk.toFixed(2)}</b> (검수자 ${m}명, 관측 일치 ${Math.round(Pbar*100)}%)</div>`}}
   // pairwise kappa on the class answer, common items
-  let kap=[];for(let i=0;i<rv.length;i++)for(let j=i+1;j<rv.length;j++){const a=[],b=[];for(let n=1;n<=300;n++){const x=all[rv[i]][n],y=all[rv[j]][n];if(x&&y){a.push(label(x));b.push(label(y))}}
+  let kap=[];for(let i=0;i<rv.length;i++)for(let j=i+1;j<rv.length;j++){const a=[],b=[];for(const n of NS){const x=all[rv[i]][n],y=all[rv[j]][n];if(x&&y){a.push(label(x));b.push(label(y))}}
     const k=kappa(a,b);if(k!=null)kap.push(`<tr><td>${esc(nm(rv[i]))} · ${esc(nm(rv[j]))}</td><td class="n">${a.length}</td><td class="n">${Math.round(a.filter((v,t)=>v===b[t]).length/a.length*100)}%</td><td class="n">${k.toFixed(2)}</td></tr>`)}
   // majority accuracy per component and disagreements
   const comp={};COMPS.forEach(([k])=>comp[k]={o:0,x:0});const dis=[];
@@ -221,20 +222,21 @@ async function dash(){const app=$('app');app.innerHTML='<div class="card">불러
     <section class="card"><h2 style="margin:0;font-size:17px">의견이 갈린 문항 ${dis.length}건</h2><div class="dis">${dis.slice(0,80).map(d=>{const x=it(d.n);const arr=byItem[d.n];return `<div class="it"><b>#${d.n}</b> <span class="note">${COMPS.find(c=>c[0]===d.k)[1]}</span> · ${esc(x.card)} ${esc(x.name)}<br>${esc(x.text.slice(0,120))}…<br>${arr.map(a=>`${esc(nm(a.id))}: ${a.r.v[d.k]}${d.k==='cls'&&a.r.v.cls==='X'?' → '+esc(a.r.gold):''}${a.r.memo?' 「'+esc(a.r.memo)+'」':''}`).join(' · ')}</div>`}).join('')||'<div class="note">없음</div>'}</div></section>`;$('impGo').onclick=doImport}
 
 /* ---------- start ---------- */
+if(D.title){document.title='효과 분류 '+D.title;const st=document.getElementById('subt');if(st)st.textContent=D.title}
 loadDraft();render();
 (async()=>{
   db=window.claude&&window.claude.use?await window.claude.use('db'):null;user=window.claude&&window.claude.use?await window.claude.use('user'):null;
   if(user){try{me=await user.id();isOwner=await user.isOwner();const p=await user.me();$('who').textContent=(p&&p.name?p.name:'')+(isOwner?' · 페이지 주인':'')}catch(e){}}
   if(isOwner){$('tabs').insertAdjacentHTML('beforeend','<button type="button" data-view="dash" aria-pressed="false">검수 현황</button>')}
-  if(db&&me){try{const rs=await db.collection(`rv/${me}/items`).get();rs.docs.forEach(d=>{const v=d.data();mine[v.n]=v})}catch(e){}
+  if(db&&me){try{const rs=await db.collection(`${RV}/${me}/items`).get();rs.docs.forEach(d=>{const v=d.data();mine[v.n]=v})}catch(e){}
     // answers saved in this browser while signed out: upload the ones the server does not have yet, one at a time
-    let local={};try{local=JSON.parse(localStorage.getItem('rv-local')||'{}')}catch(e){}
+    let local={};try{local=JSON.parse(localStorage.getItem(RV+'-local')||'{}')}catch(e){}
     const up=Object.values(local).filter(v=>v&&v.n&&!mine[v.n]);
-    if(up.length){let ok=0;for(const v of up){try{await db.doc(`rv/${me}/items/${v.n}`).set(v);mine[v.n]=v;ok++}catch(e){break}}
-      try{await db.doc(`rv/${me}`).set({count:Object.keys(mine).length,at:new Date().toISOString()})}catch(e){}
-      if(ok===up.length){try{localStorage.removeItem('rv-local')}catch(e){}}
+    if(up.length){let ok=0;for(const v of up){try{await db.doc(`${RV}/${me}/items/${v.n}`).set(v);mine[v.n]=v;ok++}catch(e){break}}
+      try{await db.doc(`${RV}/${me}`).set({count:Object.keys(mine).length,at:new Date().toISOString()})}catch(e){}
+      if(ok===up.length){try{localStorage.removeItem(RV+'-local')}catch(e){}}
       const n=document.createElement('div');n.className='warn';n.style.background='var(--okbg,#e7f6ec)';n.style.color='var(--ink)';n.textContent=`로그인 전에 이 브라우저에 임시 저장한 답 ${ok}개를 올렸습니다.`;document.body.prepend(n)}}
-  else{try{mine=JSON.parse(localStorage.getItem('rv-local')||'{}')}catch(e){}}
+  else{try{mine=JSON.parse(localStorage.getItem(RV+'-local')||'{}')}catch(e){}}
   const l=inBatch();const j=l.findIndex(x=>!mine[x.n]);pos=j>=0?j:0;loadDraft();render();
 })();
 })();
