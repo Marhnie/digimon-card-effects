@@ -26,5 +26,9 @@ from rule_issues import ISSUES, exemplars
 EX = exemplars(T['qa'])
 T['issues'] = [{**{k: it[k] for k in ('id', 'name', 'desc', 'rules', 'cue', 'ask', 'not', 'needs_trigger')}, 'qa': EX[it['id']]} for it in ISSUES]
 print('rule issues', {it['id']: len(EX[it['id']]) for it in ISSUES})
+# reason groups (all Q&A) — only the consistent ones are used by the engine; engine-lite weights (time-split trained)
+RGJ = json.load(open('reason_groups.json', encoding='utf-8'))
+T['rg'] = {'of': RGJ['of'], 'g': [[g['name'], g['yes'], g['cons'], g['ny'], g['cards']] for g in RGJ['groups']]}
+T['eng'] = json.load(open('net/engine_lite.json')); T['eng']['thr'] = 0.80
 json.dump(T, open('test_data4.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('units', len(st), 'clusters', len(T['clu']), 'with cluster', sum(x[6] >= 0 for x in st))
