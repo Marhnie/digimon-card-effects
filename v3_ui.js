@@ -157,6 +157,7 @@ function patternQA(u,limit,exceptCard){if(!u||u.p==null)return [];return (byPat[
 function evidenceFor(){const u=mainUnit();const card=ST.cards[0]?ST.cards[0].no:'';const out=[],seen=new Set();const add=it=>{if(it&&!seen.has(it.id)){seen.add(it.id);out.push(it)}};
   if(!QIDX)buildQIdx();
   const tagQ=(q,why)=>{const it=QIDX.byId['Q'+q.i];return it&&Object.assign({},it,{label:it.label+' · '+why})};
+  (ST.res&&ST.res.issues||[]).forEach(x=>{x.rules.forEach(n=>add(QIDX.byId['R'+n]));x.qa.slice(0,8).forEach(i=>add(tagQ(QA[i],'같은 룰 쟁점: '+x.name)))});
   (ST.res&&ST.res.list||[]).slice(0,4).forEach(x=>add(tagQ(x.q,'같은 상황 선례')));
   (ST.res&&ST.res.similar||similarQA(15)).slice(0,12).forEach(x=>add(tagQ(x.q,'비슷한 질문 '+Math.round(Math.min(1,x.s)*100)+'%')));
   (ST.res&&ST.res.groups||[]).slice(0,2).forEach((G,k)=>G.mem.slice(0,5).forEach(q=>add(tagQ(q,'같은 쟁점 그룹 '+(k+1)))));
@@ -184,7 +185,7 @@ async function askClaude(){
 [카드] ${card?card.no+' '+cname(card.no):'(붙여 넣은 효과)'}
 [카드 텍스트]
 ${cardText}
-[질문 대상 효과] ${u.text}
+[질문 대상 효과] ${u.text}${(ST.res&&ST.res.issues||[]).map(x=>`\n[이 질문의 룰 쟁점] ${x.name}: ${x.desc} (종합 룰 ${x.rules.join(', ')})`).join('')}
 [효과 구조(종합 룰 15장)] ${structText(u)}${extras().map(x=>`\n[함께 관련된 카드] ${x.no} ${cname(x.no)}\n  카드 텍스트: ${(byCard[x.no]||[]).map(v=>v.text).join(' / ')}${x.unit>=0?`\n  관련 효과: ${U[x.unit].text}`:''}`).join('')}
 [묻는 것] ${INT[ST.it].n}
 [상황 항목] ${[...ST.sl].map(i=>SLOT[i].g+':'+SLOT[i].n).join(', ')||'없음'}
@@ -218,16 +219,25 @@ function structHTML(u){const s=strOf(u);if(!s)return '<div class="empty">구조 
     ${row('처리 단계','15-1-2',s[4].length?'<ol>'+s[4].map(p=>`<li><b>${p[4]?'임의':'강제'}${p[5]?' · '+esc(p[5]):''}${p[6]?' · '+esc(p[6]):''}</b> ${esc(stepTxt(p))}</li>`).join('')+'</ol>':none)}
     ${row('구조 그룹','',esc(s[5]))}${c?row('같은 효과 무리','',`${esc(c[0])} <span class="no">· 대분류 ${c[1]+1} ${esc(c[2])} · 효과 ${c[3]}개</span>`):''}</table>`}
 
+
+/* ---------- rule issues (룰 쟁점): rulebook points that decide a question whatever the card ---------- */
+const ISS=(D.issues||[]).map(x=>({...x,re:new RegExp(x.cue),ask:new RegExp(x.ask||'.'),not:x.not?new RegExp(x.not):null}));
+function detectIssues(){const q=ST.q||'';const trig=involvedUnits().some(u=>{const s=strOf(u);return s&&(s[0]==='유발형'||s[0]==='즉시형'||s[1].length)});
+  return ISS.filter(x=>x.re.test(q)&&x.ask.test(q)&&!(x.not&&x.not.test(q))&&(!x.needs_trigger||trig))}
+function involvedUnits(){const out=[];const u=mainUnit();if(u)out.push(u);for(const x of extras()){if(x.unit>=0)out.push(U[x.unit]);else(byCard[x.no]||[]).forEach(v=>out.push(v))}return out}
+function issueVerdict(iss){if(!iss)return null;const myneg=ST.sl.has(NEGI)?1:0;const ys=iss.qa.map(i=>QA[i]).filter(q=>q.y>=0).map(q=>q.y^(q.neg^myneg));
+  if(ys.length<3)return null;const yes=ys.filter(v=>v===1).length;if(yes!==0&&yes!==ys.length)return null;return {ans:yes?1:0,n:ys.length,iss}}
+
 /* ---------- result ---------- */
 const yn=a=>a?'네':'아니요';
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  ST.res=precedents();ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
-  ST.tab=ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
+  ST.res=precedents();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if(ST.res.level!=='sure'||extras().length)askClaude();
+  if((ST.res.level==='none'||extras().length)&&!ST.res.iv)askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
@@ -239,6 +249,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
       const rs=(Array.isArray(r.reasons)?r.reasons:[]).map(x=>`<li>${esc(x.text||'')} ${cite(x.cite)}</li>`).join('');
       h+=`<div class="verdict v-ai"><span class="badge">Claude 판정 · 근거 ${(A.ev||[]).length}건 검토</span><div class="ans">${esc(r.verdict||'?')}</div>${(()=>{const c=Number(r.conf);if(!isFinite(c))return '';const hi=c>=0.8;return `<div class="conf ${hi?'hi':'lo'}">${hi?'확신 높음':'확신 낮음 · 심판이나 운영자 확인 권장'} <b>${Math.round(c*100)}%</b><span>${hi?'시험 200문항에서 확신 80% 이상 판정은 모두 공식 답과 같았습니다':'시험에서 확신 80% 미만 판정은 약 91%만 맞았습니다'}</span></div>`})()}<div class="why">${esc(r.summary||'')}</div>${rs?`<ol class="reasons">${rs}</ol>`:''}${r.caution?`<div class="sub">주의: ${esc(r.caution)}</div>`:''}<div class="sub">공식 판정이 아닌 근거 정리입니다. 대회에서는 저지 확인을 거쳐 주세요.</div></div>`}
   }
+  if(R&&R.iv&&!(A&&A.r)){const V=R.iv;
+    h=`<div class="verdict v-sure"><span class="badge">룰 쟁점 · ${esc(V.iss.name)} · 공식 Q&amp;A ${V.n}건 일치</span><div class="ans">${yn(V.ans)}</div><div class="why">${esc(V.iss.desc)}</div><div class="sub">근거 룰 ${V.iss.rules.map(esc).join(' · ')} · 같은 쟁점의 공식 Q&amp;A가 모두 「${yn(V.ans)}」입니다. 상황이 쟁점과 다르면(예: 그 카드가 실제로는 자리를 벗어나지 않음) 결론이 바뀝니다.</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R){
     if(R.level==='sure')h=`<div class="verdict v-sure"><span class="badge">확정 · 선례 ${R.list.length}건 일치</span><div class="ans">${yn(R.ans)}</div><div class="why">${TIERNAME[R.tier]}에서 묻는 것과 상황이 같은 공식 Q&amp;A가 모두 「${yn(R.ans)}」입니다.</div><div class="sub">Claude 없이 낸 판정 · 이 단계 과거 정확도 약 97%</div>${A?'':'<div class="row"><button class="btn2" type="button" data-askai="1">Claude로 한 번 더 확인</button></div>'}</div>`+h;
     else if(R.level==='ref'&&!(A&&A.r))h=`<div class="verdict v-ref"><span class="badge">참고 · 선례 ${R.list.length}건${R.unanimous?'':' · 답이 갈림'}</span><div class="ans">${yn(R.ans)}?</div><div class="why">${extras().length?'여러 카드가 얽힌 질문이라 선례는 참고로만 씁니다.':TIERNAME[R.tier]+'의 선례로 본 추정입니다.'}</div><div class="sub">과거 정확도 약 89~92%</div>${A?'':'<div class="row"><button class="btn2 pri" type="button" data-askai="1">Claude로 확인</button></div>'}</div>`+h;
@@ -251,10 +263,11 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
   return h}
 function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   const own=ownQA();
-  const tabs=[['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
+  const tabs=[(R.issues||[]).length?['issue','같은 룰 쟁점',R.issues.reduce((s,x)=>s+x.qa.length+x.rules.length,0)]:null,['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
   if(!tabs.some(t=>t[0]===ST.tab))ST.tab=tabs[0][0];
   let body='';const myneg=ST.sl.has(NEGI)?1:0;
-  if(ST.tab==='prec')body=R.list.length?R.list.slice(0,20).map(x=>itemQA(x.q,`<span>· ${TIERNAME[R.tier]}</span><span class="yn">답: ${yn(x.y)}</span>${x.q.neg!==myneg?'<span>(반대로 물은 질문이라 뒤집음)</span>':''}`)).join(''):'<div class="empty">묻는 것과 상황이 완전히 같은 선례가 없습니다. 상황 태그를 줄이면 찾을 수도 있습니다.</div>';
+  if(ST.tab==='issue')body=(R.issues||[]).map(x=>`<div class="empty" style="padding:0 2px"><b>${esc(x.name)}</b> — ${esc(x.desc)}</div>`+x.rules.map(itemRule).join('')+x.qa.map(i=>itemQA(QA[i],'<span>· 같은 룰 쟁점</span>')).join('')).join('');
+  else if(ST.tab==='prec')body=R.list.length?R.list.slice(0,20).map(x=>itemQA(x.q,`<span>· ${TIERNAME[R.tier]}</span><span class="yn">답: ${yn(x.y)}</span>${x.q.neg!==myneg?'<span>(반대로 물은 질문이라 뒤집음)</span>':''}`)).join(''):'<div class="empty">묻는 것과 상황이 완전히 같은 선례가 없습니다. 상황 태그를 줄이면 찾을 수도 있습니다.</div>';
   else if(ST.tab==='sim'){const gs=(R.groups||[]).slice(0,12);const myneg=ST.sl.has(NEGI)?1:0;
     body=gs.length?gs.map((G,k)=>{const shown=G.mem.slice().sort((a,b)=>(G.hits.find(h=>h.q===b)?.s||0)-(G.hits.find(h=>h.q===a)?.s||0));
       const row=q=>itemQA(q,`${q.y>=0?`<span class="yn">답: ${yn(q.y^(q.neg^myneg))}</span>`:''}${q.y>=0&&q.neg!==myneg?'<span>(반대로 물은 질문이라 뒤집음)</span>':''}`);

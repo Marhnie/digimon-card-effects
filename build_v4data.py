@@ -22,5 +22,9 @@ assert all(x is not None for x in st)
 co = {f: c for c in NET['coarse'] for f in c['fine']}
 T['st'] = st
 T['clu'] = [[c['name'], co[c['id']]['id'], co[c['id']]['name'], c['n']] for c in NET['clusters']]
+from rule_issues import ISSUES, exemplars
+EX = exemplars(T['qa'])
+T['issues'] = [{**{k: it[k] for k in ('id', 'name', 'desc', 'rules', 'cue', 'ask', 'not', 'needs_trigger')}, 'qa': EX[it['id']]} for it in ISSUES]
+print('rule issues', {it['id']: len(EX[it['id']]) for it in ISSUES})
 json.dump(T, open('test_data4.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('units', len(st), 'clusters', len(T['clu']), 'with cluster', sum(x[6] >= 0 for x in st))
