@@ -1,0 +1,15 @@
+const {JSDOM}=require('jsdom');const fs=require('fs');
+const html=fs.readFileSync('card-effect-test.html','utf8');const errs=[];let prompt='';
+const dom=new JSDOM('<!doctype html><html><head></head><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.addEventListener('error',e=>errs.push(e.message));
+ const f=async()=>{};f.json=async(p)=>{prompt=p;return {verdict:'네',summary:'s',reasons:[],caution:'',conf:0.62}};w.claude={use:async()=>f}}});
+const w=dom.window,d=w.document,$=i=>d.getElementById(i);
+const type=(el,v)=>{el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}))};const key=(el,k)=>el.dispatchEvent(new w.KeyboardEvent('keydown',{key:k,bubbles:true}));
+setTimeout(()=>{type($('cardq'),'EX8-005');key($('cardq'),'Enter');
+ console.log('card',d.querySelector('.cb-h').textContent.replace(/\s+/g,' '));
+ const rs=[...d.querySelectorAll('input[name=mainEff]')];const r=rs[rs.length-1];r.checked=true;r.dispatchEvent(new w.Event('change',{bubbles:true}));
+ console.log('effect',d.querySelector('.eff.on').textContent.replace(/\s+/g,' ').slice(0,160));
+ type($('askq'),'이 카드가 효과로 진화원에서 파기되었을 때, 상대의 턴이라도 메모리 +1 효과가 발휘되나요?');$('go').click();
+ setTimeout(()=>{console.log('tabs',[...d.querySelectorAll('.tabs button')].map(b=>b.textContent).join(' | '));
+  const tb=k=>[...d.querySelectorAll('.tabs button')].find(b=>b.dataset.tab===k);tb('struct').click();console.log('struct tab',d.querySelector('.tabp').textContent.replace(/s+/g,' ').slice(0,300));tb('clu').click();console.log('clu tab',d.querySelector('.tabp').textContent.replace(/s+/g,' ').slice(0,200));tb('trig').click();
+  console.log('trig tab',d.querySelector('.tabp').textContent.replace(/\s+/g,' ').slice(0,260));
+  console.log('prompt struct',prompt.includes('[효과 구조(종합 룰 15장)]'),'cluster ev',prompt.includes('같은 효과 무리'));setTimeout(()=>{const c=d.querySelector('.conf');console.log('conf box',c?c.className+' | '+c.textContent.replace(/s+/g,' '):'none');console.log('prompt note',prompt.includes('종합 룰 15-3'),'conf field',prompt.includes('"conf"'));console.log('errors',errs)},300)},400)},300);

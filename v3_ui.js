@@ -180,7 +180,7 @@ async function askClaude(){
   const ev=evidenceFor();ST.ai.ev=ev;
   const card=ST.cards[0];
   const cardText=card?(byCard[card.no]||[]).map(x=>x.text).join('\n'):ST.pasted.text;
-  const prompt=`당신은 디지몬 카드게임(한국어판) 룰 판정 보조입니다. 아래 상황에 대해 [자료]의 공식 Q&A와 종합 룰 Ver.4.3만 근거로 판정하세요. [자료]는 공식 카드 Q&A(같은 상황 선례 → 문구가 비슷한 질문 → 고른 카드의 Q&A → 같은 효과 패턴 순)가 먼저 오고 종합 룰 조항이 뒤에 옵니다. 상황이 같은 공식 Q&A가 있으면 그 판정을 최우선 근거로 삼아 반드시 cite하고, 카드나 조건이 달라 그대로 적용할 수 없으면 무엇이 다른지 밝히세요. 자료에 없는 룰을 지어내지 말고, 근거가 부족하면 "판단 불가"로 하고 무엇이 더 필요한지 쓰세요.
+  const prompt=`당신은 디지몬 카드게임(한국어판) 룰 판정 보조입니다. 카드의 「효과(상단 텍스트)」·「진화원 효과」·「시큐리티 효과」는 서로 다른 효과입니다(종합 룰 15-3) — 질문이 「진화원 효과에 ~를 가진 카드」처럼 어느 쪽을 가리키는지 먼저 확인하세요. 아래 상황에 대해 [자료]의 공식 Q&A와 종합 룰 Ver.4.3만 근거로 판정하세요. [자료]는 공식 카드 Q&A(같은 상황 선례 → 문구가 비슷한 질문 → 고른 카드의 Q&A → 같은 효과 패턴 순)가 먼저 오고 종합 룰 조항이 뒤에 옵니다. 상황이 같은 공식 Q&A가 있으면 그 판정을 최우선 근거로 삼아 반드시 cite하고, 카드나 조건이 달라 그대로 적용할 수 없으면 무엇이 다른지 밝히세요. 자료에 없는 룰을 지어내지 말고, 근거가 부족하면 "판단 불가"로 하고 무엇이 더 필요한지 쓰세요.
 [카드] ${card?card.no+' '+cname(card.no):'(붙여 넣은 효과)'}
 [카드 텍스트]
 ${cardText}
@@ -192,7 +192,7 @@ ${cardText}
 [자료]
 ${ev.map(it=>`[${it.id}] (${it.label}) ${it.text}`).join('\n\n')}
 
-JSON 하나로만 답하세요: {"verdict":"네" | "아니요" | "조건부" | "판단 불가","summary":"한두 문장 결론","reasons":[{"text":"처리 순서대로 한 단계","cite":["Q123","R4-15"]}],"caution":"판단이 갈릴 수 있는 점(없으면 빈 문자열)"}
+JSON 하나로만 답하세요: {"verdict":"네" | "아니요" | "조건부" | "판단 불가","summary":"한두 문장 결론","reasons":[{"text":"처리 순서대로 한 단계","cite":["Q123","R4-15"]}],"caution":"판단이 갈릴 수 있는 점(없으면 빈 문자열)","conf":0.0~1.0 사이 숫자(이 판정이 공식 답과 같을 확신)}
 cite에는 [자료]에 실제로 있는 ID만 쓰세요.`;
   ST.ctl=new AbortController();
   try{const r=await sample.json(prompt,{modelTier:'complex',signal:ST.ctl.signal});ST.ai={r,ev};ST.tab='ai'}
@@ -227,7 +227,7 @@ function judge(){
   ST.res=precedents();ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if(ST.res.level==='none'||extras().length)askClaude();
+  if(ST.res.level!=='sure'||extras().length)askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
@@ -237,7 +237,7 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
     else{const r=A.r||{};const byId=Object.fromEntries((A.ev||[]).map(it=>[it.id,it]));
       const cite=ids=>(ids||[]).filter(id=>byId[id]).map(id=>`<button class="cite" type="button" data-cite="${esc(id)}">${esc(id[0]==='R'?id.slice(1):(byId[id].qa?byId[id].qa.card:id))}</button>`).join('');
       const rs=(Array.isArray(r.reasons)?r.reasons:[]).map(x=>`<li>${esc(x.text||'')} ${cite(x.cite)}</li>`).join('');
-      h+=`<div class="verdict v-ai"><span class="badge">Claude 판정 · 근거 ${(A.ev||[]).length}건 검토</span><div class="ans">${esc(r.verdict||'?')}</div><div class="why">${esc(r.summary||'')}</div>${rs?`<ol class="reasons">${rs}</ol>`:''}${r.caution?`<div class="sub">주의: ${esc(r.caution)}</div>`:''}<div class="sub">공식 판정이 아닌 근거 정리입니다. 대회에서는 저지 확인을 거쳐 주세요.</div></div>`}
+      h+=`<div class="verdict v-ai"><span class="badge">Claude 판정 · 근거 ${(A.ev||[]).length}건 검토</span><div class="ans">${esc(r.verdict||'?')}</div>${(()=>{const c=Number(r.conf);if(!isFinite(c))return '';const hi=c>=0.8;return `<div class="conf ${hi?'hi':'lo'}">${hi?'확신 높음':'확신 낮음 · 심판이나 운영자 확인 권장'} <b>${Math.round(c*100)}%</b><span>${hi?'시험 200문항에서 확신 80% 이상 판정은 모두 공식 답과 같았습니다':'시험에서 확신 80% 미만 판정은 약 91%만 맞았습니다'}</span></div>`})()}<div class="why">${esc(r.summary||'')}</div>${rs?`<ol class="reasons">${rs}</ol>`:''}${r.caution?`<div class="sub">주의: ${esc(r.caution)}</div>`:''}<div class="sub">공식 판정이 아닌 근거 정리입니다. 대회에서는 저지 확인을 거쳐 주세요.</div></div>`}
   }
   if(R){
     if(R.level==='sure')h=`<div class="verdict v-sure"><span class="badge">확정 · 선례 ${R.list.length}건 일치</span><div class="ans">${yn(R.ans)}</div><div class="why">${TIERNAME[R.tier]}에서 묻는 것과 상황이 같은 공식 Q&amp;A가 모두 「${yn(R.ans)}」입니다.</div><div class="sub">Claude 없이 낸 판정 · 이 단계 과거 정확도 약 97%</div>${A?'':'<div class="row"><button class="btn2" type="button" data-askai="1">Claude로 한 번 더 확인</button></div>'}</div>`+h;
