@@ -22,6 +22,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ DP +1000 을 받는 것은 이 디지몬인데 셈 기준(트래시의 「에테몬」 카드)을 대상 칸에 넣음"
 }
 },
 "2": {
@@ -47,6 +58,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 토큰 괄호 설명문(【소멸 시】DP -3000)을 별도 DP 감소 단계로 잘못 분할함. 실제 처리는 '사역마 토큰 1마리를 등장시킬 수 있다'(임의) 한 단계뿐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 토큰 설명 괄호 안 DP -3000을 처리 단계로 떼어 냄"
 }
 },
 "3": {
@@ -69,6 +91,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -97,6 +130,17 @@
 },
 "gold": "유발형",
 "memo": "[AI] cls: 진화 조건문 뒤에 【진화 시】 효과가 붙은 텍스트로, 【진화 시】 유발형이 맞음(tm에 진화 시 누락). proc: 1단계 원문(t)에 진화 조건 문구 '진화 : 『…』에서 3【진화 시】'가 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "X",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "유발형",
+"memo": "[C·DGC Sim] 진화 조건 「진화 : 『…』에서 3」이 붙어 상재형·타이밍 누락"
 }
 },
 "5": {
@@ -119,6 +163,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -147,6 +202,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 블래스트 진화는 임의 처리(규칙 16-26-3, '진화시킬 수 있다')인데 opt=false로 강제 처리됨"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "7": {
@@ -169,6 +235,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -197,6 +274,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "9": {
@@ -219,6 +307,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -247,6 +346,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "11": {
@@ -269,6 +379,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -297,6 +418,17 @@
 },
 "gold": "",
 "memo": "[AI] cost: 앞부분이 잘림. 정답은 '특징으로 「X」/「X」을 가진 자신의 디지몬의 진화원에서 그 디지몬과 같은 Lv.의 카드 1장을 코스트를 지불하지 않고 등장시키는 것으로'. proc: 1단계 t에 임의 처리 조건 앞부분이 섞여 있음. 처리는 '자신의 디지몬 2마리로 패의 디지몬 카드로 조그레스 진화할 수 있다'만 들어가야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ④ 비용이 Lv. 에서 잘림"
 }
 },
 "13": {
@@ -319,6 +451,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -347,6 +490,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 블래스트 진화는 임의 처리(16-26-3)인데 opt=false"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "15": {
@@ -372,6 +526,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 2단계 '이 카드를 시큐리티 아래에 앞면으로 놓는다'의 acts가 비어 있음(시큐리티에 놓기 동작 누락)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 둘째 단계(시큐리티 아래에 놓기) acts 비어 있음"
 }
 },
 "16": {
@@ -394,6 +559,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -422,6 +598,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "18": {
@@ -447,6 +634,17 @@
 },
 "gold": "카드 정보(효과 아님)",
 "memo": "[AI] cls: 토큰 규칙 문(■…)이라 효과가 아니고 카드 정보임. trig: 토큰 규칙 문구 '토큰이 에어리어를 벗어날 때'를 유발 조건으로 잘못 뽑음. 비어 있어야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "카드 정보(효과 아님)",
+"memo": "[C·DGC Sim] 토큰 ■ 규칙 문구라 효과 아님"
 }
 },
 "19": {
@@ -469,6 +667,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -497,6 +706,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "21": {
@@ -522,6 +742,17 @@
 },
 "gold": "카드 정보(효과 아님)",
 "memo": "[AI] cls: 원문이 '―'(효과 없음)인데 상재형으로 분류됨. 효과가 아님"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "카드 정보(효과 아님)",
+"memo": "[C·DGC Sim] 「―」 빈 칸"
 }
 },
 "22": {
@@ -544,6 +775,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -572,6 +814,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "24": {
@@ -594,6 +847,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -622,6 +886,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "26": {
@@ -644,6 +919,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -672,6 +958,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "28": {
@@ -694,6 +991,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -722,6 +1030,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 블래스트 진화는 임의 처리(16-26-3)인데 opt=false"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "30": {
@@ -744,6 +1063,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -772,6 +1102,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "32": {
@@ -794,6 +1135,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -822,6 +1174,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "34": {
@@ -847,6 +1210,17 @@
 },
 "gold": "",
 "memo": "[AI] cond: '이 디지몬의 진화원이 4장 이상 있다면'이 처리 조건인데 빠져 있음. proc: 그 조건 문구가 단계 원문(t)에 섞여 있음. 처리는 《1 드로우》만"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「진화원이 4장 이상 있다면」을 cond 로 안 뺌"
 }
 },
 "35": {
@@ -869,6 +1243,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -897,6 +1282,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 블래스트 진화는 임의 처리(16-26-3)인데 opt=false"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "37": {
@@ -919,6 +1315,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -947,6 +1354,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 블래스트 진화는 임의 처리(16-26-3)인데 opt=false"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "39": {
@@ -969,6 +1387,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -997,6 +1426,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "41": {
@@ -1022,6 +1462,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ JP 「2色以上の間」 처리 조건(15-8-2-6) 누락"
 }
 },
 "42": {
@@ -1047,6 +1498,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "카드 정보(효과 아님)",
+"memo": "[C·DGC Sim] 오버플로우는 4-19·2-10 카드 정보, 16장 키워드 목록에 없음"
 }
 },
 "43": {
@@ -1069,6 +1531,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1097,6 +1570,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "45": {
@@ -1122,6 +1606,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ JP 「DPが10000以上の間」 처리 조건인데 필터로만"
 }
 },
 "46": {
@@ -1144,6 +1639,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1172,6 +1678,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "48": {
@@ -1197,6 +1714,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: '「X」으로만 진화할 수 있다'는 진화 대상을 제한하는 상재 제한 효과인데, acts=진화, opt=true(임의로 진화하는 처리)로 잘못 태깅됨. 진화 제한이어야 하고 임의 처리가 아님"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「으로만 진화할 수 있다」는 진화 제한인데 임의 진화로"
 }
 },
 "49": {
@@ -1219,6 +1747,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -1247,6 +1786,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "51": {
@@ -1269,6 +1819,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1297,6 +1858,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「다음 상대의 턴 종료 시까지」의 「다음」이 빠짐"
 }
 },
 "53": {
@@ -1319,6 +1891,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1347,6 +1930,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "55": {
@@ -1369,6 +1963,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1397,6 +2002,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "57": {
@@ -1419,6 +2035,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1447,6 +2074,17 @@
 },
 "gold": "",
 "memo": "[AI] 원문 첫 문장(「펄스몬」이 기술된 자신의 디지몬/테이머가 있는 동안 색 조건 무시, 상재형)이 통째로 빠짐: cond에 '~있는 동안' 누락, steps에 색 조건 무시 단계 누락. 사용할 때 코스트 경감 부분(즉시형)만 분해됨"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] 효과 둘(색 조건 무시 상재형 + 사용할 때)이 한 문항, 앞 효과 누락"
 }
 },
 "59": {
@@ -1469,6 +2107,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1497,6 +2146,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "61": {
@@ -1519,6 +2179,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1547,6 +2218,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "63": {
@@ -1572,6 +2254,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ #45 와 같은 모양"
 }
 },
 "64": {
@@ -1594,6 +2287,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -1622,6 +2326,17 @@
 },
 "gold": "",
 "memo": "[AI] 《블래스트 진화》는 임의 처리(규칙서 16-26-3, 리마인더에도 '진화시킬 수 있다')인데 opt=false로 강제 처리로 들어감. opt=true가 맞음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "66": {
@@ -1644,6 +2359,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1672,6 +2398,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "68": {
@@ -1694,6 +2431,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1722,6 +2470,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "70": {
@@ -1744,6 +2503,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1772,6 +2542,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "72": {
@@ -1794,6 +2575,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1822,6 +2614,17 @@
 },
 "gold": "즉시형",
 "memo": "[AI] 진화 조건(Lv.4 「아르고몬」 코스트 4) 뒤에 붙은 '이 카드로 진화할 때, 테이머 5명까지를 레스트시키는 것으로, 1명마다 진화 코스트 -1'은 실제 효과(15-8-5 '~할 때' 즉시형). 전체를 카드 정보로 버려 효과가 누락됨. 진화 조건 부분만 카드 정보로 떼고 나머지는 즉시형(유발: 이 카드로 진화할 때, 임의 처리 조건: 테이머 5명까지 레스트, 처리: 진화 코스트 감소)으로 분해해야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "X",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "즉시형",
+"memo": "[C·DGC Sim] 진화 조건 뒤 즉시형 효과를 카드 정보로 버림"
 }
 },
 "74": {
@@ -1847,6 +2650,17 @@
 },
 "gold": "카드 정보(효과 아님)",
 "memo": "[AI] 《진화:「명칭에 드래곤 모드 포함」에서 2》는 진화 조건 표기(규칙서 16장 키워드 효과 목록에 없음)라 키워드 효과가 아니라 카드 정보(진화 조건)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "카드 정보(효과 아님)",
+"memo": "[C·DGC Sim] 「진화:『…』에서 2」는 진화 조건(2-3-5)"
 }
 },
 "75": {
@@ -1869,6 +2683,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -1897,6 +2722,17 @@
 },
 "gold": "",
 "memo": "[AI] 3번째 단계 '이 효과로 파기한 1장마다 이 효과의 코스트 경감 수치 -1'의 acts가 비어 있음(상한·수치 변경 류 태그 필요). 2번째 단계의 경감 수치를 고치는 보정이라 별도 처리 단계라기보다 2단계에 딸린 수치 변경임"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "77": {
@@ -1919,6 +2755,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1947,6 +2794,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "79": {
@@ -1969,6 +2827,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -1997,6 +2866,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 강제 「액티브로 하고」와 임의 「어택할 수 있다」를 한 단계로"
 }
 },
 "81": {
@@ -2019,6 +2899,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -2047,6 +2938,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 앞부분 '이 디지몬의 진화원에,'가 잘려 조건 대상이 사라짐(정답: 이 디지몬의 진화원에 특징 「X」를 가진 디지몬 카드 또는 블루인 테이머 카드가 있는 동안). 단계 원문 t에 조건 조각 '이 디지몬의 진화원에,  ,'이 섞임(정답 t: 이 디지몬은 어택당하지 않는다)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "X",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 조건 앞부분 「이 디지몬의 진화원에,」가 떨어짐"
 }
 },
 "83": {
@@ -2069,6 +2971,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2097,6 +3010,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "85": {
@@ -2119,6 +3043,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2147,6 +3082,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "87": {
@@ -2169,6 +3115,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2197,6 +3154,17 @@
 },
 "gold": "",
 "memo": "[AI] 《딜레이》는 임의 처리 조건(규칙서 16-17-2: 배틀 에어리어의 이 카드를 파기하는 것으로 발휘)이므로 cost에 들어가야 하는데 비어 있음. 대신 처리 단계에 '키워드 실행: 딜레이'로 섞여 t도 '《딜레이》 ・메모리 +2'가 됨. 정답 처리는 '메모리 +2' 한 단계"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "89": {
@@ -2219,6 +3187,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2247,6 +3226,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "91": {
@@ -2269,6 +3259,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2297,6 +3298,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "93": {
@@ -2319,6 +3331,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2347,6 +3370,17 @@
 },
 "gold": "",
 "memo": "[AI] 《블래스트 진화》는 임의 처리(규칙서 16-26-3)인데 opt=false로 강제 처리로 들어감. opt=true가 맞음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "95": {
@@ -2372,6 +3406,17 @@
 },
 "gold": "",
 "memo": "[AI] 성격이 다른 두 처리(상대 시큐리티 1장 파기 / 턴 종료까지 이 디지몬 DP -30000)를 한 단계로 합쳐서, DP 감소의 대상이 tg=시큐리티, side=상대로 잘못 매겨짐. 두 단계로 나눠야 함: 2단계 대상은 이 카드, 지속은 턴 종료까지"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 시큐리티 파기와 이 디지몬 DP -30000을 한 단계로"
 }
 },
 "96": {
@@ -2394,6 +3439,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -2422,6 +3478,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "98": {
@@ -2447,6 +3514,17 @@
 },
 "gold": "",
 "memo": "[AI] cost가 'Lv.' 마침표에서 잘림: 정답은 '자신의 트래시에서 「X」이 기술되어 있는 Lv.6 이하의 디지몬 카드 1장을 이 디지몬의 진화원 위에 놓는 것으로'. 잘린 앞부분 '자신의 트래시에서 「X」이 기술되어 있는 Lv. ,'이 단계 원문 t에 섞임(정답 t: 놓은 카드와 같은 Lv.의 상대의 디지몬 1마리를 소멸시킨다)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ④ 비용 Lv. 에서 잘림"
 }
 },
 "99": {
@@ -2469,6 +3547,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2497,6 +3586,17 @@
 },
 "gold": "",
 "memo": "[AI] acts가 '추가 어택'으로 들어갔는데, 실제 의미는 어택을 한 번 더 하는 게 아니라 액티브 상태의 상대 디지몬도 어택 대상으로 고를 수 있게 하는 허용(어택 대상 확장) 효과임"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「에게도 어택할 수 있다」는 어택 대상 허가"
 }
 },
 "101": {
@@ -2519,6 +3619,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -2547,6 +3658,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "103": {
@@ -2569,6 +3691,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2597,6 +3730,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "105": {
@@ -2619,6 +3763,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -2647,6 +3802,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "107": {
@@ -2669,6 +3835,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2697,6 +3874,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 〈링크 중〉 DP +3000은 【링크 시】와 따로인 상재형 효과인데 링크 시 처리의 두 번째 단계로 들어가 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 〈링크 중〉 DP 는 링크 DP(카드 정보)"
 }
 },
 "109": {
@@ -2719,6 +3907,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -2747,6 +3946,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "111": {
@@ -2772,6 +3982,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 대상은 (양쪽 플레이어의) 이 디지몬 DP 이하 디지몬 전부인데 side가 '이 카드'로 되어 있음. 정답은 양쪽"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 대상은 양쪽 「이 디지몬의 DP 이하인 디지몬 전부」, DP 이하 필터 없음"
 }
 },
 "112": {
@@ -2794,6 +4015,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2822,6 +4054,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "114": {
@@ -2847,6 +4090,17 @@
 },
 "gold": "",
 "memo": "[AI] cost: 앞부분 '「X」이 기술되어 있는 Lv.'가 잘려서 '4 이상의…'부터 시작함. proc: 단계 원문이 '《딜레이》 ・「X」이 기술되어 있는 Lv. , 메모리 +2'로 비용 일부가 섞여 깨짐. 딜레이와 메모리 +2는 별도 단계로, t는 '메모리 +2'여야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ④ Lv. 에서 잘림"
 }
 },
 "115": {
@@ -2872,6 +4126,17 @@
 },
 "gold": "",
 "memo": "[AI] cond: '특징으로 「X」을 가진 자신의 디지몬이 있거나'(OR의 첫 조건)가 빠지고 두 번째 조건만 들어감. proc: 단계 원문에 그 조건 조각이 섞여 있음. 정답 t는 '이 디지몬은 《블로커》를 얻는다'"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "X",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「A가 있거나, B가 있는 동안」 앞절 누락"
 }
 },
 "116": {
@@ -2894,6 +4159,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2922,6 +4198,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "118": {
@@ -2944,6 +4231,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -2972,6 +4270,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "120": {
@@ -2994,6 +4303,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3022,6 +4342,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "122": {
@@ -3044,6 +4375,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3072,6 +4414,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "124": {
@@ -3094,6 +4447,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3122,6 +4486,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "126": {
@@ -3144,6 +4519,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3172,6 +4558,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "128": {
@@ -3197,6 +4594,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] JP 「持つ間」은 처리 조건이나 KR 문면대로 맞음"
 }
 },
 "129": {
@@ -3219,6 +4627,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3247,6 +4666,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "131": {
@@ -3269,6 +4699,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3297,6 +4738,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "133": {
@@ -3319,6 +4771,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3347,6 +4810,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "135": {
@@ -3369,6 +4843,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3397,6 +4882,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "137": {
@@ -3419,6 +4915,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3447,6 +4954,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "139": {
@@ -3469,6 +4987,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3497,6 +5026,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "141": {
@@ -3522,6 +5062,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 〈링크 중〉 DP +3000은 【링크 시】와 따로인 상재형 효과인데 링크 시 처리의 두 번째 단계로 들어가 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 〈링크 중〉 DP 는 링크 DP"
 }
 },
 "142": {
@@ -3544,6 +5095,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3572,6 +5134,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 대상은 '자신의 디지몬 1마리'인데 side가 '상대'로 되어 있음(상대의 디지몬 효과를 받지 않는다는 문구를 잘못 읽음). 정답은 자신"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ side 상대 → 자신"
 }
 },
 "144": {
@@ -3594,6 +5167,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3622,6 +5206,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "146": {
@@ -3644,6 +5239,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3672,6 +5278,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "148": {
@@ -3694,6 +5311,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3722,6 +5350,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "150": {
@@ -3744,6 +5383,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3772,6 +5422,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "152": {
@@ -3794,6 +5455,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3822,6 +5494,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 누락: '자신의 트래시에 「X」가 있다면'이 cond에 없고 단계 원문 t에 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「트래시에 …가 있다면」 누락"
 }
 },
 "154": {
@@ -3847,6 +5530,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 어택하는 것·고르는 것은 상대, 「어택시킨다」는 강제 어택"
 }
 },
 "155": {
@@ -3872,6 +5566,17 @@
 },
 "gold": "카드 정보(효과 아님)",
 "memo": "[AI] 원문이 '―'(효과 없음)이라 상재형이 아니라 카드 정보(효과 아님)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "카드 정보(효과 아님)",
+"memo": "[C·DGC Sim] 「―」 빈 칸"
 }
 },
 "156": {
@@ -3894,6 +5599,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -3922,6 +5638,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "158": {
@@ -3944,6 +5671,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -3972,6 +5710,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: '카드 카테고리 1개를 선언한다' 단계 누락, '오픈한 카드는 덱 위 또는 아래로 되돌린다' 단계 누락, 단계 원문이 빈 절(', ,')로 잘못 합쳐짐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 선언·덱 위/아래 되돌림 단계 누락"
 }
 },
 "160": {
@@ -3997,6 +5746,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 〈링크 중〉DP+2000은 별도의 상재형 효과인데 【링크 시】 유발형의 두 번째 단계로 합쳐짐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 〈링크 중〉 DP 는 링크 DP"
 }
 },
 "161": {
@@ -4019,6 +5779,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4047,6 +5818,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 누락: '자신의 디지몬 전부가 레스트 상태인 동안'이 cond에 없고 필터/원문에 섞임. proc: 금지 대상은 상대(옵션 카드 사용)인데 side가 '자신'"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 레스트 상태인 동안 누락, ⑤ 금지당하는 것은 상대"
 }
 },
 "163": {
@@ -4069,6 +5851,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4097,6 +5890,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "165": {
@@ -4119,6 +5923,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4147,6 +5962,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "167": {
@@ -4169,6 +5995,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4197,6 +6034,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "169": {
@@ -4219,6 +6067,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4247,6 +6106,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "171": {
@@ -4269,6 +6139,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4297,6 +6178,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "173": {
@@ -4319,6 +6211,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4347,6 +6250,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "175": {
@@ -4369,6 +6283,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4397,6 +6322,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "177": {
@@ -4419,6 +6355,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4447,6 +6394,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "179": {
@@ -4469,6 +6427,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4497,6 +6466,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "181": {
@@ -4519,6 +6499,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4547,6 +6538,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "183": {
@@ -4569,6 +6571,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4597,6 +6610,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "185": {
@@ -4619,6 +6643,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4647,6 +6682,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "187": {
@@ -4672,6 +6718,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「1마리 또는 DP 5000 이하 2마리」 두 갈래를 한 단계로"
 }
 },
 "188": {
@@ -4694,6 +6751,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4722,6 +6790,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「다음」 빠짐"
 }
 },
 "190": {
@@ -4744,6 +6823,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -4772,6 +6862,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "192": {
@@ -4794,6 +6895,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -4822,6 +6934,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "194": {
@@ -4844,6 +6967,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4872,6 +7006,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "196": {
@@ -4894,6 +7039,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4922,6 +7078,17 @@
 },
 "gold": "",
 "memo": "[AI] proc: 후반 '진화원에 두프트몬/X항체가 있다면 이 효과의 코스트 경감 수치 변경' 단계가 누락됨(조건만 cond에 있고 처리 없음)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 코스트 경감 수치 -3 단계 누락"
 }
 },
 "198": {
@@ -4944,6 +7111,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -4972,6 +7150,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "200": {
@@ -4994,6 +7183,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5022,6 +7222,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "202": {
@@ -5044,6 +7255,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5072,6 +7294,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "204": {
@@ -5094,6 +7327,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5122,6 +7366,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "206": {
@@ -5144,6 +7399,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5172,6 +7438,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "208": {
@@ -5194,6 +7471,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5222,6 +7510,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "210": {
@@ -5247,6 +7546,17 @@
 },
 "gold": "상재형",
 "memo": "[AI] 순수 키워드가 아님: 《블로커》 리마인더 뒤에 '〈링크 중〉이 디지몬의 DP +2000' 상재형 효과가 붙어 있는데 키워드 효과로만 분류되어 처리 단계(DP 증가)와 〈링크 중〉 조건이 통째로 빠짐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "211": {
@@ -5272,6 +7582,17 @@
 },
 "gold": "",
 "memo": "[AI] 키워드 부여 대상은 이 디지몬(side=이 카드)인데 side=상대, scope=단일 처리로 됨. 상대의 《S 어택》 디지몬은 대상이 아니라 수를 세는 기준"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 키워드를 얻는 것은 이 디지몬(상대 디지몬은 세는 기준)"
 }
 },
 "212": {
@@ -5297,6 +7618,17 @@
 },
 "gold": "",
 "memo": "[AI] tm에 【서로의 턴】이 빠짐(분류 자체는 상재형 맞음). 앞의 '진화:『…Lv.2』에서 0' 진화 조건(카드 정보) 절이 섞여서 cond가 '2』에서 0【서로의 턴】…'으로 잘못 잘림(정답: '특징으로 X 또는 X을 가진 자신의 다른 디지몬 또는 테이머가 있는 동안'). 단계 t도 '진화:『…Lv. , 이 디지몬을 DP+3000'으로 깨짐(정답: '이 디지몬을 DP+3000')"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "X",
+"cond": "X",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] 진화 요건 「진화:『…Lv.2』에서 0」이 붙어 분해가 깨짐"
 }
 },
 "213": {
@@ -5319,6 +7651,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -5347,6 +7690,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "215": {
@@ -5369,6 +7723,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5397,6 +7762,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "217": {
@@ -5419,6 +7795,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5447,6 +7834,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] 문항 원문이 카드와 다름(카드 하단은 【어택 시】) — 문항 기준 맞음"
 }
 },
 "219": {
@@ -5469,6 +7867,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5497,6 +7906,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "221": {
@@ -5522,6 +7942,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 누락: '「X」 이외의 자신의 디지몬이 없는 동안'이 cond에 안 들어가고 단계 t에만 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "즉시형",
+"memo": "[C·DGC Sim] 디지크로스 확장은 1-3-11-4 즉시형, ③ 「…없는 동안」 누락"
 }
 },
 "222": {
@@ -5547,6 +7978,17 @@
 },
 "gold": "",
 "memo": "[AI] '〈링크 중〉이 디지몬의 DP +3000'은 【자신의 턴 종료 시】 유발형과 별개인 상재형 효과인데 이 유발형의 두 번째 처리 단계로 합쳐짐. 분리해야 하고 〈링크 중〉은 그 효과의 조건"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 〈링크 중〉 DP 는 링크 DP"
 }
 },
 "223": {
@@ -5569,6 +8011,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5597,6 +8050,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 누락: '이 디지몬이 특징으로 「X」를 가진 동안'이 cond에 안 들어가고 단계 t에만 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「X항체」를 가진 동안 누락"
 }
 },
 "225": {
@@ -5619,6 +8083,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -5647,6 +8122,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "227": {
@@ -5672,6 +8158,17 @@
 },
 "gold": "",
 "memo": "[AI] 두 번째 단계 tg가 '테이머'뿐임. '상대의 디지몬과 테이머 1마리(명)씩'이라 디지몬 1마리와 테이머 1명을 각각 소멸시켜야 함(tg=디지몬+테이머)"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 디지몬과 테이머 둘 다 대상"
 }
 },
 "228": {
@@ -5694,6 +8191,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5722,6 +8230,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "230": {
@@ -5744,6 +8263,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5772,6 +8302,17 @@
 },
 "gold": "",
 "memo": "[AI] 두 번째 단계 t가 조건만 빼고 '또한,  , 《1 드로우》'로 깨짐(정답 '《1 드로우》')"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "232": {
@@ -5797,6 +8338,17 @@
 },
 "gold": "",
 "memo": "[AI] 《속공》 부여(강제)와 '레스트시키지 않고 어택할 수 있다'(임의)가 opt=true인 한 단계로 합쳐져 부여까지 임의가 됨. 강제 키워드 부여 단계와 임의 어택 단계로 나눠야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "233": {
@@ -5819,6 +8371,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -5847,6 +8410,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "235": {
@@ -5869,6 +8443,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -5897,6 +8482,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "237": {
@@ -5919,6 +8515,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -5947,6 +8554,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "239": {
@@ -5972,6 +8590,17 @@
 },
 "gold": "유발형",
 "memo": "[AI] 【진화 시】【메인】 복합 타이밍: 【진화 시】 부분은 유발형(15-8-3), 【메인】 부분은 기동형(15-8-4)인데 기동형 하나로만 분류됨. 두 타이밍을 나눠서 분류해야 함"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "240": {
@@ -5997,6 +8626,17 @@
 },
 "gold": "",
 "memo": "[AI] cond 누락: '그 카드가 블랙인 디지몬 카드라면'(~라면 조건)이 cond에 없음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "241": {
@@ -6019,6 +8659,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6047,6 +8698,17 @@
 },
 "gold": "",
 "memo": "[AI] steps가 비어 있음. '지불하는 진화 코스트 +1'(코스트 증가, 강제, 대상: 진화하는 상대 디지몬) 처리 단계가 빠짐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 진화 코스트 +1 누락"
 }
 },
 "243": {
@@ -6069,6 +8731,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6097,6 +8770,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "245": {
@@ -6119,6 +8803,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6147,6 +8842,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "247": {
@@ -6169,6 +8875,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6197,6 +8914,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "249": {
@@ -6219,6 +8947,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -6247,6 +8986,17 @@
 },
 "gold": "",
 "memo": "[AI] 소멸 단계 tg가 '테이머'뿐인데 '상대의 디지몬과 테이머 전부'가 대상이라 tg=디지몬+테이머여야 함. f '명칭 지정'은 소멸 대상이 아니라 코스트 기준이 되는 자신 디지몬의 필터"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 코스트 합계 예산 이하로 고른 디지몬·테이머 소멸(선택)"
 }
 },
 "251": {
@@ -6269,6 +9019,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6297,6 +9058,17 @@
 },
 "gold": "",
 "memo": "[AI] cost가 앞부분이 잘림: 정답은 '자신의 패에서 그 디지몬과 같은 Lv.의 카드 1장을 오픈하는 것으로'. steps.t에 비용 절 조각('자신의 패에서 그 디지몬과 같은 Lv. ,')이 섞임. 정답 t는 '그 카드를 시큐리티 위에 놓는다'"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ④ Lv. 에서 잘림"
 }
 },
 "253": {
@@ -6319,6 +9091,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6347,6 +9130,17 @@
 },
 "gold": "",
 "memo": "[AI] tc가 잘림('6의 디지몬 카드로 진화할 때,'). 정답은 '레스트 상태인 이 디지몬이 특징으로 「X」을 포함하는 Lv.6의 디지몬 카드로 진화할 때,'. tk도 주체(이 카드)가 빠짐"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "X",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ② Lv. 에서 잘림"
 }
 },
 "255": {
@@ -6372,6 +9166,17 @@
 },
 "gold": "",
 "memo": "[AI] 처리 조건 '이 디지몬이 명칭에 「X」을 포함하거나 특징으로 「X」를 가지는 동안'이 cond에 없고 단계 원문 t에 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「…가지는 동안」 누락"
 }
 },
 "256": {
@@ -6394,6 +9199,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6422,6 +9238,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "258": {
@@ -6444,6 +9271,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -6472,6 +9310,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "260": {
@@ -6494,6 +9343,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -6522,6 +9382,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "262": {
@@ -6544,6 +9415,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6572,6 +9454,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "264": {
@@ -6594,6 +9487,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6622,6 +9526,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "266": {
@@ -6644,6 +9559,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6672,6 +9598,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 「이 디지몬 또는 블루 테이머」 합집합"
 }
 },
 "268": {
@@ -6694,6 +9631,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -6722,6 +9670,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "270": {
@@ -6744,6 +9703,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6772,6 +9742,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "272": {
@@ -6794,6 +9775,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -6822,6 +9814,17 @@
 },
 "gold": "유발형",
 "memo": "[AI] 【시큐리티】 타이밍 효과이므로 유발형이며 tm에 '시큐리티'가 빠짐. steps.t에 '- 【시큐리티】' 머리 부분이 섞임. 정답 t는 '이 카드의 【메인】 효과를 발휘한다'"
+},
+"C_DGCSim": {
+"v": {
+"cls": "X",
+"trig": "X",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "유발형",
+"memo": "[C·DGC Sim] 글머리 「- 」 때문에 【시큐리티】 못 읽음"
 }
 },
 "274": {
@@ -6844,6 +9847,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6872,6 +9886,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "276": {
@@ -6894,6 +9919,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6922,6 +9958,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "278": {
@@ -6944,6 +9991,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -6972,6 +10030,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "280": {
@@ -6994,6 +10063,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7022,6 +10102,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "282": {
@@ -7044,6 +10135,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7072,6 +10174,17 @@
 },
 "gold": "",
 "memo": "[AI] 두 번째 문장의 처리('이 효과의 코스트 경감 수치 -3')가 steps에 없음. cond는 이 수정 단계에 붙어야 하는데 그 단계가 빠졌음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 코스트 경감 -3 단계 누락"
 }
 },
 "284": {
@@ -7094,6 +10207,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7122,6 +10246,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "286": {
@@ -7147,6 +10282,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 선택 acts 비어 있음, 어택시키는 주체는 상대"
 }
 },
 "287": {
@@ -7169,6 +10315,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -7197,6 +10354,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "289": {
@@ -7219,6 +10387,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7247,6 +10426,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "291": {
@@ -7269,6 +10459,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7297,6 +10498,17 @@
 },
 "gold": "",
 "memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": ""
 }
 },
 "293": {
@@ -7322,6 +10534,17 @@
 },
 "gold": "",
 "memo": "[AI] steps가 비어 있음. 정답은 '지불하는 진화 코스트 +1'(코스트 증가, 강제) 단계"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 진화 코스트 +1 누락"
 }
 },
 "294": {
@@ -7347,6 +10570,17 @@
 },
 "gold": "",
 "memo": "[AI] '〈링크 중〉이 디지몬의 DP +2000'은 따로 떨어진 상재형 링크 효과인데, 턴 종료 시 효과의 두 번째 처리 단계로 섞여 들어감"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ⑤ 〈링크 중〉 DP 는 링크 DP(2-3-11-4-5)"
 }
 },
 "295": {
@@ -7369,6 +10603,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""
@@ -7397,6 +10642,17 @@
 },
 "gold": "",
 "memo": "[AI] cost 앞부분이 잘림: 정답은 '자신의 트래시에서 「X」이 기술되어 있는 Lv.6 이하의 디지몬 카드 3장을 이 디지몬의 진화원 위에 놓는 것으로'. steps.t에 비용 절 조각이 섞임. 정답 t는 '가장 Lv.이 낮은 상대의 디지몬 전부를 소멸시킨다'"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "X",
+"proc": "X"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ④ Lv. 에서 잘림"
 }
 },
 "297": {
@@ -7419,6 +10675,17 @@
 "cost": "NA",
 "proc": "NA",
 "trig": "NA"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
 },
 "gold": "",
 "memo": ""
@@ -7447,6 +10714,17 @@
 },
 "gold": "",
 "memo": "[AI] 처리 조건 '그린인 자신의 테이머가 있다면'이 cond에 없고 단계 원문 t에 섞여 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "X",
+"cost": "O",
+"proc": "O"
+},
+"gold": "",
+"memo": "[C·DGC Sim] ③ 「…있다면」 누락"
 }
 },
 "299": {
@@ -7472,6 +10750,17 @@
 },
 "gold": "상재형",
 "memo": "[AI] 리마인더만 있는 순수 키워드가 아님. 《재밍》 뒤에 '〈링크 중〉이 디지몬의 DP +2000' 상재형 효과가 붙어 있음"
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "NA",
+"cond": "NA",
+"cost": "NA",
+"proc": "NA"
+},
+"gold": "",
+"memo": ""
 }
 },
 "300": {
@@ -7494,6 +10783,17 @@
 "cost": "O",
 "proc": "O",
 "trig": "O"
+},
+"gold": "",
+"memo": ""
+},
+"C_DGCSim": {
+"v": {
+"cls": "O",
+"trig": "O",
+"cond": "O",
+"cost": "O",
+"proc": "O"
 },
 "gold": "",
 "memo": ""

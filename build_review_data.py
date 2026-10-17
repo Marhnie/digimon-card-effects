@@ -31,7 +31,7 @@ if __name__ == '__main__':
         new = item(x['n'], byi[x['i']])
         if sig(new) != sig({**x, 'extra': []}): changed.append(new)
     pop = collections.Counter(s['분류'] for s in S)
-    json.dump({'items': changed, 'pop': pop, 'rv': 'rv41', 'title': 'v4.1 재검수',
-               'intro': f'정답셋 300문항 중 v4.1에서 자동 분석이 바뀐 {len(changed)}문항만 다시 봅니다. 문항 번호는 정답셋 번호 그대로입니다.'},
+    json.dump({'items': changed, 'pop': pop, 'rv': 'rv41', 'title': 'v4.2 재검수',
+               'intro': f'정답셋 300문항 중 v4.2(검수자 A·B·C 지적 반영)에서 자동 분석이 바뀐 {len(changed)}문항만 다시 봅니다. 문항 번호는 정답셋 번호 그대로입니다.'},
               open('review_data41.json', 'w', encoding='utf-8'), ensure_ascii=False)
     print('바뀐 문항', len(changed), [x['n'] for x in changed])

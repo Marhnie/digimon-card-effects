@@ -210,6 +210,7 @@ if os.path.exists('cluster_names_auto.json'):
     BA = json.load(open('cluster_names_auto.json', encoding='utf-8'))
     for c_ in range(F):
         k2 = f'{fauto[c_]}|{len(fine[c_])}'
+        if k2 in BA.get('force', {}): fname[c_] = BA['force'][k2]; continue   # size-qualified names win even over carried ones
         if fname[c_] != fauto[c_]: pass
         elif k2 in BA.get('fine', {}): fname[c_] = BA['fine'][k2]
         elif fauto[c_] in BA.get('fine', {}): fname[c_] = BA['fine'][fauto[c_]]

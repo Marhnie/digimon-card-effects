@@ -57,6 +57,7 @@ def trigger_key(clause):
 
 DUR_NOT = r'(?<!턴)(?<!배틀)(?<!어택)(?<!이 턴)'
 COND_RE = re.compile(r'([^,.]*?(?:라면|다면|' + DUR_NOT + r' 동안|' + STATE_WHEN + r' 때))[,，]')
+COND3_RE = re.compile(r'((?:\d+색|DP ?\d+|Lv\.?\s?\d+) ?(?:이상|이하)(?:의|인) 이 디지몬)(?:은|을|의|에게)')
 COND2_RE = re.compile(r'([^,.]*?(?:라면|다면|' + DUR_NOT + r' 동안))\s+(?=[^\s,.])')
 COST_RE = re.compile(r'([^,.]*?것으로)[,，]?')
 
@@ -86,6 +87,7 @@ def steps_from(text):
 def step_info(s):
     s_t = s.split('마다', 1)[1] if re.search(r'마다[,，]?\s', s) else s   # 「상대의 디지몬 1마리마다, 이 디지몬은 …」: target follows 마다
     acts = list(dict.fromkeys(n for n, p in ACT if p.search(s)))
+    if re.search(r'어택시킨다|어택시킬', s): acts = [a for a in acts if a != '추가 어택'] + ['강제 어택']
     if re.search(r'에게도 어택', s): acts = [a for a in acts if a != '추가 어택'] + ['어택 대상 확장']
     for k in re.findall(r'《\s*(?:\d+\s*)?([^《》\d+\-]+?)\s*(?:[+\-]?\s*\d+)?\s*(?:《[^》]*》)?\s*》', s):   # a keyword effect executed as this step (《세이브》, 《1 드로우》…)
         if not re.search(r'(?:을|를|과|와)\s*(?:얻|준|가진|갖)', s[s.find(k):s.find(k) + 40]):
@@ -96,18 +98,19 @@ def step_info(s):
     elif re.search(r'이 (?:디지몬|카드|테이머)', s_t): scope = '자신(이 카드)'
     else: scope = ''
     player = '자신' if re.search(r'^자신은|[ ,]자신은', s) else ('상대' if re.search(r'^상대는|[ ,]상대는', s) else ('서로' if '서로는' in s else ''))
-    dur = next((d for d, p in [('턴 종료까지', r'(?<!상대의 )턴 종료까지|이 턴 동안|이번 턴 동안'), ('상대의 턴 종료까지', r'상대의 턴 종료까지'),
+    dur = next((d for d, p in [('다음 상대의 턴 종료까지', r'다음 상대의 턴 종료'), ('턴 종료까지', r'(?<!상대의 )턴 종료까지|이 턴 동안|이번 턴 동안'), ('상대의 턴 종료까지', r'상대의 턴 종료까지'),
                                ('어택 종료까지', r'어택 (?:종료까지|동안)'), ('배틀 동안', r'배틀 동안')] if re.search(p, s)), '')
-    tg = next((n for n, p in [('디지몬·테이머', r'디지몬\s*(?:/|또는|과|와)\s*테이머'), ('시큐리티 디지몬', r'시큐리티 디지몬'), ('테이머', r'테이머 ?\d+ ?(?:명|마리|장)|테이머 전부|테이머를'),
+    tg = next((n for n, p in [('디지몬·테이머', r'디지몬\s*(?:/|또는|과|와)\s*테이머|디지몬 또는[^,.]{0,25}테이머'), ('시큐리티 디지몬', r'시큐리티 디지몬'), ('테이머', r'테이머 ?\d+ ?(?:명|마리|장)|테이머 전부|테이머를'),
                                ('옵션 카드', r'옵션 카드'), ('시큐리티', r'시큐리티(?:를|의|에서| 위| 아래)'), ('디지몬', r'디지몬 ?\d+ ?마리|디지몬 전부|디지몬을|디지몬에게'),
                                ('카드', r'카드 ?\d+ ?장|카드를')] if re.search(p, s_t)), '')
+    if re.search(r'^상대는|[ ,]상대는', s_t) and not re.search(r'자신의', s_t): s_t = '상대의 ' + s_t   # 「상대는 본인의 디지몬 …」
     sq = re.search(r'(상대|자신)의? (?:[^ ,.]{0,15} ){0,3}?(?:디지몬|테이머|카드)\s*\d+\s*(?:마리|명|장)\s*(?:을|를|은|는|에게|까지|씩|\()', s_t)
-    side = sq.group(1) if sq else '상대' if re.search(r'상대의? (?:[^ ,.]{0,15} )?(?:디지몬|테이머|시큐리티|패|트래시)', s_t) else ('자신' if re.search(r'자신의? (?:[^ ,.]{0,15} )?(?:디지몬|테이머|시큐리티|패|트래시|덱)', s_t) else ('이 카드' if re.search(r'이 (?:디지몬|카드|테이머)', s_t) else ''))
-    filt = [n for n, p in [('등장 코스트 이하', r'등장 코스트 ?\d+ ?이하'), ('등장 코스트 이상', r'등장 코스트 ?\d+ ?이상'), ('DP 이하', r'DP ?\d+ ?이하'), ('DP 이상', r'DP ?\d+ ?이상'),
+    side = sq.group(1) if sq else '양쪽' if re.search(r'(?<![상자][대신]의 )(?<!이 )디지몬 전부', s_t) and not re.search(r'(상대|자신)의?[^,.]{0,20}디지몬 전부', s_t) else '상대' if re.search(r'상대의? (?:[^ ,.]{0,15} )?(?:디지몬|테이머|시큐리티|패|트래시)', s_t) else ('자신' if re.search(r'자신의? (?:[^ ,.]{0,15} )?(?:디지몬|테이머|시큐리티|패|트래시|덱)', s_t) else ('이 카드' if re.search(r'이 (?:디지몬|카드|테이머)', s_t) else ''))
+    filt = [n for n, p in [('등장 코스트 이하', r'등장 코스트 ?\d+ ?이하'), ('등장 코스트 이상', r'등장 코스트 ?\d+ ?이상'), ('DP 이하', r'DP ?\d+ ?이하|DP 이하(?:의|인)'), ('DP 이상', r'DP ?\d+ ?이상'),
                            ('Lv 이하', r'Lv\.\s?\d+ ?이하'), ('Lv 이상', r'Lv\.\s?\d+ ?이상'), ('Lv 지정', r'Lv\.\s?\d+(?:의|인)'), ('사용 코스트', r'사용 코스트 ?\d+'),
                            ('특징 지정', r'특징(?:으로|에|을)? ?「'), ('명칭 지정', r'명칭에 ?「|「[^」]+」 ?\d+ ?(?:장|마리)'), ('색 지정', r'(?:레드|블루|옐로|그린|블랙|퍼플|화이트)(?:인|의)'),
                            ('진화원 조건', r'진화원(?:을|이)? ?(?:갖지 않|없는|\d+장)'), ('레스트 상태', r'레스트 상태인'), ('가장 높은/낮은', r'가장 (?:높|낮)')] if re.search(p, s)]
-    return {'text': s, 'acts': acts, 'target': tg, 'side': side, 'filters': filt, '임의': bool(re.search(r'수 있다|수 있으며|해도 된다|놓을 수|선택할 수', s)) and not re.search(r'만 \S+ 수 있다', s), 'scope': scope, 'player': player, 'dur': dur,
+    return {'text': s, 'acts': acts, 'target': tg, 'side': side or ('상대' if player == '상대' else ''), 'filters': filt, '임의': bool(re.search(r'수 있다|수 있으며|해도 된다|놓을 수|선택할 수', s)) and not re.search(r'만 \S+ 수 있다', s), 'scope': scope, 'player': player, 'dur': dur,
             '정보 추가': bool(re.search(r'(?:로|으로)도 취급', s)), '정보 변경': bool(re.search(r'(?:으로|로) 변경(?:한다|하고)', s)),
             '효과 부여': bool(re.search(r'효과를 (?:얻|주|부여)|》(?:을|를|과)?\s*(?:얻|준)', s)), '치환': bool(re.search(r'대신', s))}
 
@@ -155,6 +158,9 @@ def analyse(u):
         cs = [c.strip() for c in COND_RE.findall(strip_quotes(mc.group(1)))]
         extra.append({'분류': '상재형', '조건': ' / '.join(cs), '처리': steps_from(mc.group(1))})
         body = mc.group(2)
+    if kind == '키워드 능력' and not timing and u['keywords'] and all(k.startswith('오버플로우') for k in u['keywords']):
+        out.update({'분류': '카드 정보(효과 아님)', '세부': '오버플로우(4-19)', '타이밍': [], '아이콘': [], '유발 조건': '', '유발 키': '', '처리 조건': [], '임의 처리 조건': [], '처리': [], '부가 효과': extra})
+        return restore(out)
     if kind == '키워드 능력' and not timing:
         out.update({'분류': '키워드 효과', '세부': ' / '.join(u['keywords']), '타이밍': [], '아이콘': icons, '유발 조건': '', '유발 키': '',
                     '처리 조건': [], '임의 처리 조건': [], '처리': [], '부가 효과': extra})
@@ -184,6 +190,7 @@ def analyse(u):
             c = pm.group(1) + ', ' + c.lstrip(); st = pm.start(1)
         conds.append(c.strip())
     conds += [c.strip() for c in COND2_RE.findall(rest) if c.strip() not in conds and not any(c.strip() in x for x in conds)]
+    conds += [c + '인 동안(수식어)' for c in COND3_RE.findall(rest) if not any(c in x for x in conds)]
     costs = []
     for m_ in re.finditer(r'것으로', rest):   # whole cost clause: back to the previous sentence end or condition
         st = max(rest.rfind('.', 0, m_.start()), rest.rfind('・', 0, m_.start())) + 1   # 《딜레이》 ・… : the bullet starts the delayed effect
@@ -196,6 +203,7 @@ def analyse(u):
     steps = steps_from(proc)
     for s in steps:
         if any(a == '키워드 실행: ' + k for a in s['acts'] for k in OPT_KW): s['임의'] = True
+        if s['dur'] == '상대의 턴 종료까지' and '다음 상대의 턴 종료' in u['text']: s['dur'] = '다음 상대의 턴 종료까지'   # normalisation dropped 「다음」
     if '《딜레이》' in body:
         costs.insert(0, '《딜레이》(배틀 에어리어의 이 카드를 파기하는 것으로)')
         for s in steps: s['acts'] = [a for a in s['acts'] if a != '키워드 실행: 딜레이']
