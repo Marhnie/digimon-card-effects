@@ -178,7 +178,7 @@ fname = [describe(m) for m in fine]
 cname = [describe([k for f in mem for k in fine[f]], 2) for mem in coarse]
 # human names (cluster_names.json) replace the automatic ones when the cluster size still matches; auto name kept as 'auto'
 fauto, cauto = list(fname), list(cname)
-if os.path.exists('cluster_names.json'):
+if os.path.exists('cluster_names.json') and not os.path.exists('net/effect_sna_prev.json'):   # size match only when there is no previous run to overlap with
     HN = json.load(open('cluster_names.json', encoding='utf-8')); hit = [0, 0]
     for c_, mem in enumerate(fine):
         v = HN['fine'].get(str(c_ + 1))
@@ -187,6 +187,36 @@ if os.path.exists('cluster_names.json'):
         v = HN['coarse'].get(str(c_ + 1))
         if v and v[1] == sum(len(fine[f]) for f in mem): cname[c_] = v[0]; hit[1] += 1
     print('사람 이름 적용: 세부', hit[0], '/', F, '· 대분류', hit[1], '/', len(coarse))
+# carry human names over a rebuild: a new cluster takes the name of the previous cluster it overlaps most (Jaccard >= 0.5)
+if os.path.exists('net/effect_sna_prev.json'):
+    PV = json.load(open('net/effect_sna_prev.json', encoding='utf-8'))
+    key = lambda c, x: (c, x)
+    pf, pc = collections.defaultdict(set), collections.defaultdict(set)
+    for n in PV['nodes']: pf[n['c']].add(key(n['card'], n['text'])); pc[n['cc']].add(key(n['card'], n['text']))
+    pfn = {c['id']: c['name'] for c in PV['clusters']}; pcn = {c['id']: c['name'] for c in PV['coarse']}
+    def best(mem, prev):
+        m = {key(nodes[k]['card'], nodes[k]['text']) for k in mem}
+        sc = [(len(m & v) / len(m | v), i) for i, v in prev.items()]
+        return max(sc) if sc else (0, None)
+    tf = tc = 0
+    for c_, mem in enumerate(fine):
+        j, i = best(mem, pf)
+        if j >= 0.5 and fname[c_] == fauto[c_]: fname[c_] = pfn[i]; tf += 1
+    for c_, mem in enumerate(coarse):
+        j, i = best([k for f in mem for k in fine[f]], pc)
+        if j >= 0.5 and cname[c_] == cauto[c_]: cname[c_] = pcn[i]; tc += 1
+    print('이전 이름 이어받음: 세부', tf, '· 대분류', tc, '/ 이름 없는 세부', sum(1 for c_ in range(F) if fname[c_] == fauto[c_]), '대분류', sum(1 for c_ in range(len(coarse)) if cname[c_] == cauto[c_]))
+if os.path.exists('cluster_names_auto.json'):
+    BA = json.load(open('cluster_names_auto.json', encoding='utf-8'))
+    for c_ in range(F):
+        k2 = f'{fauto[c_]}|{len(fine[c_])}'
+        if fname[c_] != fauto[c_]: pass
+        elif k2 in BA.get('fine', {}): fname[c_] = BA['fine'][k2]
+        elif fauto[c_] in BA.get('fine', {}): fname[c_] = BA['fine'][fauto[c_]]
+        fname[c_] = BA.get('rename_fine', {}).get(fname[c_], fname[c_])
+    for c_ in range(len(coarse)):
+        if cname[c_] == cauto[c_] and cauto[c_] in BA.get('coarse', {}): cname[c_] = BA['coarse'][cauto[c_]]
+        cname[c_] = BA.get('rename_coarse', {}).get(cname[c_], cname[c_])
 print('소분류(클러스터)', F, ' 대분류', len(coarse))
 for c_ in range(min(12, len(coarse))): print(f'  대{c_ + 1}. {sum(len(fine[f]) for f in coarse[c_])}효과 · 소분류 {len(coarse[c_])}개 · {cname[c_]}')
 

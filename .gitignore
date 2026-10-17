@@ -22,3 +22,10 @@ paper/repro/
 network/
 paper/results/*.gexf
 paper/results/effect_sna.json
+
+# raw reviewer records (account ids) and working dumps — the repo keeps de-identified labels only
+gold_rv/
+gold_dump.txt
+gold_x.txt
+struct_before.json
+net/effect_sna_named_src.json
