@@ -240,7 +240,7 @@ function issueVerdict(iss){if(!iss)return null;const myneg=ST.sl.has(NEGI)?1:0;c
 const ENG=D.eng||null,RGOF=(D.rg&&D.rg.of)||{},RGG=(D.rg&&D.rg.g)||[];
 const sigm=x=>1/(1+Math.exp(-x));
 window.__decTest=()=>{const R=ST.res;if(!R)return null;const d=decisive();let ans=null,by=null;
-  if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}
+  if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.xref){by='explain';ans=R.xref.q.i}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}
   return {dec:d,by,ans}};
 window.__crefTest=()=>({auto:ST.res&&ST.res.auto,cref:ST.res&&ST.res.cref?{ans:ST.res.cref.ans,qi:ST.res.cref.q.i}:null});
 window.__engTest=()=>({card:ST.cards[0]&&ST.cards[0].no,eng:engineLite(similarQA(30))});   // test hook (tests/teng.js)
@@ -277,7 +277,7 @@ function crMatch(){const c=ST.cards[0];if(!c||!ST.q.trim()||!CR.list.length)retu
     const s=simQ(ST.q,r.q||'');const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
     if(!best||s>best.s)best={r,s,ans:r.ans^((r.neg?1:0)^myneg)}}
   return best}
-function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null)return null;
+function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null||R.xref)return null;
   if(A&&A.r){const v=A.r.verdict;return {ans:v==='네'?1:v==='아니요'?0:null,src:'claude',summary:String(A.r.summary||'')}}
   if(A&&(A.wait||A.err))return null;
   if(R.cr||R.level==='sure')return null;
@@ -371,16 +371,38 @@ function pickSugg(k){const x=SUGG[k];if(!x)return;const q=x.q;
   ST.q=q.q;$('askq').value=q.q;ST.it=intentOf(q.q);ST.itManual=true;ST.sl=new Set(slotsOf(q.q));ST.manual=new Set(SLOT.map(s=>s.i));ST.pickQ=q.card===(ST.cards[0]||{}).no?q.i:null;
   ST.suggOpen=false;SUGI=-1;renderSugg();renderMeta();updateGo();judge()}
 
+
+/* ---------- explanation questions (E26): reuse the official answer of the same question asked about another card ---------- */
+const YN_INT=new Set(['가능 여부','유발·발휘 여부','대상 선택 가능','포함·해당 여부','지속·종료','횟수 제한','여부(그 밖)']);
+const qTerms=s=>new Set((String(s).match(/「[^「」]{2,40}」/g)||[]));
+const SPECIFIC=/이 (?:카드|테이머|디지몬|옵션)/;
+let EXQB=null;
+function explainRef(){if(!ST.q.trim())return null;const nm=INT[ST.it]&&INT[ST.it].n;if(YN_INT.has(nm))return null;
+  if(!EXQB)EXQB=QA.map(q=>q.y<0&&q.card?bg(q.q):null);const A=bg(ST.q);const mt=qTerms(ST.q);const spec=SPECIFIC.test(ST.q);
+  const EXP=window.__exProducts;let best=null;
+  QA.forEach((q,k)=>{const B=EXQB[k];if(!B)return;if(EXP&&EXP.has((q.card.match(/^([A-Z]+\d*)-/)||[])[1]))return;
+    let x=0;for(const g of A)if(B.has(g))x++;let s=x/((A.size+B.size-x)||1);if(s<0.45)return;
+    const shared=[...qTerms(q.q)].some(t=>mt.has(t));if(q.it!==ST.it)s-=0.1;if(shared)s+=0.1;
+    // a question about "this card" only carries over when it names the same quoted term (otherwise the answer is card-specific)
+    if(spec&&!shared&&!(ST.cards[0]&&q.card===ST.cards[0].no))return;
+    if(!best||s>best.s)best={q,s}});
+  return best&&best.s>=0.6?best:null}
+// card-specific "what does this effect do": a deterministic restatement from the rulebook-structure decomposition
+function structExplain(){const u=mainUnit();if(!u||!/어떤 효과|무슨 효과|어떻게 (?:처리|발휘)/.test(ST.q))return null;const s=strOf(u);if(!s)return null;
+  const parts=[];parts.push(`분류: ${s[0]}`);if(u.timing&&u.timing.length)parts.push(`타이밍: ${u.timing.map(x=>'【'+x+'】').join('')}`);
+  if(s[1].length)parts.push(`유발 조건: ${s[1].join(' / ')}`);if(s[2].length)parts.push(`처리 조건: ${s[2].join(' / ')}`);if(s[3].length)parts.push(`임의 처리 조건: ${s[3].join(' / ')}`);
+  return {parts,steps:s[4].map(p=>`${p[4]?'(임의) ':''}${stepTxt(p)}`),text:u.text}}
+
 /* ---------- result ---------- */
 const yn=a=>a?'네':'아니요';
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';CR.code='';if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
+  if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!ST.res.xref&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function autoNote(){const a=ST.res&&ST.res.auto||[];return a.length?`<div class="sub" style="padding:0 4px 8px">질문에서 ${a.map(no=>`「${esc(cname(no))}」(${esc(no)})`).join(', ')}를 찾아 함께 판단했습니다. 다른 카드라면 1단계에서 빼거나 바꿔 주세요.</div>`:''}
@@ -395,6 +417,10 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
   }
   if(R&&ST.pickQ!=null&&!(A&&A.r)){const q=QA[ST.pickQ];
     h=`<div class="verdict v-sure"><span class="badge">공식 Q&amp;A · ${esc(q.card)} ${esc(cname(q.card))}</span><div class="ans">${q.y>=0?yn(q.y):'공식 답'}</div><div class="why">${esc(q.a)}</div><div class="sub">고른 질문이 이 카드의 공식 Q&amp;A와 같습니다.</div></div>`;return h}
+  if(R&&R.xref&&!(A&&A.r)){const X=R.xref,q=X.q;
+    h=`<div class="verdict v-sure"><span class="badge">공식 답변 · 같은 질문 · ${esc(q.card)} ${esc(cname(q.card))}</span><div class="why" style="font-size:16px;color:var(--ink)">${esc(q.a)}</div><div class="sub">거의 같은 질문(문구 유사도 ${Math.round(Math.min(1,X.s)*100)}%)에 대한 공식 답변입니다: ${esc(q.q)}</div></div>`;return h}
+  if(R&&R.sx&&!(A&&A.r)&&!R.cr){const S=R.sx;
+    h=`<div class="verdict v-ref"><span class="badge">효과 구조 설명 · 카드 텍스트에서 자동 정리</span><div class="why">${S.parts.map(esc).join('<br>')}${S.steps.length?'<br>처리 순서:<ol style="margin:4px 0 0 18px;padding:0">'+S.steps.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>':''}</div><div class="sub">카드 텍스트를 종합 룰 15장 구조로 나눈 것입니다(판정이 아니라 정리). 원문: ${esc(S.text)}</div></div>`}
   if(R&&R.cr&&!(A&&A.r)){const M=R.cr,r=M.r;const d=String(r.at||'').slice(0,10);
     h=`<div class="verdict v-sure"><span class="badge">확인된 판정 · Claude 없이 · 질문 유사도 ${Math.round(M.s*100)}%</span><div class="ans">${yn(M.ans)}</div><div class="why">같은 카드에 대해 사람이 확인한 판정입니다${r.src&&SRCN[r.src]?` (처음 판정: ${esc(SRCN[r.src])}${r.agreed===false?' → 확인 때 바로잡음':''})`:''}.</div><div class="sub">확인한 질문: ${esc(r.q||'')}${r.note?`<br>메모: ${esc(r.note)}`:''}${d?` · ${esc(d)}`:''}${(r.neg?1:0)!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.iv&&!(A&&A.r)){const V=R.iv;
@@ -439,7 +465,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');
   return `<div class="ev"><div class="tabs" role="tablist">${tabs.map(([k,n,c])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${ST.tab===k}">${n}<span class="n">${c}</span></button>`).join('')}</div><div class="tabp" role="tabpanel">${body}</div></div>`}
-function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
+function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||!!R.xref||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
 function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||decisive())return '';
   return `<div class="verdict v-none"><span class="badge">판정 보류 · 심판 확인 필요</span><div class="why">공식 Q&amp;A·확인된 판정·룰 쟁점 가운데 이 질문에 확실히 맞는 근거가 없습니다. 아래 참고 자료는 정답이 아닐 수 있습니다.</div><div class="sub">질문 칸의 추천 문장으로 다시 물으면 맞는 근거를 찾을 수 있습니다. 정답을 아는 분은 아래에서 알려 주세요 — 심판이 확인하면 판정으로 쌓여 다음부터 바로 답합니다.</div></div>`}
 function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?(DIST?aiOffer()+v:v+aiOffer())+(v.includes('질문에서 「')?'':autoNote())+crPanel()+tabsHTML():''}
