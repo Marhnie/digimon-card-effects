@@ -1,0 +1,1 @@
+{"id": "q815", "you": {"memory": 10, "hand": ["EX9-029", "ST1-04"], "security": ["ST1-04", "ST1-04", "ST1-04"], "field": [{"cards": ["EX9-014"]}]}, "opp": {}, "steps": [{"do": "digivolve", "card": "EX9-029", "frame": 0}], "timeScale": 20}

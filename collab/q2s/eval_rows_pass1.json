@@ -1,0 +1,2608 @@
+[
+ {
+  "id": 1,
+  "card": "BT24-002",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 진화원 효과+턴 종료 효과 연쇄 필요"
+ },
+ {
+  "id": 2,
+  "card": "BT24-003",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "방벽·시큐리티 배틀 후 진화원 효과로 P-194 진화 선택 필요"
+ },
+ {
+  "id": 3,
+  "card": "BT24-005",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "오픈 카드를 상대에게 보이는지는 엔진 로그/상태로 관측 불가(공개 여부 규칙 문항)"
+ },
+ {
+  "id": 5,
+  "card": "BT24-009",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과(패 파기 유발)로 P-209 진화 후 연계 발휘 필요"
+ },
+ {
+  "id": 8,
+  "card": "BT24-013",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과(패 파기 유발)로 P-209 진화 후 연계 발휘 필요"
+ },
+ {
+  "id": 9,
+  "card": "BT24-013",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "패 2장 동시 파기와 같은 카드 효과 2회 연속 유발 상황 구성 불확실"
+ },
+ {
+  "id": 11,
+  "card": "BT24-014",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "방벽·시큐리티 배틀 소멸 시점과 다른 카드 진화 효과 연계 필요"
+ },
+ {
+  "id": 12,
+  "card": "BT24-016",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패}【메인】 효과 발휘 및 다른 카드 진화 코스트 합산 필요"
+ },
+ {
+  "id": 13,
+  "card": "BT24-016",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패}【메인】 효과와 다른 진화 효과의 동시 발휘 필요"
+ },
+ {
+  "id": 16,
+  "card": "BT24-017",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "상대 트래시에서 디지타마 포함 2장을 선택해야 함"
+ },
+ {
+  "id": 18,
+  "card": "BT24-017",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "트래시에서 1장만 선택해 되돌리는 선택 지정 필요"
+ },
+ {
+  "id": 19,
+  "card": "BT24-017",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸시킨 카드를 트래시에서 되돌린 뒤 소멸 시 효과 처리 시점 구성 불확실"
+ },
+ {
+  "id": 22,
+  "card": "BT24-017",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "즉시형 효과로 이 카드가 벗어나는 중첩 상황 필요"
+ },
+ {
+  "id": 26,
+  "card": "BT24-018",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "이탈 시점의 효과 처리 중 다른 효과로 소멸 방해 상황 필요"
+ },
+ {
+  "id": 27,
+  "card": "BT24-018",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸 시점의 효과 처리 중 다른 효과로 소멸 방해 상황 필요"
+ },
+ {
+  "id": 29,
+  "card": "BT24-021",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과(패 파기 유발)로 P-209 진화 후 연계 발휘 필요"
+ },
+ {
+  "id": 30,
+  "card": "BT24-025",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "베누스몬 진화는 다른 청색 TS 디지몬의 언서스펜드 유발과 패의 특정 카드 지정이 필요해 재현 불확실"
+ },
+ {
+  "id": 31,
+  "card": "BT24-025",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "두 진화 조건 중 하나를 선택하는 지정이 필요"
+ },
+ {
+  "id": 33,
+  "card": "BT24-026",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과(패 파기 시 타이타몬 진화)와 연계 발휘 필요"
+ },
+ {
+  "id": 34,
+  "card": "BT24-026",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "패 2장 동시 파기와 순차 처리 상황은 장치로 구성 불확실"
+ },
+ {
+  "id": 38,
+  "card": "BT24-031",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘와 선택(패 추가 안 함) 필요"
+ },
+ {
+  "id": 40,
+  "card": "BT24-034",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "테이머를 등장시키지 않는 선택 지정 필요"
+ },
+ {
+  "id": 41,
+  "card": "BT24-034",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "필드에 BT24-085 테이머와 엘레크몬, 시큐리티 1장, 패에 BT24-034와 BT25-086. 엘레크몬에서 BT24-034로 진화해 등장 효과로 BT25-086 등장 여부 관측(후보 하나라 선택 자명)",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 43,
+  "card": "BT24-036",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 상태와 BT7-107 조합 구성이 복잡"
+ },
+ {
+  "id": 45,
+  "card": "BT24-037",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "어택하지 않는 선택 지정 필요"
+ },
+ {
+  "id": 56,
+  "card": "BT24-041",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "패에 등장시킬 카드 없이 BT24-041 등장, 상대 필드에 2장 스택 디지몬, 퇴화 로그 관측",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 60,
+  "card": "BT24-042",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘와 연계 필요"
+ },
+ {
+  "id": 63,
+  "card": "BT24-045",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘와 연계 필요"
+ },
+ {
+  "id": 64,
+  "card": "BT24-045",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "패 2장 동시 파기와 순차 처리 상황은 장치로 구성 불확실"
+ },
+ {
+  "id": 70,
+  "card": "BT24-051",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "어택하지 않는 선택 지정 필요"
+ },
+ {
+  "id": 72,
+  "card": "BT24-057",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 상태와 BT7-107 조합 구성이 복잡"
+ },
+ {
+  "id": 74,
+  "card": "BT24-065",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "진화원 효과와 다른 효과 연쇄 구성이 복잡"
+ },
+ {
+  "id": 76,
+  "card": "BT24-065",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 어택 중 소멸 대체/상대 턴 효과 필요"
+ },
+ {
+  "id": 78,
+  "card": "BT24-071",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크+BT7-107 소멸/패 복귀 복합 상호작용"
+ },
+ {
+  "id": 79,
+  "card": "BT24-073",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 트래시 7장, Lv4 진화로 BT24-073 진화 시; 트래시의 BT2-074 등장 여부 관측",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 80,
+  "card": "BT24-073",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 트래시 11장(3장 파기 조건 불충족), 이후 처리로 BT2-074 등장 여부",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 88,
+  "card": "BT24-078",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "트래시 효과·덱 0장 조건 재현 곤란"
+ },
+ {
+  "id": 89,
+  "card": "BT24-078",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{트래시} 효과 발휘 필요"
+ },
+ {
+  "id": 90,
+  "card": "BT24-078",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "진화 시 처리 중 다른 즉시형 효과로 이탈 필요"
+ },
+ {
+  "id": 94,
+  "card": "BT24-080",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 동시 유발 {트래시} 효과"
+ },
+ {
+  "id": 102,
+  "card": "BT24-084",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "방벽·시큐리티 체크 복합 상호작용"
+ },
+ {
+  "id": 105,
+  "card": "BT24-085",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 효과"
+ },
+ {
+  "id": 112,
+  "card": "BT24-089",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "딜레이+진화 대상 선택 지정 필요"
+ },
+ {
+  "id": 114,
+  "card": "BT24-090",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{시큐리티} 효과 발휘 필요"
+ },
+ {
+  "id": 117,
+  "card": "BT24-091",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "옵션 사용 불가 상황 및 링크 코스트 지불 재현 불가"
+ },
+ {
+  "id": 118,
+  "card": "BT24-091",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "육성 에어리어 링크 대상 선택 필요"
+ },
+ {
+  "id": 119,
+  "card": "BT24-091",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 효과 + 링크 복합"
+ },
+ {
+  "id": 122,
+  "card": "BT24-092",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "옵션 사용 불가 상황 및 링크 코스트 지불 재현 불가"
+ },
+ {
+  "id": 123,
+  "card": "BT24-092",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "육성 에어리어 디지몬 링크 대상 지정은 장치 스키마로 주입·선택 불가"
+ },
+ {
+  "id": 124,
+  "card": "BT24-092",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "BT24-085의 자신의 턴 종료 시 효과와 어택 후 링크 효과 필요(턴 종료 시점)"
+ },
+ {
+  "id": 125,
+  "card": "BT24-093",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "시큐리티 0장에서 BT24-093 사용, 리커버리로 시큐리티가 생기면 네",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 128,
+  "card": "BT24-093",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "시큐리티 제거 유발과 필드에 놓인 옵션 상태 주입 불가, 딜레이 대상 선택 지정 필요"
+ },
+ {
+  "id": 132,
+  "card": "BT24-095",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "옵션 카드 사용 불가 상황 및 링크 코스트 지불 선택 재현 불가"
+ },
+ {
+  "id": 133,
+  "card": "BT24-095",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "육성 에어리어 디지몬 링크 대상 지정은 장치 스키마로 주입·선택 불가"
+ },
+ {
+  "id": 134,
+  "card": "BT24-095",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "BT24-085의 자신의 턴 종료 시 효과와 어택 후 링크 효과 필요(턴 종료 시점)"
+ },
+ {
+  "id": 139,
+  "card": "BT24-097",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "옵션 카드 사용 불가 상황 및 링크 코스트 지불 선택 재현 불가"
+ },
+ {
+  "id": 140,
+  "card": "BT24-097",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "육성 에어리어 디지몬 링크 대상 지정은 장치 스키마로 주입·선택 불가"
+ },
+ {
+  "id": 141,
+  "card": "BT24-097",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "BT24-085의 자신의 턴 종료 시 효과와 어택 후 링크 효과 필요(턴 종료 시점)"
+ },
+ {
+  "id": 145,
+  "card": "BT24-099",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸 시점의 딜레이 효과(필드의 옵션 카드)와 소멸 시 효과 디지몬 조합, 선택 필요"
+ },
+ {
+  "id": 148,
+  "card": "BT24-101",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "시큐리티 0장에서 BT24-101 등장, 상대 Lv4 1마리(-13000으로 소멸)가 대상; 소멸하면 DP 마이너스 발휘됨",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 153,
+  "card": "BT24-102",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과 필요"
+ },
+ {
+  "id": 156,
+  "card": "BT24-102",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과 필요"
+ },
+ {
+  "id": 157,
+  "card": "BT24-102",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과 필요"
+ },
+ {
+  "id": 175,
+  "card": "ST22-02",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "되돌리지 않을 수 있는지 선택 지정 필요"
+ },
+ {
+  "id": 182,
+  "card": "ST22-04",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과의 어택 종료 시 유발과 다른 진화원 효과 진화 필요"
+ },
+ {
+  "id": 183,
+  "card": "ST22-05",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대의 카운터 타이밍 블래스트 진화 필요"
+ },
+ {
+  "id": 185,
+  "card": "ST22-05",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "연계 효과 정의가 불확실하고 토큰 레스트 관측이 불명확"
+ },
+ {
+  "id": 186,
+  "card": "ST22-05",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "다른 카드의 진화원 효과로 진화하는 복합 상황"
+ },
+ {
+  "id": 191,
+  "card": "ST22-06",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 효과와 다른 효과의 이탈 방지 필요"
+ },
+ {
+  "id": 192,
+  "card": "ST22-06",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 효과와 다른 효과의 이탈 방지 필요"
+ },
+ {
+  "id": 195,
+  "card": "ST22-07",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "다른 효과로 어택한 디지몬을 진화시키는 복합 상황과 옵션 아래 카드 구성이 필요해 불확실"
+ },
+ {
+  "id": 198,
+  "card": "ST22-08",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "패에서 링크 코스트를 지불하고 링크하는 단계(steps)가 장치에 없음"
+ },
+ {
+  "id": 200,
+  "card": "ST22-09",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "패에서 링크 코스트를 지불하고 링크하는 단계(steps)가 장치에 없음"
+ },
+ {
+  "id": 203,
+  "card": "ST22-10",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "시큐리티 옵션 여러 장과 효과로 디지몬이 배틀 에어리어를 벗어나는 상황을 만들어야 해 구성 불확실"
+ },
+ {
+  "id": 206,
+  "card": "ST22-11",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "패에서 링크 코스트를 지불하고 링크하는 단계(steps)가 장치에 없음"
+ },
+ {
+  "id": 209,
+  "card": "ST22-12",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 상태 구성과 링크 카드의 어택 부여 효과 관측이 복잡해 구성 불확실"
+ },
+ {
+  "id": 210,
+  "card": "ST22-12",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "어택 시 링크·어플 합체·진화원 돌진 발휘 순서 등 다중 카드 상호작용 필요"
+ },
+ {
+  "id": 212,
+  "card": "ST22-13",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 어택과 불굴 등장 후 재어택은 턴 종료 시점이라 재현 어려움"
+ },
+ {
+  "id": 213,
+  "card": "ST22-14",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 패5/트래시5(합계 10이지만 각각 10 미만)에서 메모리 7로 패의 ST22-14(코스트12)를 등장. 코스트 -5가 적용되면 등장 성공, 아니면 등장 불가. 질문의 '첫 번째 효과'는 코스트 경감 효과로 해석(불확실)",
+  "run": "ok",
+  "pred": "네",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 216,
+  "card": "BT23-008",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "등장시키지 않는 선택 지정 필요"
+ },
+ {
+  "id": 217,
+  "card": "BT23-008",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "진화원 없는 상태에서 메인 효과 발휘, 패에 파피몬",
+  "run": "ok",
+  "pred": "네",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 218,
+  "card": "BT23-008",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "진화원이 디지타마뿐, 패에 파피몬",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 219,
+  "card": "BT23-008",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "DP-1000 부여 및 진화원 DP 조건을 장치로 재현 불가"
+ },
+ {
+  "id": 222,
+  "card": "BT23-013",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "연계 보유 조건(헉몬 진화 등)과 어택 중 연계 재현이 복잡"
+ },
+ {
+  "id": 223,
+  "card": "BT23-013",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "어택 중 추가 어택 효과의 선택/로그 판정이 불확실"
+ },
+ {
+  "id": 224,
+  "card": "BT23-013",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "토큰 vs 카드 선택 및 시스터몬 느와르 선택 지정 필요"
+ },
+ {
+  "id": 227,
+  "card": "BT23-014",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "상대의 EX5-060 드라고몬 상호작용 필요"
+ },
+ {
+  "id": 228,
+  "card": "BT23-014",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례의 효과 발휘 필요"
+ },
+ {
+  "id": 231,
+  "card": "BT23-015",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "덱 아래로 되돌릴지 선택 지정 필요"
+ },
+ {
+  "id": 236,
+  "card": "BT23-017",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 및 연계 레스트 상호작용 필요"
+ },
+ {
+  "id": 239,
+  "card": "BT23-018",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "등장시키지 않는 선택 지정 필요"
+ },
+ {
+  "id": 240,
+  "card": "BT23-018",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "진화원 없는 상태에서 메인 효과 발휘, 패에 아구몬",
+  "run": "ok",
+  "pred": "네",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 241,
+  "card": "BT23-018",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "진화원이 디지타마뿐, 패에 아구몬",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 242,
+  "card": "BT23-018",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "DP-1000 부여 및 진화원 DP 조건을 장치로 재현 불가"
+ },
+ {
+  "id": 251,
+  "card": "BT23-024",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "링크 시 서로의 턴 효과와 상대 레스트 가능 여부 필요"
+ },
+ {
+  "id": 252,
+  "card": "BT23-024",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "링크 시 서로의 턴 효과와 상대 레스트 가능 여부 필요"
+ },
+ {
+  "id": 253,
+  "card": "BT23-024",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례 중 상대 디지몬 등장·링크 필요"
+ },
+ {
+  "id": 254,
+  "card": "BT23-024",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례 중 상대 디지몬 진화 필요"
+ },
+ {
+  "id": 255,
+  "card": "BT23-024",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례 중 소멸/이탈 이후 레스트 판정 필요"
+ },
+ {
+  "id": 256,
+  "card": "BT23-024",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "링크 발동과 상대 차례 레스트 시도 필요"
+ },
+ {
+  "id": 257,
+  "card": "BT23-024",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례 중 상대 디지몬 등장 필요"
+ },
+ {
+  "id": 259,
+  "card": "BT23-025",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 선언 및 조건 미충족 처리"
+ },
+ {
+  "id": 260,
+  "card": "BT23-025",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "시큐리티 효과 등장 후 턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 263,
+  "card": "BT23-027",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "베타몬 진화원 효과 경유 등장 필요"
+ },
+ {
+  "id": 264,
+  "card": "BT23-027",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "여러 카드의 연계/진화원/어택 시 효과가 얽힘"
+ },
+ {
+  "id": 276,
+  "card": "BT23-030",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "코스트 지불 처리 여부를 선택해야 함"
+ },
+ {
+  "id": 279,
+  "card": "BT23-031",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "시큐리티 0장, 패의 BT23-031을 등장",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 283,
+  "card": "BT23-032",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "방벽 후 소멸 회피와 서로의 턴 효과, 배틀 상황 필요"
+ },
+ {
+  "id": 295,
+  "card": "BT23-035",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "같은 턴 상대 디지몬 등장 필요"
+ },
+ {
+  "id": 297,
+  "card": "BT23-035",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례와 다음 자신 차례에 걸친 효과"
+ },
+ {
+  "id": 298,
+  "card": "BT23-035",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "시큐리티 디지몬 배틀·방벽·서로의 턴 효과 연쇄"
+ },
+ {
+  "id": 300,
+  "card": "BT23-036",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과 및 어택 안 함 선택"
+ },
+ {
+  "id": 302,
+  "card": "BT23-037",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 및 연계 선택 필요"
+ },
+ {
+  "id": 306,
+  "card": "BT23-040",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과이며 패/트래시 지정 필요"
+ },
+ {
+  "id": 319,
+  "card": "BT23-047",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "시큐리티 체크로 옵션 배치 후 파기 상호작용"
+ },
+ {
+  "id": 320,
+  "card": "BT23-048",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 및 연계 선택 필요"
+ },
+ {
+  "id": 324,
+  "card": "BT23-050",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "베타몬 진화원 효과로 등장시키는 구성 필요"
+ },
+ {
+  "id": 325,
+  "card": "BT23-050",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "후디에몬 어택 시/연계 등 다중 카드 상호작용"
+ },
+ {
+  "id": 328,
+  "card": "BT23-057",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "트래시 2장만으로 코스트 감소 선택/지불 메모리 판정 불가"
+ },
+ {
+  "id": 336,
+  "card": "BT23-060",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "발휘 선택 여부 지정 필요"
+ },
+ {
+  "id": 337,
+  "card": "BT23-060",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "것으로 조건을 처리하지 않을 선택 필요"
+ },
+ {
+  "id": 338,
+  "card": "BT23-063",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 어택 시 발휘 필요, 다중 효과"
+ },
+ {
+  "id": 339,
+  "card": "BT23-063",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "드라큐몬 진화원 효과 발휘 필요"
+ },
+ {
+  "id": 340,
+  "card": "BT23-065",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 341,
+  "card": "BT23-065",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 344,
+  "card": "BT23-069",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 어택 시 반응 필요"
+ },
+ {
+  "id": 345,
+  "card": "BT23-069",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 어택 시 반응 필요"
+ },
+ {
+  "id": 348,
+  "card": "BT23-070",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "어택하지 않을 선택 필요"
+ },
+ {
+  "id": 349,
+  "card": "BT23-070",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "레스트 상태의 벨페몬: 레이지 모드를 패의 BT23-070으로 진화, 소스에 벨페몬 있음. 어택 로그 형식 불확실",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 350,
+  "card": "BT23-071",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "소멸 대상을 선택하지 않는 선택 필요"
+ },
+ {
+  "id": 351,
+  "card": "BT23-071",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "소멸 불가 효과를 가진 상대 디지몬 구성 불확실"
+ },
+ {
+  "id": 352,
+  "card": "BT23-072",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 353,
+  "card": "BT23-072",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "{패} 효과, 놓지 않을 선택 필요"
+ },
+ {
+  "id": 356,
+  "card": "BT23-073",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 효과 및 육성 에어리어 진화원 효과"
+ },
+ {
+  "id": 360,
+  "card": "BT23-074",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "테이머 BT23-084를 패의 BT23-074로 진화 후 진화 드로우 로그 확인",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 361,
+  "card": "BT23-074",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "테이머 BT23-084를 패의 BT23-074로 진화 후 스택에 테이머가 진화원으로 남는지 확인",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 364,
+  "card": "BT23-075",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "마더 이터 진화원 효과(진화원 영역)와 서로의 턴 이탈 유발 연계 필요"
+ },
+ {
+  "id": 367,
+  "card": "BT23-080",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 턴 관통 어택 중 소멸 대체 효과 필요"
+ },
+ {
+  "id": 375,
+  "card": "BT23-087",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 유발은 주입 후 재현 불가"
+ },
+ {
+  "id": 377,
+  "card": "BT23-090",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 유발이며 '되돌리지 않음' 선택 지정 필요"
+ },
+ {
+  "id": 392,
+  "card": "BT23-098",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "딜레이 후 진화 대상/카드 선택 지정 필요"
+ },
+ {
+  "id": 400,
+  "card": "BT23-101",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "테이머에서의 진화는 룰 문항으로 엔진에서 재현 불확실"
+ },
+ {
+  "id": 401,
+  "card": "BT23-101",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "테이머 카드가 진화원이 되는지 룰 문항으로 재현 불확실"
+ },
+ {
+  "id": 405,
+  "card": "BT23-102",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "시큐리티 아래에 놓을 디지몬(자신/상대) 선택 지정 필요"
+ },
+ {
+  "id": 406,
+  "card": "BT23-102",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "자기 자신을 시큐리티 아래로 놓는 선택 및 파티션 유발 구성 불확실"
+ },
+ {
+  "id": 410,
+  "card": "EX10-030",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 교체 파기 상황 구성이 불확실(링크 카드 사전 부착+링크 효과 필요)"
+ },
+ {
+  "id": 414,
+  "card": "EX10-028",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "다른 디지몬(BT1-014)의 진화원에 EX10-028이 있고 랜드라몬 본인은 진화원 없음; 파기되면 네(불확실: 다른 디지몬 진화원도 후보인지)",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 416,
+  "card": "EX10-027",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "되돌리지 않음 선택 필요"
+ },
+ {
+  "id": 418,
+  "card": "EX10-001",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 + 링크 교체 파기 구성 불확실"
+ },
+ {
+  "id": 419,
+  "card": "EX10-003",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 턴 어택 시 진화원 효과"
+ },
+ {
+  "id": 422,
+  "card": "EX10-004",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 + 육성에어리어 이동 필요"
+ },
+ {
+  "id": 423,
+  "card": "EX10-005",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 + 덱 오픈 카드 파기 필요"
+ },
+ {
+  "id": 428,
+  "card": "EX10-009",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 디지몬 없음에서 BT2-075 위에 EX10-009 진화; 덱 5장 파기(상대 트래시 5장 이상)가 되면 조건 충족",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 429,
+  "card": "EX10-009",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸하지 않는 효과를 가진 상대 디지몬 카드 특정 불가/불확실"
+ },
+ {
+  "id": 430,
+  "card": "EX10-009",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸하지 않는 효과를 가진 상대 디지몬 카드 특정 불가/불확실"
+ },
+ {
+  "id": 438,
+  "card": "EX10-010",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 BT5-112만 레스트로 두고 EX10-010(DP15000)으로 어택해 소멸시킴; 소멸 시 대상은 EX10-010뿐. 불확실: 어택 처리 여부",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 441,
+  "card": "EX10-011",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{트래시} 효과 발휘 필요"
+ },
+ {
+  "id": 442,
+  "card": "EX10-011",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "자신 액티브 디지몬 1(ST1-05)+상대 1(BT1-014)뿐인 상태에서 등장; 양쪽 모두 소멸하면 네",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 448,
+  "card": "EX10-012",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 451,
+  "card": "EX10-012",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 455,
+  "card": "EX10-013",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 456,
+  "card": "EX10-013",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 효과 + 진화 거절 선택"
+ },
+ {
+  "id": 458,
+  "card": "EX10-013",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 효과 + 트래시 선택 지정"
+ },
+ {
+  "id": 462,
+  "card": "EX10-015",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 + 파기 생략 선택"
+ },
+ {
+  "id": 472,
+  "card": "EX10-019",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 유발 구성 + 레스트 불가 대상 필요"
+ },
+ {
+  "id": 473,
+  "card": "EX10-019",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "대상 미선택 지정 필요"
+ },
+ {
+  "id": 474,
+  "card": "EX10-019",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 유발 및 턴 1회 소비 확인 필요"
+ },
+ {
+  "id": 480,
+  "card": "EX10-020",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 483,
+  "card": "EX10-020",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 486,
+  "card": "EX10-021",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 턴 효과"
+ },
+ {
+  "id": 494,
+  "card": "EX10-022",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대의 턴 종료 시 효과"
+ },
+ {
+  "id": 496,
+  "card": "EX10-023",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "액티브 페이즈 효과"
+ },
+ {
+  "id": 499,
+  "card": "EX10-025",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "1장만 놓기 선택 지정 필요"
+ },
+ {
+  "id": 500,
+  "card": "EX10-025",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 광물형 카드(EX10-028) 1장만, 등장한 샌드리자몬 자신이 유일한 대상",
+  "run": "fatal:watchdog: editor hung and was killed"
+ },
+ {
+  "id": 501,
+  "card": "EX10-032",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 및 다른 카드 진화 코스트 합산 필요"
+ },
+ {
+  "id": 502,
+  "card": "EX10-032",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "P-107 등 다른 진화 효과와 동시 발휘 필요"
+ },
+ {
+  "id": 503,
+  "card": "EX10-032",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "다른 디지몬(BT1-014 위, 아래 EX10-003 광석형)의 진화원이 유일한 파기 후보인 상태에서 EX10-032 등장. 진화원이 파기되면 stack 1장",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 505,
+  "card": "EX10-033",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 광석형 디지타마 EX10-003만 있는 상태에서 EX10-032 위에 EX10-033 진화. 후속 파기 효과가 다시 트래시로 보낼 수 있어 불확실",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 507,
+  "card": "EX10-033",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "등장 코스트 수치(-1) 관측 불가, 상대 코스트 변화 로그 없음"
+ },
+ {
+  "id": 509,
+  "card": "EX10-033",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "'파기하지 않을 수 있나'는 선택 지정 필요"
+ },
+ {
+  "id": 510,
+  "card": "EX10-033",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX10-028 진화원 효과와 코스트 변경 연계 필요"
+ },
+ {
+  "id": 519,
+  "card": "EX10-035",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 522,
+  "card": "EX10-035",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 소멸 및 {패} 효과 필요"
+ },
+ {
+  "id": 526,
+  "card": "EX10-036",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "Lv6 비광물형 흑색 진화 소스 및 진화원 정확히 1장 구성 불확실"
+ },
+ {
+  "id": 528,
+  "card": "EX10-036",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "진화 조건(Lv6 흑색) 및 트래시 1장 구성 불확실"
+ },
+ {
+  "id": 533,
+  "card": "EX10-040",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과"
+ },
+ {
+  "id": 534,
+  "card": "EX10-040",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과"
+ },
+ {
+  "id": 535,
+  "card": "EX10-041",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "덱/시큐리티 오픈 카드 파기 상황 구성 불가"
+ },
+ {
+  "id": 537,
+  "card": "EX10-043",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 교체 파기 상황 구성이 불확실"
+ },
+ {
+  "id": 540,
+  "card": "EX10-046",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과"
+ },
+ {
+  "id": 541,
+  "card": "EX10-046",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과"
+ },
+ {
+  "id": 547,
+  "card": "EX10-050",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시 6장(베르제브몬 BT2-111 포함)에서 EX10-050이 배틀로 소멸. 10장 미만이므로 등장 여부로 판정",
+  "run": "fatal:watchdog: editor hung and was killed"
+ },
+ {
+  "id": 549,
+  "card": "EX10-052",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "P-153 아머 해제 등 다른 카드 상호작용 필요"
+ },
+ {
+  "id": 550,
+  "card": "EX10-053",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시 비어 있어 진화원에 놓을 카드가 없는 상태에서 레굴루스몬 등장, 상대 DP4000 디지몬 1마리. 소멸 여부로 판정",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 555,
+  "card": "EX10-055",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "Lv5 스택(진화원 2장)에 택티몬 진화, 자신 디지몬은 택티몬 1마리뿐이라 자기 선택이 자명. 상대 ST1-04 소멸 후 택티몬 대체 효과(진화원 2장 파기)로 필드에 남으면 네. 불확실성: 선택/발동 자동 판단",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 562,
+  "card": "EX10-056",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크(어플 합체) 상태의 상대 디지몬 구성이 필요해 불확실"
+ },
+ {
+  "id": 568,
+  "card": "EX10-057",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패}【메인】 효과 발휘 필요"
+ },
+ {
+  "id": 571,
+  "card": "EX10-057",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패}【메인】으로 등장 후 턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 576,
+  "card": "EX10-058",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 차례의 턴 종료 시 효과 필요"
+ },
+ {
+  "id": 577,
+  "card": "EX10-058",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "트래시에서 등장한 카드의 진화원 효과 발휘 필요"
+ },
+ {
+  "id": 578,
+  "card": "EX10-059",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 바그라군 2장만 둠, 상대 패 1장·상대 디지몬 1마리. 진화 후 스택이 4장(2장 추가)이 되면 2장만 놓은 것으로 판정. 불확실성: 엔진이 3장 미만을 허용하지 않을 가능성",
+  "run": "ok",
+  "pred": "아니요",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 583,
+  "card": "EX10-059",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "디지크로스와 획득한 서로의 턴 효과의 복합 상황"
+ },
+ {
+  "id": 584,
+  "card": "EX10-059",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 바그라몬 포함 바그라군 3장, 상대 패 1장·디지몬 1마리·시큐리티 1장. 진화 시 효과 처리 후 EX10-056 효과 발휘 로그 여부로 판정. 불확실성 있음",
+  "run": "ok",
+  "pred": "아니요",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 585,
+  "card": "EX10-059",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 리리스몬 포함 바그라군 3장 + 퍼플 임프몬(리리스몬 효과 대상), 상대 디지몬 1마리가 소멸. EX10-058 효과 발휘 로그 여부로 판정. 불확실성 있음",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 586,
+  "card": "EX10-059",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "상대 효과 끼어들기 상호작용 필요"
+ },
+ {
+  "id": 588,
+  "card": "EX10-060",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "상대가 소멸시키지 않는 선택이 필요"
+ },
+ {
+  "id": 589,
+  "card": "EX10-061",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 591,
+  "card": "EX10-061",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "앞면 시큐리티 주입 및 코스트 감소 선택 필요"
+ },
+ {
+  "id": 592,
+  "card": "EX10-061",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "시큐리티 두 장 중 한 장만 선택 필요"
+ },
+ {
+  "id": 593,
+  "card": "EX10-061",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "어둠의 4천왕 Lv6 메탈시드라몬(BT15-031) 위에 아포카리몬 진화, 진화원은 메탈시드라몬 1장뿐. 등장 로그로 판정",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 594,
+  "card": "EX10-061",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "두 장 중 1장만 등장시키는 선택 지정 필요"
+ },
+ {
+  "id": 595,
+  "card": "EX10-062",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 카드 교체 파기 상황 구성 불확실"
+ },
+ {
+  "id": 597,
+  "card": "EX10-063",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과 필요"
+ },
+ {
+  "id": 607,
+  "card": "EX10-069",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "딜레이 유발에 클로즈 레스트와 특정 진화 카드 등 복합 상황 필요"
+ },
+ {
+  "id": 608,
+  "card": "EX10-070",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 교체 파기 유발은 링크 효과와 바꿔 끼우기 복합 상황 필요"
+ },
+ {
+  "id": 609,
+  "card": "EX10-071",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "트래시 영역 효과 발휘 및 턴 종료 시점 필요"
+ },
+ {
+  "id": 610,
+  "card": "EX10-071",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "트래시 영역 효과이며 턴 종료 시점 필요"
+ },
+ {
+  "id": 611,
+  "card": "EX10-071",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "트래시 영역 턴 종료 시 효과이며 레스트 대상 선택 지정 필요"
+ },
+ {
+  "id": 612,
+  "card": "EX10-072",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 턴 종료 시/턴 종료 시 소멸 확인 필요"
+ },
+ {
+  "id": 614,
+  "card": "EX10-073",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "링크 교체 파기 유발은 링크 효과와 바꿔 끼우기 복합 상황 필요"
+ },
+ {
+  "id": 617,
+  "card": "EX10-074",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "1장만 되돌리는 선택을 지정해야 함"
+ },
+ {
+  "id": 618,
+  "card": "EX10-074",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 카운터 타이밍 블래스트 진화 필요"
+ },
+ {
+  "id": 619,
+  "card": "BT22-006",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "문몬 진화원 효과 발휘 여부 문항"
+ },
+ {
+  "id": 621,
+  "card": "BT22-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "확인한 카드 공개 여부는 엔진 로그로 관측 불가"
+ },
+ {
+  "id": 623,
+  "card": "BT22-007",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 효과이며 육성 에어리어/디지타마 덱 0장 상황 재현 불가"
+ },
+ {
+  "id": 624,
+  "card": "BT22-007",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 육성 효과, 진화원 구성 및 등장 장수 선택 필요"
+ },
+ {
+  "id": 625,
+  "card": "BT22-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "3장 중 2장만 등장 선택 지정 필요, 메인 페이즈 개시 시 효과"
+ },
+ {
+  "id": 626,
+  "card": "BT22-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "메인 페이즈 개시 시 육성 효과 재현 불가"
+ },
+ {
+  "id": 627,
+  "card": "BT22-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "육성 에어리어 부화 시점 유발은 장치로 재현 불가"
+ },
+ {
+  "id": 628,
+  "card": "BT22-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과와 상대 차례 관통 어택 필요"
+ },
+ {
+  "id": 631,
+  "card": "BT22-010",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트를 1만 지불 가능한지는 메모리 선택/최종 메모리 판정 필요"
+ },
+ {
+  "id": 633,
+  "card": "BT22-011",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트를 1만 지불 가능한지는 메모리 판정 필요"
+ },
+ {
+  "id": 635,
+  "card": "BT22-015",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "디코드 조합 등장은 색/레벨 조합 선택과 다수 카드 구성 필요"
+ },
+ {
+  "id": 639,
+  "card": "BT22-020",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "효과 부여 카드와 진화원에 놓은 카드의 연쇄 처리, 선택 필요"
+ },
+ {
+  "id": 641,
+  "card": "BT22-024",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 642,
+  "card": "BT22-024",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 및 다른 진화 효과와의 동시 발휘 필요"
+ },
+ {
+  "id": 644,
+  "card": "BT22-028",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "일부만 등장시키는 선택 지정 필요"
+ },
+ {
+  "id": 649,
+  "card": "BT22-036",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 발휘 필요"
+ },
+ {
+  "id": 650,
+  "card": "BT22-036",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "{패} 효과 및 다른 진화 효과와의 동시 발휘 필요"
+ },
+ {
+  "id": 651,
+  "card": "BT22-038",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "딜레이 효과와의 진화 코스트 중첩 처리, 선택 필요"
+ },
+ {
+  "id": 653,
+  "card": "BT22-038",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "효과 발휘 금지가 부여된 상태의 어택 구성이 복잡"
+ },
+ {
+  "id": 662,
+  "card": "BT22-043",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘 필요"
+ },
+ {
+  "id": 663,
+  "card": "BT22-044",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 + 효과로 진화원에 놓이는 상황 구성 필요"
+ },
+ {
+  "id": 664,
+  "card": "BT22-045",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "카노바이스몬 효과로 얻은 진화 시 효과 + 놓인 카드의 진화 시 발휘, 구성 불확실"
+ },
+ {
+  "id": 669,
+  "card": "BT22-049",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 672,
+  "card": "BT22-052",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "최후의 수호자 딜레이 효과와 오메가몬 등 복합 상호작용"
+ },
+ {
+  "id": 674,
+  "card": "BT22-054",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 + 효과로 진화원에 놓이는 상황 구성 필요"
+ },
+ {
+  "id": 682,
+  "card": "BT22-061",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이 효과와의 복합 코스트 경감 상호작용, 진화 코스트는 최종 메모리로만 관측"
+ },
+ {
+  "id": 698,
+  "card": "BT22-067",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "돌진 어택 대상 변경과 서로의 턴 효과 순서 구성이 불확실"
+ },
+ {
+  "id": 699,
+  "card": "BT22-067",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "돌진 어택 대상 변경과 서로의 턴 효과 순서 구성이 불확실"
+ },
+ {
+  "id": 708,
+  "card": "BT22-072",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "진화 원본이 되는 CS/나이트 클로 Lv.3 카드를 DCGO에서 확인하지 못해 구성 불확실"
+ },
+ {
+  "id": 710,
+  "card": "BT22-074",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 Lv4 디지몬 BT1-014 1마리 대상, 메인 효과 발휘 후 어택 가능 여부(어택 로그 불확실성 있음)",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 711,
+  "card": "BT22-074",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트 일부만 지불하는 선택/메모리 지불량은 최종 메모리로만 관측 불가"
+ },
+ {
+  "id": 715,
+  "card": "BT22-074",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "상대 필드 없음에서 메인 효과 발휘",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 717,
+  "card": "BT22-076",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이 효과와의 복합 코스트 경감 상호작용"
+ },
+ {
+  "id": 721,
+  "card": "BT22-077",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 + 조그레스 진화"
+ },
+ {
+  "id": 722,
+  "card": "BT22-079",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "육성 에어리어 진화원 효과"
+ },
+ {
+  "id": 724,
+  "card": "BT22-080",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "육성 에어리어 진화원 효과"
+ },
+ {
+  "id": 751,
+  "card": "BT22-090",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 753,
+  "card": "BT22-092",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과의 메인 효과를 테이머가 발휘하는 구성 필요"
+ },
+ {
+  "id": 755,
+  "card": "BT22-092",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "효과로 발휘한 메인 턴 1회 효과의 재발휘 구성이 불확실"
+ },
+ {
+  "id": 756,
+  "card": "BT22-093",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "테이머 2장 연쇄 진화, 선택 필요"
+ },
+ {
+  "id": 758,
+  "card": "BT22-096",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "진화 대상 카드를 한쪽 특징만 가진 카드로 지정해야 하고 딜레이 발동 필요"
+ },
+ {
+  "id": 761,
+  "card": "BT22-098",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "진화 대상 카드를 한쪽 특징만 가진 카드로 지정해야 함"
+ },
+ {
+  "id": 768,
+  "card": "BT22-101",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "테이머가 액티브가 되는 시점(턴 개시) 필요"
+ },
+ {
+  "id": 773,
+  "card": "EX9-001",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이와 어택 시 진화의 복합 상호작용"
+ },
+ {
+  "id": 774,
+  "card": "EX9-002",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이와 진화원 효과 복합 상호작용"
+ },
+ {
+  "id": 775,
+  "card": "EX9-003",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이와 진화원 효과 합산 복합 상호작용"
+ },
+ {
+  "id": 776,
+  "card": "EX9-005",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "육성 에어리어 효과와 트래시/진화원 복합 구성 불확실"
+ },
+ {
+  "id": 780,
+  "card": "EX9-006",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "진화원 파기 대상 및 트래시 진화 선택 지정 필요"
+ },
+ {
+  "id": 781,
+  "card": "EX9-006",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "EX9-070 딜레이와 어택 시 진화의 복합 상호작용"
+ },
+ {
+  "id": 782,
+  "card": "EX9-007",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "덱 위 오픈 3장 구성 및 선택 지정 필요"
+ },
+ {
+  "id": 783,
+  "card": "EX9-008",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘 필요"
+ },
+ {
+  "id": 784,
+  "card": "EX9-010",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화원 효과 발휘 필요"
+ },
+ {
+  "id": 785,
+  "card": "EX9-011",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "패 파기 선택 지정 필요하며 코스트 경감 구성 불확실"
+ },
+ {
+  "id": 786,
+  "card": "EX9-012",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "진화 시 유발 연쇄와 가루몬 카드 등 복합 상황"
+ },
+ {
+  "id": 789,
+  "card": "EX9-014",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "덱 위 3장 오픈 구성을 주입 불가(덱 지정 불가)"
+ },
+ {
+  "id": 790,
+  "card": "EX9-017",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "여러 디지몬 대상 선택은 봇 자동 선택에 의존"
+ },
+ {
+  "id": 791,
+  "card": "EX9-018",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트 없이 등장하는 경로+코스트 경감 효과(패 파기) 재현 불확실"
+ },
+ {
+  "id": 792,
+  "card": "EX9-018",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "여러 디지몬 대상 선택은 봇 자동 선택에 의존"
+ },
+ {
+  "id": 794,
+  "card": "EX9-019",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "hand_or_inherited",
+  "note": "진화한 뒤 진화원이 된 카드의 효과 발휘 여부를 묻는 문항"
+ },
+ {
+  "id": 798,
+  "card": "EX9-021",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "그레이몬만 선택해 등장시키는 선택 지정 필요"
+ },
+ {
+  "id": 799,
+  "card": "EX9-021",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "진화원에 그레이몬(BT12-062) 1장만 있는 상태로 어택(상대 시큐리티 3장), 어택 종료 시 그레이몬 등장 여부 관측. 어택 로그 불확실성 있음",
+  "run": "ok",
+  "pred": "네",
+  "match": true,
+  "step_error": false
+ },
+ {
+  "id": 806,
+  "card": "EX9-023",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "덱 위 3장 오픈 구성을 주입 불가(덱 지정 불가)"
+ },
+ {
+  "id": 814,
+  "card": "EX9-028",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 815,
+  "card": "EX9-029",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "파피몬(EX9-014, DM Lv3) 위로 유니몬 진화, 시큐리티 3장(진화원 뒷면 1장 이상 이상 상황), 패에 보조 카드 1장. 효과 후 스택 3장이면 패 1장이 진화원에 놓인 것",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 816,
+  "card": "EX9-030",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트 없이 등장하는 경로+코스트 경감 효과(패 파기) 재현 불확실"
+ },
+ {
+  "id": 819,
+  "card": "EX9-035",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "덱 위 3장 오픈 구성을 주입 불가(덱 지정 불가)"
+ },
+ {
+  "id": 828,
+  "card": "EX9-043",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "코스트 없이 등장하는 경로+코스트 경감 효과(패 파기) 재현 불확실"
+ },
+ {
+  "id": 836,
+  "card": "EX9-049",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 837,
+  "card": "EX9-050",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 838,
+  "card": "EX9-052",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "자신의 턴 종료 시 효과"
+ },
+ {
+  "id": 840,
+  "card": "EX9-054",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "소멸 시 패/트래시/진화원 복합 구성 및 Lv 상한 선택 의존"
+ },
+ {
+  "id": 842,
+  "card": "EX9-055",
+  "gold": "네",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시 네가몬 2장+진화원 네가몬 2장(EX9-005)인 Lv5 디지몬을 아바도몬으로 진화, 육성 에어리어 비어 있고 트래시에 아바도몬 코어 둠. 코어 등장 여부로 조건 판정",
+  "run": "ok",
+  "pred": "아니요",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 843,
+  "card": "EX9-055",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "서로의 턴 종료 시 효과"
+ },
+ {
+  "id": 848,
+  "card": "EX9-057",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "육성 에어리어 상대의 턴 효과"
+ },
+ {
+  "id": 849,
+  "card": "EX9-057",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "육성 에어리어의 【상대의 턴】 효과, 상대 어택 시점 필요"
+ },
+ {
+  "id": 850,
+  "card": "EX9-057",
+  "gold": "아니요",
+  "status": "ok",
+  "reason": null,
+  "note": "트래시에 네가몬 기술 Lv5 카드 2장만 두고 EX9-057로 어택, 상대 Lv4 소멸 여부로 판정(3장 조건 미충족 시 효과 처리 안 됨)",
+  "run": "ok",
+  "pred": "네",
+  "match": false,
+  "step_error": false
+ },
+ {
+  "id": 851,
+  "card": "EX9-057",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "육성 에어리어 이동 후 상대 어택 중 블록 시점 필요"
+ },
+ {
+  "id": 854,
+  "card": "EX9-058",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "덱 위 3장 오픈 구성을 주입할 수 없고 선택 지정 필요"
+ },
+ {
+  "id": 855,
+  "card": "EX9-064",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "코스트 없이 등장하는 시점의 진화 전 패 파기 효과 재현 불확실"
+ },
+ {
+  "id": 856,
+  "card": "EX9-064",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "진화원 효과와 서로의 턴 대체 효과 연계, 다른 카드 상호작용 필요"
+ },
+ {
+  "id": 857,
+  "card": "EX9-066",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "되돌리지 않기를 선택해야 함"
+ },
+ {
+  "id": 864,
+  "card": "EX9-070",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "multi_card",
+  "note": "옵션 2장 딜레이와 진화원 뒷면 구성, 복수 효과 상호작용"
+ },
+ {
+  "id": 866,
+  "card": "EX9-071",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "other",
+  "note": "뒷면 진화원 1장 상태를 주입으로 구성할 수 없음"
+ },
+ {
+  "id": 875,
+  "card": "EX9-073",
+  "gold": "네",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "벗어날 때의 대체 효과, 서로의 턴 및 상대 효과 필요"
+ },
+ {
+  "id": 877,
+  "card": "EX9-074",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "같은 대상을 반복 선택하는 선택 지정 필요"
+ },
+ {
+  "id": 878,
+  "card": "EX9-074",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "note": "선택하지 않음을 지정해야 함"
+ },
+ {
+  "id": 881,
+  "card": "ST21-03",
+  "gold": "아니요",
+  "status": "unsupported",
+  "reason": "opp_turn",
+  "note": "상대 디지몬의 진화원이 이후 늘어나는 상대 차례 진행 필요"
+ }
+]

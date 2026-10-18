@@ -1,0 +1,1 @@
+{"id": "q438", "you": {"memory": 10, "field": [{"cards": ["EX10-010", "BT2-075"]}]}, "opp": {"field": [{"cards": ["BT5-112"], "suspended": true}]}, "steps": [{"do": "attack", "frame": 0, "target": 0}], "timeScale": 20}

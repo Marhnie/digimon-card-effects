@@ -1,0 +1,1 @@
+{"id": "q442", "you": {"memory": 20, "hand": ["EX10-011"], "field": [{"cards": ["ST1-05"]}]}, "opp": {"field": [{"cards": ["BT1-014"]}]}, "steps": [{"do": "play", "card": "EX10-011"}], "timeScale": 20}

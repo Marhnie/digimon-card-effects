@@ -18,7 +18,7 @@ public static class HarnessFlags
 [Serializable] public class HStack { public string[] cards; public bool suspended; }   // cards[0] = top
 [Serializable] public class HSide { public int memory = 0; public string[] hand = new string[0]; public string[] trash = new string[0]; public string[] security = new string[0]; public HStack[] field = new HStack[0]; public bool clearHand = true; }
 [Serializable] public class HStep { public string @do; public string card; public int frame = -1; public int target = -1; public int skill = 0; public int[] pick = new int[0]; public bool yes = true; }
-[Serializable] public class HJob { public string id; public HSide you = new HSide(); public HSide opp = new HSide(); public HStep[] steps = new HStep[0]; public float timeScale = 20f; public float stepTimeout = 60f; }
+[Serializable] public class HJob { public string id; public HSide you = new HSide(); public HSide opp = new HSide(); public HStep[] steps = new HStep[0]; public float timeScale = 20f; public float stepTimeout = 60f; public float calm = 6f; }
 
 public class HarnessRunner : MonoBehaviour
 {
@@ -138,7 +138,7 @@ public class HarnessRunner : MonoBehaviour
                 int frame;
                 if (s.@do == "digivolve") { var perm = FieldAt(you, s.frame); if (perm == null) return "no permanent at " + s.frame; frame = Array.IndexOf(you.FieldPermanents, perm); }
                 else { frame = 0; while (frame < you.fieldCardFrames.Count - 1 && !you.fieldCardFrames[frame].IsEmptyFrame()) frame++; }
-                tsm.QueueMainPhaseAction(you, new PlayCardAction(c.CardIndex, frame, null, -1, null));
+                tsm.QueueMainPhaseAction(you, new PlayCardAction(c.CardIndex, frame, new int[0], -1, new int[0]));
                 return null;
             }
             case "attack":
@@ -163,13 +163,14 @@ public class HarnessRunner : MonoBehaviour
     // idle = back in our main phase, nothing executing or being selected, for a few consecutive frames
     IEnumerator WaitIdle(float timeout)
     {
-        float t0 = Time.realtimeSinceStartup; float calmSince = -1;
+        float t0 = Time.realtimeSinceStartup; float calmSince = -1; int lastLogCount = log.Count;
         yield return null; yield return null;
-        while (calmSince < 0 || Time.realtimeSinceStartup - calmSince < 0.8f)
+        while (calmSince < 0 || Time.realtimeSinceStartup - calmSince < (job != null ? job.calm : 0.8f))
         {
             var tsm = GManager.instance.turnStateMachine;
             bool busy = tsm.isExecuting || tsm.IsSelecting || tsm.gameContext.TurnPhase != GameContext.phase.Main || tsm.gameContext.TurnPlayer != GManager.instance.You || tsm.endGame;
             if (tsm.gameContext.TurnPlayer != GManager.instance.You && !tsm.endGame) { log.Add("[harness] turn passed to opponent (state below is from before that)"); turnPassed = true; yield break; }
+            if (log.Count != lastLogCount) { lastLogCount = log.Count; calmSince = -1; }
             if (busy) calmSince = -1; else { if (calmSince < 0) calmSince = Time.realtimeSinceStartup; try { lastSnap = Side(GManager.instance.You) + "|" + Side(GManager.instance.Opponent); } catch { } }
             if (tsm.endGame) { log.Add("[harness] game ended"); yield break; }
             if (Time.realtimeSinceStartup - t0 > timeout) { log.Add($"[harness] idle timeout (executing={tsm.isExecuting} selecting={tsm.IsSelecting} phase={tsm.gameContext.TurnPhase})"); yield break; }

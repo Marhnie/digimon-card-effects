@@ -1,0 +1,1 @@
+{"id": "q349", "you": {"memory": 10, "hand": ["BT23-070"], "field": [{"cards": ["BT13-091"], "suspended": true}]}, "opp": {"field": [{"cards": ["BT1-014"]}]}, "steps": [{"do": "digivolve", "card": "BT23-070", "frame": 0}], "timeScale": 20}

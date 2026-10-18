@@ -1,0 +1,1 @@
+{"id": "q799", "you": {"memory": 10, "field": [{"cards": ["EX9-021", "BT12-062"]}]}, "opp": {"security": ["ST1-04", "ST1-04", "ST1-04"]}, "steps": [{"do": "attack", "frame": 0, "target": -1}], "timeScale": 20}

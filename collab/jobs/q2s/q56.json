@@ -1,0 +1,1 @@
+{"id": "q56", "you": {"memory": 15, "hand": ["BT24-041"]}, "opp": {"field": [{"cards": ["ST1-05", "ST1-04"]}]}, "steps": [{"do": "play", "card": "BT24-041"}], "timeScale": 20}

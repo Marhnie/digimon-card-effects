@@ -1,0 +1,1 @@
+{"id": "q547", "you": {"memory": 10, "trash": ["BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT2-111"], "field": [{"cards": ["EX10-050", "BT1-014", "BT1-014", "BT1-014"]}]}, "opp": {"field": [{"cards": ["BT1-080"]}]}, "steps": [{"do": "attack", "frame": 0, "target": 0}], "timeScale": 20}

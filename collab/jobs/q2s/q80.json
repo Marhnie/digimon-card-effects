@@ -1,0 +1,1 @@
+{"id": "q80", "you": {"memory": 10, "hand": ["BT24-073"], "trash": ["BT2-074"], "security": [], "field": [{"cards": ["BT1-014"]}]}, "opp": {"trash": ["BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014", "BT1-014"]}, "steps": [{"do": "digivolve", "card": "BT24-073", "frame": 0}], "timeScale": 20}

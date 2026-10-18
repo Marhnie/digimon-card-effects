@@ -1,0 +1,1 @@
+{"id": "q505", "you": {"memory": 10, "hand": ["EX10-033"], "trash": ["EX10-003"], "field": [{"cards": ["EX10-032"]}]}, "opp": {}, "steps": [{"do": "digivolve", "card": "EX10-033", "frame": 0}], "timeScale": 20}

@@ -1,0 +1,1 @@
+{"id": "q41", "you": {"memory": 10, "hand": ["BT24-034", "BT25-086"], "security": ["ST1-04"], "field": [{"cards": ["BT24-085"]}, {"cards": ["BT24-031"]}]}, "opp": {}, "steps": [{"do": "digivolve", "card": "BT24-034", "frame": 1}, {"do": "optional", "yes": true}], "timeScale": 20}

@@ -1,0 +1,1 @@
+{"id": "q500", "you": {"memory": 10, "hand": ["EX10-025"], "trash": ["EX10-028"]}, "opp": {}, "steps": [{"do": "play", "card": "EX10-025"}], "timeScale": 20}

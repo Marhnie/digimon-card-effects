@@ -1,0 +1,1 @@
+{"id": "q213", "you": {"memory": 7, "hand": ["ST22-14"]}, "opp": {"memory": 0, "hand": ["ST1-04", "ST1-04", "ST1-04", "ST1-04", "ST1-04"], "trash": ["ST1-05", "ST1-05", "ST1-05", "ST1-05", "ST1-05"]}, "steps": [{"do": "play", "card": "ST22-14"}], "timeScale": 20}
