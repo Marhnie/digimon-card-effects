@@ -172,12 +172,18 @@ function evidenceFor(){const u=mainUnit();const card=ST.cards[0]?ST.cards[0].no:
     us.forEach(v=>{patternQA(v,2,x.no).forEach(q=>add(QIDX.byId['Q'+q.i]));v.rules.slice(0,3).forEach(n=>add(QIDX.byId['R'+n]))})}
   (ST.res&&ST.res.combo||comboQA()).slice(0,6).forEach(q=>add(QIDX.byId['Q'+q.i]));
   return out.slice(0,extras().length?56:44)}
-let sampleP=null;const getSample=()=>sampleP||(sampleP=(window.claude&&window.claude.use)?window.claude.use('sample'):Promise.resolve(null));
+let sampleP=null;const getSample=async()=>{if(!sampleP)sampleP=(window.claude&&window.claude.use)?window.claude.use('sample'):Promise.resolve(null);const s=await sampleP;if(!s)sampleP=null;return s};   // never cache a null: a retry asks again
+// why Claude is unavailable here, in the viewer's terms
+async function whyNoClaude(){const framed=(()=>{try{return window.top!==window.self}catch(e){return true}})();
+  if(!window.claude||!window.claude.use||!framed)return {msg:'이 페이지가 claude.ai 화면 밖(단독 주소·카카오톡 등 앱 안 브라우저·저장한 파일)에서 열려 있어 Claude를 부를 수 없습니다. 크롬·사파리 같은 일반 브라우저에서 claude.ai에 로그인한 뒤 claude.ai/artifact/… 주소로 열어 주세요.'};
+  let st=null;try{const pm=await window.claude.use('permissions');if(pm)st=await pm.state('sample')}catch(e){}
+  if(st==='denied')return {msg:'이 페이지의 Claude 사용 허락이 거절되어 있습니다. 「권한 설정 열기」에서 허용으로 바꾼 뒤 다시 시도해 주세요.',manage:true};
+  return {msg:'지금 이 화면에서는 Claude를 쓸 수 없습니다. claude.ai에 로그인되어 있는지 확인해 주세요. 공개 링크로 연 경우 계정·조직 설정에 따라 Claude 호출이 막혀 있을 수 있습니다. 근거 탭의 공식 Q&A·룰 조항은 그대로 볼 수 있습니다.'}}
 async function askClaude(){
   if(ST.busy)return;const u=mainUnit();if(!u)return;
   ST.busy=true;ST.ai={wait:true};renderResult();updateGo();
   const sample=await getSample();
-  if(!sample){ST.busy=false;ST.ai={err:'이 화면에서는 Claude를 부를 수 없습니다. claude.ai에서 이 페이지를 열어 주세요.'};renderResult();updateGo();return}
+  if(!sample){const w=await whyNoClaude();ST.busy=false;ST.ai={err:w.msg,manage:!!w.manage};renderResult();updateGo();return}
   const ev=evidenceFor();ST.ai.ev=ev;
   const card=ST.cards[0];
   const cardText=card?(byCard[card.no]||[]).map(x=>x.text).join('\n'):ST.pasted.text;
@@ -356,7 +362,7 @@ function autoNote(){const a=ST.res&&ST.res.auto||[];return a.length?`<div class=
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
   if(A&&(A.r||A.wait||A.err)){
     if(A.wait)h+=`<div class="verdict v-ai"><span class="badge">Claude 판정</span><div class="why"><span class="spin"></span>근거 자료를 모아 판정하고 있습니다… 보통 30초~1분</div><div class="sub">처음 한 번은 Claude 사용 허락을 묻습니다. 이 페이지를 연 사람의 Claude 사용량을 씁니다.</div><div class="row"><button class="btn2" type="button" id="aistop">중지</button></div></div>`;
-    else if(A.err)h+=`<div class="verdict v-none"><span class="badge">Claude 판정</span><div class="why">${esc(A.err)}</div><div class="row"><button class="btn2 pri" type="button" data-askai="1">다시 시도</button></div></div>`;
+    else if(A.err)h+=`<div class="verdict v-none"><span class="badge">Claude 판정</span><div class="why">${esc(A.err)}</div><div class="row"><button class="btn2 pri" type="button" data-askai="1">다시 시도</button>${A.manage?'<button class="btn2" type="button" id="pmmanage">권한 설정 열기</button>':''}</div></div>`;
     else{const r=A.r||{};const byId=Object.fromEntries((A.ev||[]).map(it=>[it.id,it]));
       const cite=ids=>(ids||[]).filter(id=>byId[id]).map(id=>`<button class="cite" type="button" data-cite="${esc(id)}">${esc(id[0]==='R'?id.slice(1):(byId[id].qa?byId[id].qa.card:id))}</button>`).join('');
       const rs=(Array.isArray(r.reasons)?r.reasons:[]).map(x=>`<li>${esc(x.text||'')} ${cite(x.cite)}</li>`).join('');
@@ -449,6 +455,7 @@ document.addEventListener('click',e=>{const t=e.target;
     (async()=>{for(const d of CRIN){try{await CR.db.collection('rulings').add(d);n++}catch(e){fail++}}
       $('crprev').innerHTML=`<div class="sub">${n}건 저장했습니다.${fail?` ${fail}건은 저장하지 못했습니다(권한 확인).`:''}</div>`;$('crin').value='';CRIN=[]})();return}
   if(t.id==='aistop'&&ST.ctl){ST.ctl.abort();return}
+  if(t.id==='pmmanage'){(async()=>{try{const pm=await window.claude.use('permissions');if(pm)await pm.manage()}catch(e){}})();return}
   const ex=t.closest('[data-ex]');if(ex){loadExample(+ex.dataset.ex);return}
   // legacy browse view
   const ask=t.closest('[data-ask]');if(ask){const u=ASKU[+ask.dataset.ask];if(u&&!u.pasted&&ST.cards[0]&&u.card===ST.cards[0].no){ST.sel=u.i;renderCards();updateGo();$('askq').focus();window.scrollTo(0,0)}return}
