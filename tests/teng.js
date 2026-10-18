@@ -10,7 +10,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{await sleep(300);const out=[];
  for(const it of items.slice(0,N)){
   // reset to an empty card list by reloading state: remove existing cards
-  for(const b of [...d.querySelectorAll('[data-remove],.rmcard,button')].filter(b=>/빼기/.test(b.textContent)))b.click();
+  for(let g=0;g<8;g++){const b=[...d.querySelectorAll('button')].find(b=>/빼기/.test(b.textContent));if(!b)break;b.click()}
   await sleep(5);type($('cardq'),it.card);key($('cardq'),'Enter');await sleep(5);
   const r=[...d.querySelectorAll('input[name=mainEff]')].find(r=>+r.value===it.unit);if(!r){out.push({i:it.i,skip:1});continue}
   r.checked=true;r.dispatchEvent(new w.Event('change',{bubbles:true}));type($('askq'),it.q);$('go').click();await sleep(5);
