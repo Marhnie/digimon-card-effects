@@ -248,16 +248,58 @@ function engineLite(sim){if(!ENG||!sim||!sim.length)return null;const u=mainUnit
   const conf=sigm(cf.reduce((s,v,k)=>s+v*ENG.C.w[k],ENG.C.b));
   return {ans:pA>0.5?1:0,pA,conf,sure:conf>=ENG.thr,top:top.slice(0,5),rg:rgBest,f}}
 
+
+/* ---------- confirmed rulings (확인 판정): a judge confirms or corrects a verdict → shared db → reused without Claude ---------- */
+const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false};
+window.__rulings=CR;   // test hook (tests/tcr.js)
+(async()=>{try{const use=window.claude&&window.claude.use;if(!use){CR.state='off';return}
+  const db=await use('db');if(!db){CR.state='off';if(ST.res)renderResult();return}
+  CR.db=db;try{const user=await use('user');CR.me=user?await user.id():null}catch(e){}
+  db.collection('rulings').onSnapshot(s=>{CR.list=s.docs.map(d=>({id:d.id,...d.data()}));const was=CR.state;CR.state='on';if(ST.res){const m=ST.res.level==='sure'?null:crMatch();const had=ST.res.cr;ST.res.cr=m;if(was!=='on'||!!m!==!!had)renderResult()}},
+    e=>{CR.state='off';CR.msg='확인 판정을 불러오지 못했습니다.'})}catch(e){CR.state='off'}})();
+const crKey=()=>extras().map(x=>x.no).sort().join(',');
+// same main card + same other cards; question worded alike (2-gram Jaccard >=0.6, or >=0.45 on the same effect)
+function crMatch(){const c=ST.cards[0];if(!c||!ST.q.trim()||!CR.list.length)return null;const u=mainUnit();const myneg=ST.sl.has(NEGI)?1:0;const key=crKey();
+  let best=null;for(const r of CR.list){if(r.card!==c.no||(r.others||'')!==key||(r.ans!==0&&r.ans!==1))continue;
+    const s=simQ(ST.q,r.q||'');const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
+    if(!best||s>best.s)best={r,s,ans:r.ans^((r.neg?1:0)^myneg)}}
+  return best}
+function crCandidate(){const R=ST.res,A=ST.ai;if(!R)return null;
+  if(A&&A.r){const v=A.r.verdict;return {ans:v==='네'?1:v==='아니요'?0:null,src:'claude',summary:String(A.r.summary||'')}}
+  if(A&&(A.wait||A.err))return null;
+  if(R.cr||R.level==='sure')return null;
+  if(R.iv)return {ans:R.iv.ans,src:'issue',summary:R.iv.iss.name};
+  if(R.eng&&R.eng.sure)return {ans:R.eng.ans,src:'engine',summary:''};
+  if(R.level==='ref')return {ans:R.ans,src:'precedent',summary:''};
+  if(R.gv)return {ans:R.gv.ans,src:'group',summary:''};
+  if(R.est)return {ans:R.est.ans,src:'estimate',summary:''};
+  return {ans:null,src:'none',summary:''}}
+const SRCN={claude:'Claude 판정',issue:'룰 쟁점',engine:'엔진 판정',precedent:'선례 참고',group:'쟁점 그룹',estimate:'비슷한 질문 추정',none:'직접 판정'};
+function crPanel(){const c=crCandidate();if(!c||!ST.cards[0])return '';
+  if(CR.state!=='on')return CR.state==='loading'?'':`<div class="crbar"><div class="sub">판정을 확인해 저장하려면 claude.ai에 로그인한 상태로 이 페이지를 열어야 합니다.</div></div>`;
+  if(CR.done)return `<div class="crbar ok"><b>저장했습니다.</b> 같은 카드·비슷한 질문이 다시 오면 Claude 없이 이 판정으로 답합니다.</div>`;
+  const b=(a,l,cls)=>`<button class="btn2${cls?' '+cls:''}" type="button" data-crsave="${a}"${CR.saving?' disabled':''}>${l}</button>`;
+  return `<div class="crbar"><div class="crq"><b>판정 확인</b> ${c.ans==null?'이 질문의 정답을 알고 있다면 저장해 주세요.':`위 ${esc(SRCN[c.src])} 「${yn(c.ans)}」가 맞나요?`} 확인한 판정은 저장되어, 같은 질문이 다시 오면 Claude 없이 바로 답합니다.</div>
+    <div class="row">${c.ans==null?b(1,'정답은 네','pri')+b(0,'정답은 아니요','pri'):b(c.ans,'맞음 · 저장','pri')+b(1-c.ans,`틀림 · 「${yn(1-c.ans)}」로 저장`)}<input id="crnote" type="text" maxlength="300" placeholder="메모(선택): 근거·상황" aria-label="확인 판정 메모"></div>${CR.msg?`<div class="sub">${esc(CR.msg)}</div>`:''}</div>`}
+async function crSave(ans){const c=crCandidate();const u=mainUnit();if(!CR.db||!c||!ST.cards[0]||CR.saving)return;
+  const note=(document.getElementById('crnote')||{}).value||'';
+  CR.saving=true;CR.msg='';renderResult();
+  const doc={card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
+    ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:c.summary.slice(0,500),note:note.slice(0,300),by:CR.me||'',at:new Date().toISOString()};
+  try{await CR.db.collection('rulings').add(doc);CR.done=true}
+  catch(e){CR.msg=e&&e.code==='permission_denied'?'저장 권한이 없습니다. 페이지 주인에게 「참여」 이상 권한을 받아야 합니다.':'저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'}
+  finally{CR.saving=false;renderResult()}}
+
 /* ---------- result ---------- */
 const yn=a=>a?'네':'아니요';
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  ST.res=precedents();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  CR.done=false;CR.msg='';ST.res=precedents();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if((ST.res.level==='none'||extras().length)&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
+  if((ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
@@ -269,6 +311,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
       const rs=(Array.isArray(r.reasons)?r.reasons:[]).map(x=>`<li>${esc(x.text||'')} ${cite(x.cite)}</li>`).join('');
       h+=`<div class="verdict v-ai"><span class="badge">Claude 판정 · 근거 ${(A.ev||[]).length}건 검토</span><div class="ans">${esc(r.verdict||'?')}</div>${(()=>{const c=Number(r.conf);if(!isFinite(c))return '';const hi=c>=0.8;return `<div class="conf ${hi?'hi':'lo'}">${hi?'확신 높음':'확신 낮음 · 심판이나 운영자 확인 권장'} <b>${Math.round(c*100)}%</b><span>${hi?'시험 200문항에서 확신 80% 이상 판정은 모두 공식 답과 같았습니다':'시험에서 확신 80% 미만 판정은 약 91%만 맞았습니다'}</span></div>`})()}<div class="why">${esc(r.summary||'')}</div>${rs?`<ol class="reasons">${rs}</ol>`:''}${r.caution?`<div class="sub">주의: ${esc(r.caution)}</div>`:''}<div class="sub">공식 판정이 아닌 근거 정리입니다. 대회에서는 저지 확인을 거쳐 주세요.</div></div>`}
   }
+  if(R&&R.cr&&!(A&&A.r)){const M=R.cr,r=M.r;const d=String(r.at||'').slice(0,10);
+    h=`<div class="verdict v-sure"><span class="badge">확인된 판정 · Claude 없이 · 질문 유사도 ${Math.round(M.s*100)}%</span><div class="ans">${yn(M.ans)}</div><div class="why">같은 카드에 대해 사람이 확인한 판정입니다${r.src&&SRCN[r.src]?` (처음 판정: ${esc(SRCN[r.src])}${r.agreed===false?' → 확인 때 바로잡음':''})`:''}.</div><div class="sub">확인한 질문: ${esc(r.q||'')}${r.note?`<br>메모: ${esc(r.note)}`:''}${d?` · ${esc(d)}`:''}${(r.neg?1:0)!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.iv&&!(A&&A.r)){const V=R.iv;
     h=`<div class="verdict v-sure"><span class="badge">룰 쟁점 · ${esc(V.iss.name)} · 공식 Q&amp;A ${V.n}건 일치</span><div class="ans">${yn(V.ans)}</div><div class="why">${esc(V.iss.desc)}</div><div class="sub">근거 룰 ${V.iss.rules.map(esc).join(' · ')} · 같은 쟁점의 공식 Q&amp;A가 모두 「${yn(V.ans)}」입니다. 상황이 쟁점과 다르면(예: 그 카드가 실제로는 자리를 벗어나지 않음) 결론이 바뀝니다.</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.eng&&R.eng.sure&&R.level!=='sure'&&!(A&&A.r)){const E=R.eng;
@@ -287,7 +331,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
 function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   const own=ownQA();
   const tabs=[(R.issues||[]).length?['issue','같은 룰 쟁점',R.issues.reduce((s,x)=>s+x.qa.length+x.rules.length,0)]:null,['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
-  if(!tabs.some(t=>t[0]===ST.tab))ST.tab=tabs[0][0];
+  const crl=CR.list.filter(r=>involved().includes(r.card));if(crl.length)tabs.splice(1,0,['cr','확인된 판정',crl.length]);
+  if(!tabs.some(t=>t&&t[0]===ST.tab))ST.tab=tabs.find(Boolean)[0];
   let body='';const myneg=ST.sl.has(NEGI)?1:0;
   if(ST.tab==='issue')body=(R.issues||[]).map(x=>`<div class="empty" style="padding:0 2px"><b>${esc(x.name)}</b> — ${esc(x.desc)}</div>`+x.rules.map(itemRule).join('')+x.qa.map(i=>itemQA(QA[i],'<span>· 같은 룰 쟁점</span>')).join('')).join('');
   else if(ST.tab==='prec')body=R.list.length?R.list.slice(0,20).map(x=>itemQA(x.q,`<span>· ${TIERNAME[R.tier]}</span><span class="yn">답: ${yn(x.y)}</span>${x.q.neg!==myneg?'<span>(반대로 물은 질문이라 뒤집음)</span>':''}`)).join(''):'<div class="empty">묻는 것과 상황이 완전히 같은 선례가 없습니다. 상황 태그를 줄이면 찾을 수도 있습니다.</div>';
@@ -300,6 +345,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='trig'){const l=triggerQA(u,40,ST.cards[0]&&ST.cards[0].no);const t=trigOf(u);const n=(BY_TRIG[t]||[]).length;
     body=`<div class="empty" style="padding:0 2px">${esc(t.replace('유발 · ','유발 조건: '))} · 같은 조건으로 발동하는 효과 ${n}개</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 유발 조건 효과에 연결된 Q&amp;A가 없습니다.</div>')}
   else if(ST.tab==='combo')body=R.combo.length?R.combo.map(q=>itemQA(q,'')).join(''):'<div class="empty">함께 고른 카드 이름이 같이 나오는 Q&amp;A가 없습니다.</div>';
+  else if(ST.tab==='cr')body=crl.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(r=>`<div class="item"><div class="src"><span class="cno">${esc(r.card)}</span><span>${esc(cname(r.card))}</span>${r.others?`<span>+ ${esc(r.others)}</span>`:''}<span class="yn">답: ${yn(r.ans)}</span><span>· ${esc(SRCN[r.src]||'')}${r.agreed===false?' → 바로잡음':''}</span><span>${esc(String(r.at||'').slice(0,10))}</span></div><div class="q"><b>Q</b><span>${esc(r.q||'')}</span></div>${r.note?`<div class="a"><b>메모</b><span>${esc(r.note)}</span></div>`:''}</div>`).join('');
   else if(ST.tab==='struct')body=structHTML(u);
   else if(ST.tab==='clu'){const l=clusterQA(u,40,ST.cards[0]&&ST.cards[0].no);const c=CLU[strOf(u)[6]];
     body=`<div class="empty" style="padding:0 2px">같은 효과 무리: ${esc(c[0])} · 효과 ${c[3]}개 (효과 네트워크 클러스터)</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 무리 효과에 연결된 Q&amp;A가 없습니다.</div>')}
@@ -307,7 +353,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');
   return `<div class="ev"><div class="tabs" role="tablist">${tabs.map(([k,n,c])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${ST.tab===k}">${n}<span class="n">${c}</span></button>`).join('')}</div><div class="tabp" role="tabpanel">${body}</div></div>`}
-function renderResult(){$('result').innerHTML=ST.res||ST.ai?verdictHTML()+tabsHTML():''}
+function renderResult(){$('result').innerHTML=ST.res||ST.ai?verdictHTML()+crPanel()+tabsHTML():''}
 
 /* ---------- examples ---------- */
 const EXQ=__EXQ__;
@@ -337,6 +383,7 @@ document.addEventListener('click',e=>{const t=e.target;
   const tb=t.closest('[data-tab]');if(tb){ST.tab=tb.dataset.tab;renderResult();return}
   const ci=t.closest('[data-cite]');if(ci){ST.tab='ai';renderResult();const el=$('it-'+ci.dataset.cite);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'})}return}
   if(t.closest('[data-askai]')){askClaude();return}
+  const cs=t.closest('[data-crsave]');if(cs){crSave(+cs.dataset.crsave);return}
   if(t.id==='aistop'&&ST.ctl){ST.ctl.abort();return}
   const ex=t.closest('[data-ex]');if(ex){loadExample(+ex.dataset.ex);return}
   // legacy browse view
