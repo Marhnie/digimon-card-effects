@@ -29,3 +29,6 @@ Python 3.11 · scikit-learn · numpy · scipy · networkx · openpyxl · python-
 - 카드 텍스트·카드 Q&A: 디지몬 카드게임 한국 공식 사이트(digimoncard.co.kr) 공개 자료. 카드 텍스트와 게임 자료의 권리는 ©BANDAI 및 각 권리자에게 있습니다.
 - 종합 룰: 공식 사이트에 공개된 한국어 종합 룰.
 - 연구·분석 목적의 사본이며, 원 자료의 재배포 권리를 주장하지 않습니다.
+
+## GPU 학습
+Claude 없는 판정 모델 학습 데이터·스크립트는 [train/README.md](train/README.md)를 보세요.
