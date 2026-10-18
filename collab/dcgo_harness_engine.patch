@@ -1,0 +1,131 @@
+diff --git a/Assets/Scripts/Script/MultipleSkills.cs b/Assets/Scripts/Script/MultipleSkills.cs
+index 79080a1e..5185932b 100644
+--- a/Assets/Scripts/Script/MultipleSkills.cs
++++ b/Assets/Scripts/Script/MultipleSkills.cs
+@@ -1,4 +1,4 @@
+-﻿using Photon.Pun;
++using Photon.Pun;
+ using System;
+ using System.Collections;
+ using System.Collections.Generic;
+@@ -186,7 +186,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
+                     // Blast Digivolution
+                     if (IsOnlyHandEffectStacked && IsOnlyOptionalEffectStacked && IsEachStackedEffectHasDistinctSourceCard)
+                     {
+-                        if (player.isYou)
++                        if (player.isYou && !HarnessFlags.Active)
+                         {
+                             int skillIndex = 0;
+ 
+@@ -263,7 +263,7 @@ public class MultipleSkills : MonoBehaviourPunCallbacks
+ 
+                     else
+                     {
+-                        if (player.isYou)
++                        if (player.isYou && !HarnessFlags.Active)
+                         {
+                             int skillIndex = -1;
+ 
+diff --git a/Assets/Scripts/Script/OptionalSkill.cs b/Assets/Scripts/Script/OptionalSkill.cs
+index 918f7619..4145fb36 100644
+--- a/Assets/Scripts/Script/OptionalSkill.cs
++++ b/Assets/Scripts/Script/OptionalSkill.cs
+@@ -57,7 +57,11 @@ public class OptionalSkill : MonoBehaviourPunCallbacks
+         }
+         #endregion
+ 
+-        if (cardEffect.EffectSourceCard.Owner.isYou)
++        if (HarnessFlags.Active && cardEffect.EffectSourceCard.Owner.isYou && HarnessFlags.OptionalAnswer >= 0)
++        {
++            SetUseOptional(player.PlayerID, HarnessFlags.OptionalAnswer == 1);
++        }
++        else if (cardEffect.EffectSourceCard.Owner.isYou)
+         {
+             Permanent permanent = cardEffect.EffectSourceCard.PermanentOfThisCard();
+             List<FieldPermanentCard> highlightPermanents = new List<FieldPermanentCard>();
+diff --git a/Assets/Scripts/Script/SelectCardEffect.cs b/Assets/Scripts/Script/SelectCardEffect.cs
+index b09c66ac..2c88e61b 100644
+--- a/Assets/Scripts/Script/SelectCardEffect.cs
++++ b/Assets/Scripts/Script/SelectCardEffect.cs
+@@ -1,4 +1,4 @@
+-﻿using System.Collections;
++using System.Collections;
+ using System.Collections.Generic;
+ using UnityEngine;
+ using System.Linq;
+@@ -388,7 +388,7 @@ public class SelectCardEffect : MonoBehaviourPunCallbacks
+                 GManager.instance.turnStateMachine.gameContext.IsSecurityLooking = true;
+             }
+ 
+-            if (_selectPlayer.isYou)
++            if (_selectPlayer.isYou && !HarnessFlags.Active)
+             {
+                 if ((_isDeckBottom && ContinuousController.instance.autoDeckBottomOrder)
+                 || (_isDeckTop && ContinuousController.instance.autoDeckTopOrder))
+diff --git a/Assets/Scripts/Script/SelectCountEffect.cs b/Assets/Scripts/Script/SelectCountEffect.cs
+index c0691fe4..5babee27 100644
+--- a/Assets/Scripts/Script/SelectCountEffect.cs
++++ b/Assets/Scripts/Script/SelectCountEffect.cs
+@@ -113,7 +113,7 @@ public class SelectCountEffect : MonoBehaviourPunCallbacks
+ 
+                 else
+                 {
+-                    if (_selectPlayer.isYou)
++                    if (_selectPlayer.isYou && !HarnessFlags.Active)
+                     {
+                         if ((!_isDigivolutionCost && ContinuousController.instance.autoMaxCardCount && !_preferMin)
+                         || (_isDigivolutionCost && ContinuousController.instance.autoMinDigivolutionCost && _preferMin))
+diff --git a/Assets/Scripts/Script/SelectHandEffect.cs b/Assets/Scripts/Script/SelectHandEffect.cs
+index 64d29c51..45691f59 100644
+--- a/Assets/Scripts/Script/SelectHandEffect.cs
++++ b/Assets/Scripts/Script/SelectHandEffect.cs
+@@ -183,7 +183,7 @@ public class SelectHandEffect : MonoBehaviourPunCallbacks
+                 GManager.instance.turnStateMachine.OffHandCardTarget(player);
+             }
+ 
+-            if (_selectPlayer.isYou)
++            if (_selectPlayer.isYou && !HarnessFlags.Active)
+             {
+                 GManager.instance.sideBar.SetUpSideBar();
+ 
+diff --git a/Assets/Scripts/Script/SelectPermanentEffect.cs b/Assets/Scripts/Script/SelectPermanentEffect.cs
+index c7e835bf..14afb9d2 100644
+--- a/Assets/Scripts/Script/SelectPermanentEffect.cs
++++ b/Assets/Scripts/Script/SelectPermanentEffect.cs
+@@ -1,4 +1,4 @@
+-﻿using Photon.Pun;
++using Photon.Pun;
+ using System;
+ using System.Collections;
+ using System.Collections.Generic;
+@@ -292,7 +292,7 @@ public class SelectPermanentEffect : MonoBehaviourPunCallbacks
+ 
+             GManager.instance.turnStateMachine.IsSelecting = true;
+ 
+-            if (_selectPlayer.isYou)
++            if (_selectPlayer.isYou && !HarnessFlags.Active)
+             {
+                 #region Message display
+                 if (!string.IsNullOrEmpty(_customMessage))
+diff --git a/Assets/Scripts/Script/UserSelectionManager.cs b/Assets/Scripts/Script/UserSelectionManager.cs
+index 3b7e82f9..82f69692 100644
+--- a/Assets/Scripts/Script/UserSelectionManager.cs
++++ b/Assets/Scripts/Script/UserSelectionManager.cs
+@@ -106,7 +106,7 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
+         _selectPlayer = selectPlayer;
+         _isLocal = IsLocal;
+ 
+-        if (selectPlayer.isYou)
++        if (selectPlayer.isYou && !HarnessFlags.Active)
+         {
+             GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
+ 
+@@ -160,7 +160,7 @@ public class UserSelectionManager : MonoBehaviourPunCallbacks
+         _selectPlayer = selectPlayer;
+         _isLocal = IsLocal;
+ 
+-        if (selectPlayer.isYou)
++        if (selectPlayer.isYou && !HarnessFlags.Active)
+         {
+             GManager.instance.commandText.OpenCommandText(selectPlayerMessage);
+ 
