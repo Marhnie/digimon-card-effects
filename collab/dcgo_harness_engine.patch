@@ -107,6 +107,36 @@ index c7e835bf..14afb9d2 100644
              {
                  #region Message display
                  if (!string.IsNullOrEmpty(_customMessage))
+diff --git a/Assets/Scripts/Script/TurnStateMachine.cs b/Assets/Scripts/Script/TurnStateMachine.cs
+index d41c32b8..6d4f1c86 100644
+--- a/Assets/Scripts/Script/TurnStateMachine.cs
++++ b/Assets/Scripts/Script/TurnStateMachine.cs
+@@ -384,7 +384,11 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
+ 
+             if (player.isYou)
+             {
+-                if (GManager.instance.isAuto && GManager.instance.IsAI)
++                if (HarnessFlags.Active)
++                {
++                    SetRedraw(player.PlayerID, false);
++                }
++                else if (GManager.instance.isAuto && GManager.instance.IsAI)
+                 {
+                     SetRedraw(player.PlayerID, RandomUtility.IsSucceedProbability(0.5f));
+                 }
+@@ -723,7 +727,11 @@ public class TurnStateMachine : MonoBehaviourPunCallbacks
+ 
+             yield return new WaitWhile(() => !GManager.instance.showPhaseNotificationObject.isClose);
+ 
+-            if (gameContext.TurnPlayer.isYou)
++            if (gameContext.TurnPlayer.isYou && HarnessFlags.Active)
++            {
++                SendShouldHatch(false);
++            }
++            else if (gameContext.TurnPlayer.isYou)
+             {
+                 #region If hatching is possible
+                 if (gameContext.TurnPlayer.CanHatch || !gameContext.TurnPlayer.CanMove)
 diff --git a/Assets/Scripts/Script/UserSelectionManager.cs b/Assets/Scripts/Script/UserSelectionManager.cs
 index 3b7e82f9..82f69692 100644
 --- a/Assets/Scripts/Script/UserSelectionManager.cs

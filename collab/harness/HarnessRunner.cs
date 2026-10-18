@@ -45,7 +45,7 @@ public class HarnessRunner : MonoBehaviour
         StartCoroutine(Run());
     }
 
-    HJob job;
+    HJob job; bool turnPassed; string lastSnap;
     IEnumerator Run()
     {
         job = JsonUtility.FromJson<HJob>(File.ReadAllText(jobPath, Encoding.UTF8));
@@ -98,15 +98,19 @@ public class HarnessRunner : MonoBehaviour
     IEnumerator Inject(Player p, HSide side)
     {
         var cc = ContinuousController.instance;
+        foreach (var perm in p.GetFieldPermanents().ToList()) yield return cc.StartCoroutine(CardObjectController.RemoveField(perm, true));
+        foreach (var perm in p.GetBreedingAreaPermanents().ToList()) yield return cc.StartCoroutine(CardObjectController.RemoveField(perm, true));
+        foreach (var sc in p.SecurityCards.ToList()) yield return cc.StartCoroutine(CardObjectController.AddTrashCard(sc));
         if (side.clearHand)
             foreach (var h in p.HandCards.ToList()) yield return cc.StartCoroutine(CardObjectController.AddTrashCard(h));
+        p.TrashCards.Clear();
         foreach (var id in side.hand) { var c = Make(p, id); if (c != null) yield return cc.StartCoroutine(CardObjectController.AddHandCard(c, false)); }
         foreach (var id in side.trash) { var c = Make(p, id); if (c != null) yield return cc.StartCoroutine(CardObjectController.AddTrashCard(c)); }
         foreach (var id in side.security) { var c = Make(p, id); if (c != null) yield return cc.StartCoroutine(CardObjectController.AddSecurityCard(c, true, false, false)); }
         int frame = 0;
         foreach (var st in side.field)
         {
-            var cards = st.cards.Select(id => Make(p, id)).Where(c => c != null).ToList();
+            var cards = st.cards.Select(id => Make(p, id)).Where(c => c != null).ToList(); cards.Reverse(); // JSON order: cards[0] = top; Permanent expects bottom first
             if (cards.Count == 0) continue;
             while (frame < p.fieldCardFrames.Count - 1 && !p.fieldCardFrames[frame].IsEmptyFrame()) frame++;
             var perm = new Permanent(cards);
@@ -159,13 +163,14 @@ public class HarnessRunner : MonoBehaviour
     // idle = back in our main phase, nothing executing or being selected, for a few consecutive frames
     IEnumerator WaitIdle(float timeout)
     {
-        float t0 = Time.realtimeSinceStartup; int calm = 0;
+        float t0 = Time.realtimeSinceStartup; float calmSince = -1;
         yield return null; yield return null;
-        while (calm < 15)
+        while (calmSince < 0 || Time.realtimeSinceStartup - calmSince < 0.8f)
         {
             var tsm = GManager.instance.turnStateMachine;
             bool busy = tsm.isExecuting || tsm.IsSelecting || tsm.gameContext.TurnPhase != GameContext.phase.Main || tsm.gameContext.TurnPlayer != GManager.instance.You || tsm.endGame;
-            calm = busy ? 0 : calm + 1;
+            if (tsm.gameContext.TurnPlayer != GManager.instance.You && !tsm.endGame) { log.Add("[harness] turn passed to opponent (state below is from before that)"); turnPassed = true; yield break; }
+            if (busy) calmSince = -1; else { if (calmSince < 0) calmSince = Time.realtimeSinceStartup; try { lastSnap = Side(GManager.instance.You) + "|" + Side(GManager.instance.Opponent); } catch { } }
             if (tsm.endGame) { log.Add("[harness] game ended"); yield break; }
             if (Time.realtimeSinceStartup - t0 > timeout) { log.Add($"[harness] idle timeout (executing={tsm.isExecuting} selecting={tsm.IsSelecting} phase={tsm.gameContext.TurnPhase})"); yield break; }
             yield return null;
@@ -193,7 +198,7 @@ public class HarnessRunner : MonoBehaviour
         {
             var g = GManager.instance;
             json = "{\"id\":" + Q(job != null ? job.id : "") + ",\"fatal\":" + Q(fatal) +
-                   (g != null && g.You != null ? ",\"you\":" + Side(g.You) + ",\"opp\":" + Side(g.Opponent) : "") +
+                   (g != null && g.You != null ? ",\"you\":" + (turnPassed && lastSnap != null ? lastSnap.Split('|')[0] : Side(g.You)) + ",\"opp\":" + (turnPassed && lastSnap != null ? lastSnap.Split('|')[1] : Side(g.Opponent)) : "") +
                    ",\"log\":" + Arr(log) + ",\"errors\":" + Arr(errors.Take(50)) + "}";
         }
         catch (Exception e) { json = "{\"fatal\":" + Q("finish failed: " + e.Message) + ",\"log\":" + Arr(log) + "}"; }

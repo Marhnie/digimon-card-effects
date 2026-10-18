@@ -1,0 +1,1 @@
+{"id":"smoke","you":{"memory":10,"hand":["BT23-031"],"security":[]},"opp":{"memory":0},"steps":[{"do":"play","card":"BT23-031"}],"timeScale":20}
