@@ -105,7 +105,7 @@ function comboQA(){const cs=involved();if(cs.length<2)return [];
   return hits.sort((a,b)=>b.s-a.s).slice(0,10).map(x=>x.q)}
 function precedents(){
   const u=mainUnit();const key=[...ST.sl].sort((a,b)=>a-b).join(',');const myneg=ST.sl.has(NEGI)?1:0;
-  const pool=QA.filter(q=>q.y>=0&&q.it===ST.it&&q.slk===key);
+  const EXP=window.__exProducts;const pool=QA.filter(q=>q.y>=0&&q.it===ST.it&&q.slk===key&&!(EXP&&EXP.has((q.card.match(/^([A-Z]+\d*)-/)||[])[1])));
   const tierOf=q=>{const v=q.unit>=0?U[q.unit]:null;if(!v||u.p==null)return 2;if(v.p===u.p)return 0;if(v.types.some(t=>u.types.includes(t)))return 1;return 2};
   const combo=comboQA();
   for(let t=0;t<3;t++){const c=pool.filter(q=>tierOf(q)===t);if(!c.length)continue;
@@ -180,6 +180,7 @@ async function whyNoClaude(){const framed=(()=>{try{return window.top!==window.s
   if(st==='denied')return {msg:'이 페이지의 Claude 사용 허락이 거절되어 있습니다. 「권한 설정 열기」에서 허용으로 바꾼 뒤 다시 시도해 주세요.',manage:true};
   return {msg:'지금 이 화면에서는 Claude를 쓸 수 없습니다. claude.ai에 로그인되어 있는지 확인해 주세요. 공개 링크로 연 경우 계정·조직 설정에 따라 Claude 호출이 막혀 있을 수 있습니다. 근거 탭의 공식 Q&A·룰 조항은 그대로 볼 수 있습니다.'}}
 async function askClaude(){
+  if(DIST)return;
   if(ST.busy)return;const u=mainUnit();if(!u)return;
   ST.busy=true;ST.ai={wait:true};renderResult();updateGo();
   const sample=await getSample();
@@ -231,13 +232,16 @@ const ISS=(D.issues||[]).map(x=>({...x,re:new RegExp(x.cue),ask:new RegExp(x.ask
 function detectIssues(){const q=ST.q||'';const trig=involvedUnits().some(u=>{const s=strOf(u);return s&&(s[0]==='유발형'||s[0]==='즉시형'||s[1].length)});
   return ISS.filter(x=>x.re.test(q)&&x.ask.test(q)&&!(x.not&&x.not.test(q))&&(!x.needs_trigger||trig))}
 function involvedUnits(){const out=[];const u=mainUnit();if(u)out.push(u);for(const x of extras()){if(x.unit>=0)out.push(U[x.unit]);else(byCard[x.no]||[]).forEach(v=>out.push(v))}return out}
-function issueVerdict(iss){if(!iss)return null;const myneg=ST.sl.has(NEGI)?1:0;const ys=iss.qa.map(i=>QA[i]).filter(q=>q.y>=0).map(q=>q.y^(q.neg^myneg));
+function issueVerdict(iss){if(!iss)return null;const myneg=ST.sl.has(NEGI)?1:0;const EXP=window.__exProducts;const ys=iss.qa.map(i=>QA[i]).filter(q=>!(EXP&&EXP.has((q.card.match(/^([A-Z]+\d*)-/)||[])[1]))).filter(q=>q.y>=0).map(q=>q.y^(q.neg^myneg));
   if(ys.length<3)return null;const yes=ys.filter(v=>v===1).length;if(yes!==0&&yes!==ys.length)return null;return {ans:yes?1:0,n:ys.length,iss}}
 
 
 /* ---------- engine lite (E19b): Claude-free answer + calibrated confidence from page-computable signals ---------- */
 const ENG=D.eng||null,RGOF=(D.rg&&D.rg.of)||{},RGG=(D.rg&&D.rg.g)||[];
 const sigm=x=>1/(1+Math.exp(-x));
+window.__decTest=()=>{const R=ST.res;if(!R)return null;const d=decisive();let ans=null,by=null;
+  if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}
+  return {dec:d,by,ans}};
 window.__crefTest=()=>({auto:ST.res&&ST.res.auto,cref:ST.res&&ST.res.cref?{ans:ST.res.cref.ans,qi:ST.res.cref.q.i}:null});
 window.__engTest=()=>({card:ST.cards[0]&&ST.cards[0].no,eng:engineLite(similarQA(30))});   // test hook (tests/teng.js)
 function engineLite(sim){if(!ENG||!sim||!sim.length)return null;const u=mainUnit();const main=ST.cards[0]?ST.cards[0].no:'';
@@ -273,7 +277,7 @@ function crMatch(){const c=ST.cards[0];if(!c||!ST.q.trim()||!CR.list.length)retu
     const s=simQ(ST.q,r.q||'');const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
     if(!best||s>best.s)best={r,s,ans:r.ans^((r.neg?1:0)^myneg)}}
   return best}
-function crCandidate(){const R=ST.res,A=ST.ai;if(!R)return null;
+function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null)return null;
   if(A&&A.r){const v=A.r.verdict;return {ans:v==='네'?1:v==='아니요'?0:null,src:'claude',summary:String(A.r.summary||'')}}
   if(A&&(A.wait||A.err))return null;
   if(R.cr||R.level==='sure')return null;
@@ -346,13 +350,34 @@ function comboRef(){const u=mainUnit();const xs=extras();if(!u||!xs.length)retur
     const s=simQ(ST.q,q.q)+(tm?0.25:0)+(nm?0.3:0);if(!best||s>best.s)best={q,s,ans:q.y^(q.neg^myneg),via:x.no}}
   return best&&best.s>=0.27?best:null}
 
+
+/* ---------- question autocomplete (E25): official question wording for this card / same effect pattern ---------- */
+let SUGG=[],SUGI=-1;
+function suggestions(limit=8){const u=mainUnit();const c=ST.cards[0];if(!u||!c)return [];const typed=ST.q.trim();
+  const own=QA.filter(q=>q.card===c.no&&(q.unit===u.i||q.unit<0||U[q.unit]&&U[q.unit].card===c.no));
+  const pat=u.p==null?[]:QA.filter(q=>q.card!==c.no&&q.unit>=0&&U[q.unit]&&U[q.unit].p===u.p&&q.y>=0);
+  const sc=q=>typed?simQ(typed,q.q):0;
+  const ownR=own.map(q=>({q,s:sc(q)+0.15,src:'이 카드 공식 질문'}));
+  // same effect pattern: one representative per (asked, situation) template, the most frequent templates first
+  const by=new Map();for(const q of pat){const k=intentOf(q.q)+'|'+slotsOf(q.q).sort((a,b)=>a-b).join(',');const g=by.get(k)||{n:0,best:null,bs:-1};g.n++;const s=sc(q);if(s>g.bs){g.bs=s;g.best=q}by.set(k,g)}
+  const patR=[...by.values()].map(g=>({q:g.best,s:g.bs+Math.min(0.1,g.n*0.01),n:g.n,src:'같은 효과 패턴 질문'}));
+  const all=[...ownR,...patR].filter(x=>!typed||x.s>=0.08||x.src==='이 카드 공식 질문').sort((a,b)=>b.s-a.s);
+  return all.slice(0,limit)}
+function renderSugg(){const el=document.getElementById('sugg');if(!el)return;SUGG=(document.activeElement===$('askq')||ST.suggOpen)?suggestions():[];
+  if(!SUGG.length){el.innerHTML='';el.hidden=true;return}el.hidden=false;
+  el.innerHTML=`<div class="sugg-h">비슷한 공식 질문 문장으로 고르면 Claude 없이 더 정확하게 답합니다 · ↑↓ Enter</div>`+SUGG.map((x,k)=>`<button type="button" class="sg${k===SUGI?' on':''}" role="option" aria-selected="${k===SUGI}" data-sg="${k}"><span class="sg-src">${esc(x.src)}${x.q.card!==(ST.cards[0]||{}).no?` · ${esc(x.q.card)}`:''}${x.n>1?` · 같은 틀 ${x.n}건`:''}</span>${esc(x.q.q)}</button>`).join('')}
+function pickSugg(k){const x=SUGG[k];if(!x)return;const q=x.q;
+  // keep the official wording; another card's question keeps its template (asked + situation) even if the user edits names
+  ST.q=q.q;$('askq').value=q.q;ST.it=intentOf(q.q);ST.itManual=true;ST.sl=new Set(slotsOf(q.q));ST.manual=new Set(SLOT.map(s=>s.i));ST.pickQ=q.card===(ST.cards[0]||{}).no?q.i:null;
+  ST.suggOpen=false;SUGI=-1;renderSugg();renderMeta();updateGo();judge()}
+
 /* ---------- result ---------- */
 const yn=a=>a?'네':'아니요';
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';CR.code='';ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  CR.done=false;CR.msg='';CR.code='';if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
   if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
@@ -368,6 +393,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
       const rs=(Array.isArray(r.reasons)?r.reasons:[]).map(x=>`<li>${esc(x.text||'')} ${cite(x.cite)}</li>`).join('');
       h+=`<div class="verdict v-ai"><span class="badge">Claude 판정 · 근거 ${(A.ev||[]).length}건 검토</span><div class="ans">${esc(r.verdict||'?')}</div>${(()=>{const c=Number(r.conf);if(!isFinite(c))return '';const hi=c>=0.8;return `<div class="conf ${hi?'hi':'lo'}">${hi?'확신 높음':'확신 낮음 · 심판이나 운영자 확인 권장'} <b>${Math.round(c*100)}%</b><span>${hi?'시험 200문항에서 확신 80% 이상 판정은 모두 공식 답과 같았습니다':'시험에서 확신 80% 미만 판정은 약 91%만 맞았습니다'}</span></div>`})()}<div class="why">${esc(r.summary||'')}</div>${rs?`<ol class="reasons">${rs}</ol>`:''}${r.caution?`<div class="sub">주의: ${esc(r.caution)}</div>`:''}<div class="sub">공식 판정이 아닌 근거 정리입니다. 대회에서는 저지 확인을 거쳐 주세요.</div></div>`}
   }
+  if(R&&ST.pickQ!=null&&!(A&&A.r)){const q=QA[ST.pickQ];
+    h=`<div class="verdict v-sure"><span class="badge">공식 Q&amp;A · ${esc(q.card)} ${esc(cname(q.card))}</span><div class="ans">${q.y>=0?yn(q.y):'공식 답'}</div><div class="why">${esc(q.a)}</div><div class="sub">고른 질문이 이 카드의 공식 Q&amp;A와 같습니다.</div></div>`;return h}
   if(R&&R.cr&&!(A&&A.r)){const M=R.cr,r=M.r;const d=String(r.at||'').slice(0,10);
     h=`<div class="verdict v-sure"><span class="badge">확인된 판정 · Claude 없이 · 질문 유사도 ${Math.round(M.s*100)}%</span><div class="ans">${yn(M.ans)}</div><div class="why">같은 카드에 대해 사람이 확인한 판정입니다${r.src&&SRCN[r.src]?` (처음 판정: ${esc(SRCN[r.src])}${r.agreed===false?' → 확인 때 바로잡음':''})`:''}.</div><div class="sub">확인한 질문: ${esc(r.q||'')}${r.note?`<br>메모: ${esc(r.note)}`:''}${d?` · ${esc(d)}`:''}${(r.neg?1:0)!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.iv&&!(A&&A.r)){const V=R.iv;
@@ -412,9 +439,10 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');
   return `<div class="ev"><div class="tabs" role="tablist">${tabs.map(([k,n,c])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${ST.tab===k}">${n}<span class="n">${c}</span></button>`).join('')}</div><div class="tabp" role="tabpanel">${body}</div></div>`}
-function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||R.cr||R.iv||R.level==='sure'||(R.eng&&R.eng.sure))return '';
-  return `<div class="crbar"><div class="crq"><b>Claude에게 물어볼 수 있습니다.</b> 확실한 선례가 없는 질문입니다. Claude가 근거 Q&amp;A와 종합 룰을 모아 판정합니다(30초~1분, 이 페이지를 연 분의 Claude 사용량을 씁니다. claude.ai에 로그인한 상태여야 합니다).</div><div class="row"><button class="btn2 pri" type="button" data-askai="1">Claude에게 묻기</button></div></div>`}
-function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?v+(v.includes('질문에서 「')?'':autoNote())+aiOffer()+crPanel()+tabsHTML():''}
+function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
+function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||decisive())return '';
+  return `<div class="verdict v-none"><span class="badge">판정 보류 · 심판 확인 필요</span><div class="why">공식 Q&amp;A·확인된 판정·룰 쟁점 가운데 이 질문에 확실히 맞는 근거가 없습니다. 아래 참고 자료는 정답이 아닐 수 있습니다.</div><div class="sub">질문 칸의 추천 문장으로 다시 물으면 맞는 근거를 찾을 수 있습니다. 정답을 아는 분은 아래에서 알려 주세요 — 심판이 확인하면 판정으로 쌓여 다음부터 바로 답합니다.</div></div>`}
+function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?(DIST?aiOffer()+v:v+aiOffer())+(v.includes('질문에서 「')?'':autoNote())+crPanel()+tabsHTML():''}
 
 /* ---------- examples ---------- */
 const EXQ=__EXQ__;
@@ -427,8 +455,15 @@ function renderExamples(){const pick=lv=>EXQ.map((x,i)=>({x,i})).filter(o=>o.x.l
   $('exs').innerHTML='예시:'+show.map(({x,i})=>`<button type="button" data-ex="${i}"><span class="lv lv-${x.level.split(' ')[0]}">${esc(x.level)}</span>${esc(x.ask_name)}</button>`).join('')}
 
 /* ---------- events ---------- */
-$('askq').addEventListener('input',e=>{ST.q=e.target.value;syncMeta();renderMeta();updateGo();if(ST.res||ST.ai)resetResult()});
-$('askq').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(!$('go').disabled)judge()}});
+$('askq').addEventListener('input',e=>{ST.q=e.target.value;ST.pickQ=null;syncMeta();renderMeta();updateGo();if(ST.res||ST.ai)resetResult();SUGI=-1;renderSugg()});
+(()=>{const s=document.createElement('div');s.id='sugg';s.className='sugg';s.setAttribute('role','listbox');s.hidden=true;$('askq').insertAdjacentElement('afterend',s)})();
+$('askq').addEventListener('focus',()=>{renderSugg()});
+$('askq').addEventListener('blur',()=>{setTimeout(()=>{if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#sugg')))renderSugg()},150)});
+$('askq').addEventListener('keydown',e=>{
+  if(SUGG.length&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();const n=SUGG.length+1;SUGI=((SUGI+1+(e.key==='ArrowDown'?1:-1))%n+n)%n-1;renderSugg();return}
+  if(e.key==='Escape'){SUGG=[];const s=$('sugg');if(s){s.hidden=true}return}
+  if(e.key==='Enter'&&!e.shiftKey&&SUGI>=0&&SUGG[SUGI]){e.preventDefault();pickSugg(SUGI);return}
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(!$('go').disabled)judge()}});
 $('go').onclick=judge;
 $('pastetoggle').onclick=()=>{ST.pasteOpen=!ST.pasteOpen;if(ST.pasteOpen){ST.cards=[];ST.sel=null}else{ST.pasted=null;ST.sel=null}
   $('pastetoggle').textContent=ST.pasteOpen?'카드로 고르기':'카드 대신 효과 문구로';resetResult();renderCards();updateGo();if(ST.pasteOpen)$('pastebox').focus()};
@@ -443,6 +478,7 @@ document.addEventListener('click',e=>{const t=e.target;
   const sl=t.closest('[data-slot]');if(sl){const k=+sl.dataset.slot;ST.manual.add(k);if(ST.sl.has(k))ST.sl.delete(k);else ST.sl.add(k);renderMeta();resetResult();return}
   const tb=t.closest('[data-tab]');if(tb){ST.tab=tb.dataset.tab;renderResult();return}
   const ci=t.closest('[data-cite]');if(ci){ST.tab='ai';renderResult();const el=$('it-'+ci.dataset.cite);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'})}return}
+  const sg=t.closest('[data-sg]');if(sg){pickSugg(+sg.dataset.sg);return}
   if(t.closest('[data-askai]')){askClaude();return}
   const cs=t.closest('[data-crsave]');if(cs){crSave(+cs.dataset.crsave);return}
   const cr=t.closest('[data-crrep]');if(cr){crReport(+cr.dataset.crrep);return}

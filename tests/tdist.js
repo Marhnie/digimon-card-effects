@@ -22,7 +22,7 @@ async function ask(P,q){const {w,d}=P;const $=i=>d.getElementById(i);const type=
   // viewer (no write)
   const V=page(false,[]);await sleep(300);await ask(V,Q);
   ok(V.calls()===0,'distribution: Claude not called automatically');
-  ok(V.d.querySelector('[data-askai]'),'「Claude에게 묻기」 button offered');
+  ok(/판정 보류/.test(V.d.getElementById('result').textContent),'undecided → 판정 보류 shown (no Claude)');
   ok(/정답을 알고 계신가요/.test(V.d.getElementById('result').textContent),'viewer sees report panel');
   ok(!V.d.getElementById('crimport'),'viewer has no import box');
   V.d.getElementById('crnote').value='공식 Q&A 기준';V.d.querySelector('[data-crrep]').click();await sleep(20);

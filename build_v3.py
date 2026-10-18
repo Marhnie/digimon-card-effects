@@ -14,7 +14,8 @@ data=open('test_data4.json',encoding='utf-8').read()
 import sys
 DIST='--dist' in sys.argv
 if DIST:
-    head=head.replace('<title>디지몬 판정 도우미</title>','<title>디지몬 카드 판정 도우미</title>').replace('<span class="tagline">같은 선례가 있으면 바로, 없으면 Claude가 근거를 찾아 판정합니다</span>','<span class="tagline">공식 Q&amp;A·종합 룰과 확인된 판정으로 답합니다 · 비공식 도구이며 최종 판정은 대회 심판에게 확인하세요</span>')
+    head=head.replace('<title>디지몬 판정 도우미</title>','<title>디지몬 카드 판정 도우미</title>').replace('<span class="tagline">같은 선례가 있으면 바로, 없으면 Claude가 근거를 찾아 판정합니다</span>','<span class="tagline">공식 Q&amp;A·종합 룰·심판이 확인한 판정으로만 답합니다(AI 판정 없음) · 비공식 도구이며 최종 판정은 대회 심판에게 확인하세요</span>')
+    head=head.replace('</style>','[data-askai]{display:none!important}\n</style>',1)
 html=head+('\n<script>window.__DIST__=1</script>' if DIST else '')+'\n<script id="data" type="application/json">'+data+'</script>\n<script>\n(function(){\n'+logic+'\n'+render+'\n'+showpat+'\n'+ui+'\n})();\n</script>\n'
 open('card-effect-dist.html' if DIST else 'card-effect-test.html','w',encoding='utf-8').write(html)
 print(len(html))
