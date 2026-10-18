@@ -1,0 +1,97 @@
+# GPU 학습: Claude 없는 판정 모델
+
+판정 도우미의 목표는 **Claude 없이, 확신할 때만 답하는 것**입니다. 이 폴더는 그 판정을 학습된 모델로 해 보기 위한 데이터와 스크립트입니다.
+
+비교 기준(브라우저 엔진, E19·E25·E26)은 다음과 같습니다.
+
+| 질문 | 지금 엔진 | 모델이 넘어야 할 것 |
+|---|---|---|
+| 네/아니요 (최신 팩 597) | 확신 0.8 이상에서 **48% @ 99%** | 같은 정확도에서 더 넓은 범위 |
+| 설명형 (최신 팩 290) | 같은 질문의 공식 답변 재사용 **42% (117/118 일치)** | 같은 일치율에서 더 넓은 범위 |
+
+## 1. 준비
+
+```bash
+git clone https://github.com/Marhnie/digimon-card-effects.git
+cd digimon-card-effects
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install torch --index-url https://download.pytorch.org/whl/cu124   # GPU의 CUDA 버전에 맞춰
+pip install -r train/requirements.txt
+python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+```
+
+## 2. 데이터
+
+`train/data/`에 이미 만들어 두었습니다. 다시 만들려면 다음을 실행합니다. 표준 라이브러리만 쓰고, 약 20초 걸립니다.
+
+```bash
+python train/export_dataset.py
+```
+
+**시간 분할**
+- test: 최신 팩(BT22·BT23·BT24·EX9·EX10·ST21·ST22).
+- train과 valid: 그 이전 팩. 카드 단위로 나눠서 valid의 10%는 train과 같은 카드가 없습니다.
+
+**파일과 필드**
+
+| 파일 | 내용 |
+|---|---|
+| `yesno_*.jsonl` | 네/아니요 질문. 필드: `question`, `effect`(한글 효과), `card_text_en`(DCGO 영문, 최신 팩 보충), `label`(1=네), `neighbours`(이전 팩의 비슷한 공식 Q&A K개와 정렬된 답) |
+| `explain_*.jsonl` | 설명형 질문과 공식 답변(`answer`) |
+| `engine_test.json` | 브라우저 엔진의 test 예측(비교용) |
+
+**누설 방지:** `neighbours`에는 자기 자신이 들어가지 않습니다. 거의 같은 문항(Jaccard > 0.8)과 train 쪽 근거만 넣습니다.
+
+## 3. 학습
+
+**네/아니요 판정 (cross-encoder, 입력에 선례 포함)**
+
+```bash
+python train/train_yesno.py --model klue/roberta-large --epochs 4 --bs 16 --lr 1.5e-5        # 24GB GPU 기준
+python train/train_yesno.py --model klue/roberta-large --bs 8 --grad_accum 2                 # 메모리가 작을 때
+python train/train_yesno.py --model klue/roberta-base --max_len 384                          # 가볍게
+python train/train_yesno.py --model klue/roberta-large --k 0 --name nok                      # 선례 없이(비교 실험)
+```
+
+**설명형 답변 검색 (bi-encoder)**
+
+```bash
+python train/train_explain.py --model jhgan/ko-sroberta-multitask --epochs 3 --bs 64
+```
+
+**CPU에서 동작만 확인 (몇 초)**
+
+```bash
+python train/train_yesno.py --tiny
+python train/train_explain.py --tiny
+```
+
+## 4. 결과 보는 법
+
+결과는 `train/runs/<이름>/metrics.json`에 저장됩니다.
+
+**네/아니요 (`train_yesno.py`)**
+
+| 항목 | 의미 |
+|---|---|
+| `test.cov@99` | 확신이 높은 순으로 답할 때 정확도 99%를 유지하며 답할 수 있는 비율. 엔진은 약 0.48 |
+| `test_with_valid_threshold` | **valid에서 고른 문턱**을 test에 그대로 적용한 결과. 정직한 수치이니 이걸 보고하세요 |
+| `vs_engine.union_*` | 엔진이 확신하거나 모델이 확신할 때 답한다고 볼 때의 범위와 정확도 |
+
+**설명형 (`train_explain.py`)**
+
+| 항목 | 의미 |
+|---|---|
+| `curve` | 코사인 문턱별 범위(`coverage`)와 공식 답변 일치율(`agree`) |
+
+모델 가중치는 저장소에 올리지 않습니다(`.gitignore`). `metrics.json`, `test_pred.json`, `test_retrieval.json`만 커밋하면 결과를 공유할 수 있습니다.
+
+```bash
+git add train/runs && git commit -m "GPU 학습 결과: <모델>" && git push
+```
+
+## 5. 주의
+
+- test(최신 팩)로 하이퍼파라미터를 고르지 마세요. 문턱과 에폭은 valid로 고릅니다.
+- 학습된 모델도 「Claude 없이」라는 조건은 지킵니다. 다만 판정 도우미(브라우저)에 넣으려면 ONNX나 경량 모델로 바꾸거나 서버가 필요합니다. 그건 결과를 보고 정합니다.
+- 데이터는 공식 Q&A·카드 텍스트(공개 정보)와 DCGO 카드 스크립트의 영문 텍스트(MIT)입니다. 검수자 개인 기록은 들어 있지 않습니다.

@@ -30,3 +30,10 @@ gold_x.txt
 struct_before.json
 net/effect_sna_named_src.json
 card-effect-dist.html
+
+# GPU training: keep metrics and predictions, not model weights
+train/runs/**
+!train/runs/*/
+!train/runs/*/metrics.json
+!train/runs/*/test_pred.json
+!train/runs/*/test_retrieval.json
