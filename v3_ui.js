@@ -250,11 +250,13 @@ function engineLite(sim){if(!ENG||!sim||!sim.length)return null;const u=mainUnit
 
 
 /* ---------- confirmed rulings (확인 판정): a judge confirms or corrects a verdict → shared db → reused without Claude ---------- */
-const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false};
+const DIST=window.__DIST__===1;   // public distribution build: Claude on request, viewers send report codes
+const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false,canWrite:null,code:''};
 window.__rulings=CR;   // test hook (tests/tcr.js)
 (async()=>{try{const use=window.claude&&window.claude.use;if(!use){CR.state='off';return}
   const db=await use('db');if(!db){CR.state='off';if(ST.res)renderResult();return}
-  CR.db=db;try{const user=await use('user');CR.me=user?await user.id():null}catch(e){}
+  CR.db=db;try{const user=await use('user');if(user){CR.me=await user.id();CR.canWrite=await user.can('data.write')}}catch(e){}
+  renderImport();
   db.collection('rulings').onSnapshot(s=>{CR.list=s.docs.map(d=>({id:d.id,...d.data()}));const was=CR.state;CR.state='on';if(ST.res){const m=ST.res.level==='sure'?null:crMatch();const had=ST.res.cr;ST.res.cr=m;if(was!=='on'||!!m!==!!had)renderResult()}},
     e=>{CR.state='off';CR.msg='확인 판정을 불러오지 못했습니다.'})}catch(e){CR.state='off'}})();
 const crKey=()=>extras().map(x=>x.no).sort().join(',');
@@ -274,20 +276,45 @@ function crCandidate(){const R=ST.res,A=ST.ai;if(!R)return null;
   if(R.gv)return {ans:R.gv.ans,src:'group',summary:''};
   if(R.est)return {ans:R.est.ans,src:'estimate',summary:''};
   return {ans:null,src:'none',summary:''}}
-const SRCN={claude:'Claude 판정',issue:'룰 쟁점',engine:'엔진 판정',precedent:'선례 참고',group:'쟁점 그룹',estimate:'비슷한 질문 추정',none:'직접 판정'};
+const SRCN={report:'이용자 제보',claude:'Claude 판정',issue:'룰 쟁점',engine:'엔진 판정',precedent:'선례 참고',group:'쟁점 그룹',estimate:'비슷한 질문 추정',none:'직접 판정'};
 function crPanel(){const c=crCandidate();if(!c||!ST.cards[0])return '';
-  if(CR.state!=='on')return CR.state==='loading'?'':`<div class="crbar"><div class="sub">판정을 확인해 저장하려면 claude.ai에 로그인한 상태로 이 페이지를 열어야 합니다.</div></div>`;
+  if(CR.state==='loading')return '';
+  if(CR.state!=='on'||CR.canWrite===false)return reportPanel(c);
   if(CR.done)return `<div class="crbar ok"><b>저장했습니다.</b> 같은 카드·비슷한 질문이 다시 오면 Claude 없이 이 판정으로 답합니다.</div>`;
   const b=(a,l,cls)=>`<button class="btn2${cls?' '+cls:''}" type="button" data-crsave="${a}"${CR.saving?' disabled':''}>${l}</button>`;
   return `<div class="crbar"><div class="crq"><b>판정 확인</b> ${c.ans==null?'이 질문의 정답을 알고 있다면 저장해 주세요.':`위 ${esc(SRCN[c.src])} 「${yn(c.ans)}」가 맞나요?`} 확인한 판정은 저장되어, 같은 질문이 다시 오면 Claude 없이 바로 답합니다.</div>
     <div class="row">${c.ans==null?b(1,'정답은 네','pri')+b(0,'정답은 아니요','pri'):b(c.ans,'맞음 · 저장','pri')+b(1-c.ans,`틀림 · 「${yn(1-c.ans)}」로 저장`)}<input id="crnote" type="text" maxlength="300" placeholder="메모(선택): 근거·상황" aria-label="확인 판정 메모"></div>${CR.msg?`<div class="sub">${esc(CR.msg)}</div>`:''}</div>`}
+
+// viewers without write access: build a report code (JD1:base64 JSON) to send to an operator, who imports it
+const b64e=s=>{const b=new TextEncoder().encode(s);let x='';for(let i=0;i<b.length;i+=8192)x+=String.fromCharCode.apply(null,b.subarray(i,i+8192));return btoa(x)};
+const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s),ch=>ch.charCodeAt(0)));
+function crDoc(ans,c,note){const u=mainUnit();return {card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
+  ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:(c.summary||'').slice(0,500),note:(note||'').slice(0,300),by:CR.me||'',at:new Date().toISOString()}}
+function reportPanel(c){
+  if(CR.code)return `<div class="crbar ok"><b>코드를 만들었습니다.</b> 아래 코드를 복사해 운영자(심판)에게 보내 주세요. 운영자가 확인하면 같은 질문에 Claude 없이 바로 답하게 됩니다.<textarea class="crcode" readonly rows="3" aria-label="보낼 코드">${esc(CR.code)}</textarea><div class="row"><button class="btn2 pri" type="button" data-crcopy="1">코드 복사</button></div>${CR.msg?`<div class="sub">${esc(CR.msg)}</div>`:''}</div>`;
+  const b=(a,l,cls)=>`<button class="btn2${cls?' '+cls:''}" type="button" data-crrep="${a}">${l}</button>`;
+  return `<div class="crbar"><div class="crq"><b>정답을 알고 계신가요?</b> ${c.ans==null?'':`위 판정은 「${yn(c.ans)}」입니다. `}맞는지 틀리는지 알려 주시면 운영자가 확인해 판정으로 쌓습니다.</div>
+    <div class="row">${c.ans==null?b(1,'정답은 네','pri')+b(0,'정답은 아니요','pri'):b(c.ans,'맞아요','pri')+b(1-c.ans,`틀려요 · 정답은 「${yn(1-c.ans)}」`)}<input id="crnote" type="text" maxlength="300" placeholder="근거(선택): 공식 Q&A·대회 판정 등" aria-label="근거 메모"></div></div>`}
+function crReport(ans){const c=crCandidate();if(!c||!ST.cards[0])return;const note=(document.getElementById('crnote')||{}).value||'';
+  CR.code='JD1:'+b64e(JSON.stringify(crDoc(ans,c,note)));CR.msg='';renderResult()}
+// operators: paste report codes → saved as confirmed rulings
+function renderImport(){if(!CR.db||CR.canWrite===false)return;if(document.getElementById('crimport'))return;
+  const el=document.createElement('details');el.id='crimport';el.className='browse';
+  el.innerHTML=`<summary>받은 판정 코드 가져오기 (운영자)</summary><div class="crbar"><div class="sub">이용자가 보낸 「JD1:」 코드를 한 줄에 하나씩 붙여 넣고 내용을 확인한 뒤 저장하세요. 저장한 판정은 같은 질문에 Claude 없이 답하는 데 쓰입니다.</div><textarea id="crin" rows="4" aria-label="받은 코드"></textarea><div class="row"><button class="btn2" type="button" id="crpreview">내용 보기</button><button class="btn2 pri" type="button" id="crimp" disabled>확인 판정으로 저장</button></div><div id="crprev"></div></div>`;
+  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor)}
+let CRIN=[];
+function parseCodes(txt){const out=[],bad=[];for(const line of txt.split(/\s+/).filter(Boolean)){try{if(!line.startsWith('JD1:'))throw 0;const d=JSON.parse(b64d(line.slice(4)));
+  if(typeof d.card!=='string'||typeof d.q!=='string'||(d.ans!==0&&d.ans!==1))throw 0;
+  out.push({card:d.card.slice(0,20),others:String(d.others||'').slice(0,200),unit:Number.isInteger(d.unit)?d.unit:-1,q:d.q.slice(0,1000),neg:d.neg?1:0,it:d.it==null?null:d.it,slots:Array.isArray(d.slots)?d.slots.filter(Number.isInteger).slice(0,30):[],
+    ans:d.ans,src:'report',agreed:typeof d.agreed==='boolean'?d.agreed:null,summary:String(d.summary||'').slice(0,500),note:String(d.note||'').slice(0,300),reporter:String(d.by||'').slice(0,80),reported_at:String(d.at||'').slice(0,40),by:CR.me||'',at:new Date().toISOString()})}catch(e){bad.push(line.slice(0,24))}}
+  return {out,bad}}
 async function crSave(ans){const c=crCandidate();const u=mainUnit();if(!CR.db||!c||!ST.cards[0]||CR.saving)return;
   const note=(document.getElementById('crnote')||{}).value||'';
   CR.saving=true;CR.msg='';renderResult();
   const doc={card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
     ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:c.summary.slice(0,500),note:note.slice(0,300),by:CR.me||'',at:new Date().toISOString()};
   try{await CR.db.collection('rulings').add(doc);CR.done=true}
-  catch(e){CR.msg=e&&e.code==='permission_denied'?'저장 권한이 없습니다. 페이지 주인에게 「참여」 이상 권한을 받아야 합니다.':'저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'}
+  catch(e){if(e&&e.code==='permission_denied'){CR.canWrite=false;CR.msg='저장 권한이 없어 운영자에게 보낼 코드로 바꿨습니다.'}else CR.msg='저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'}
   finally{CR.saving=false;renderResult()}}
 
 /* ---------- result ---------- */
@@ -296,10 +323,10 @@ const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><spa
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';ST.res=precedents();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  CR.done=false;CR.msg='';CR.code='';ST.res=precedents();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if((ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
+  if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
@@ -353,7 +380,9 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');
   return `<div class="ev"><div class="tabs" role="tablist">${tabs.map(([k,n,c])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${ST.tab===k}">${n}<span class="n">${c}</span></button>`).join('')}</div><div class="tabp" role="tabpanel">${body}</div></div>`}
-function renderResult(){$('result').innerHTML=ST.res||ST.ai?verdictHTML()+crPanel()+tabsHTML():''}
+function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||R.cr||R.iv||R.level==='sure'||(R.eng&&R.eng.sure))return '';
+  return `<div class="crbar"><div class="crq"><b>Claude에게 물어볼 수 있습니다.</b> 확실한 선례가 없는 질문입니다. Claude가 근거 Q&amp;A와 종합 룰을 모아 판정합니다(30초~1분, 이 페이지를 연 분의 Claude 사용량을 씁니다. claude.ai에 로그인한 상태여야 합니다).</div><div class="row"><button class="btn2 pri" type="button" data-askai="1">Claude에게 묻기</button></div></div>`}
+function renderResult(){$('result').innerHTML=ST.res||ST.ai?verdictHTML()+aiOffer()+crPanel()+tabsHTML():''}
 
 /* ---------- examples ---------- */
 const EXQ=__EXQ__;
@@ -384,6 +413,15 @@ document.addEventListener('click',e=>{const t=e.target;
   const ci=t.closest('[data-cite]');if(ci){ST.tab='ai';renderResult();const el=$('it-'+ci.dataset.cite);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'})}return}
   if(t.closest('[data-askai]')){askClaude();return}
   const cs=t.closest('[data-crsave]');if(cs){crSave(+cs.dataset.crsave);return}
+  const cr=t.closest('[data-crrep]');if(cr){crReport(+cr.dataset.crrep);return}
+  if(t.closest('[data-crcopy]')){const ta=document.querySelector('.crcode');const done=()=>{CR.msg='복사했습니다.';renderResult()};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(CR.code).then(done,()=>{if(ta){ta.select();CR.msg='자동 복사가 막혀 있습니다. 코드를 길게 눌러 복사해 주세요.';renderResult()}});else{if(ta)ta.select();CR.msg='코드를 길게 눌러 복사해 주세요.';renderResult()}return}
+  if(t.id==='crpreview'){const r=parseCodes(($('crin')||{}).value||'');CRIN=r.out;
+    $('crprev').innerHTML=(r.out.map(d=>`<div class="item"><div class="src"><span class="cno">${esc(d.card)}</span><span>${esc(cname(d.card))}</span>${d.others?`<span>+ ${esc(d.others)}</span>`:''}<span class="yn">답: ${yn(d.ans)}</span></div><div class="q"><b>Q</b><span>${esc(d.q)}</span></div>${d.note?`<div class="a"><b>근거</b><span>${esc(d.note)}</span></div>`:''}</div>`).join('')||'')+(r.bad.length?`<div class="sub">읽지 못한 코드 ${r.bad.length}개</div>`:'')+(!r.out.length&&!r.bad.length?'<div class="sub">붙여 넣은 코드가 없습니다.</div>':'');
+    $('crimp').disabled=!r.out.length;return}
+  if(t.id==='crimp'){if(!CRIN.length||!CR.db)return;t.disabled=true;let n=0,fail=0;
+    (async()=>{for(const d of CRIN){try{await CR.db.collection('rulings').add(d);n++}catch(e){fail++}}
+      $('crprev').innerHTML=`<div class="sub">${n}건 저장했습니다.${fail?` ${fail}건은 저장하지 못했습니다(권한 확인).`:''}</div>`;$('crin').value='';CRIN=[]})();return}
   if(t.id==='aistop'&&ST.ctl){ST.ctl.abort();return}
   const ex=t.closest('[data-ex]');if(ex){loadExample(+ex.dataset.ex);return}
   // legacy browse view
