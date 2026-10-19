@@ -205,6 +205,16 @@ if os.path.exists('net/effect_sna_prev.json'):
     for c_, mem in enumerate(coarse):
         j, i = best([k for f in mem for k in fine[f]], pc)
         if j >= 0.5 and cname[c_] == cauto[c_]: cname[c_] = pcn[i]; tc += 1
+    # second pass (E29): clusters still unnamed take the best-overlapping previous name not used yet (Jaccard >= 0.3), so a
+    # rebuild after adding a set does not throw away human names when a cluster split or grew
+    for c_, mem in enumerate(fine):
+        if fname[c_] != fauto[c_]: continue
+        j, i = best(mem, pf)
+        if j >= 0.3 and pfn[i] not in set(fname): fname[c_] = pfn[i]; tf += 1
+    for c_, mem in enumerate(coarse):
+        if cname[c_] != cauto[c_]: continue
+        j, i = best([k for f in mem for k in fine[f]], pc)
+        if j >= 0.3 and pcn[i] not in set(cname): cname[c_] = pcn[i]; tc += 1
     print('이전 이름 이어받음: 세부', tf, '· 대분류', tc, '/ 이름 없는 세부', sum(1 for c_ in range(F) if fname[c_] == fauto[c_]), '대분류', sum(1 for c_ in range(len(coarse)) if cname[c_] == cauto[c_]))
 if os.path.exists('cluster_names_auto.json'):
     BA = json.load(open('cluster_names_auto.json', encoding='utf-8'))
