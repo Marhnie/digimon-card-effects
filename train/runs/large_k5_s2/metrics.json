@@ -1,0 +1,115 @@
+{
+ "args": {
+  "model": "klue/roberta-large",
+  "epochs": 4,
+  "bs": 4,
+  "grad_accum": 4,
+  "lr": 1.5e-05,
+  "max_len": 512,
+  "k": 5,
+  "seed": 2,
+  "fp16": false,
+  "name": "large_k5_s2",
+  "tiny": false
+ },
+ "history": [
+  {
+   "epoch": 1,
+   "loss": 0.1463,
+   "valid": {
+    "acc_all": 0.723,
+    "cov@95": 0.2936,
+    "thr@95": 0.8936,
+    "cov@97": 0.277,
+    "thr@97": 0.8965,
+    "cov@98": 0.0,
+    "thr@98": null,
+    "cov@99": 0.0,
+    "thr@99": null
+   },
+   "sec": 5517
+  },
+  {
+   "epoch": 2,
+   "loss": 0.1151,
+   "valid": {
+    "acc_all": 0.7645,
+    "cov@95": 0.3573,
+    "thr@95": 0.9413,
+    "cov@97": 0.3102,
+    "thr@97": 0.9559,
+    "cov@98": 0.2964,
+    "thr@98": 0.9586,
+    "cov@99": 0.2465,
+    "thr@99": 0.9766
+   },
+   "sec": 5521
+  },
+  {
+   "epoch": 3,
+   "loss": 0.0864,
+   "valid": {
+    "acc_all": 0.7839,
+    "cov@95": 0.5097,
+    "thr@95": 0.9819,
+    "cov@97": 0.3435,
+    "thr@97": 0.994,
+    "cov@98": 0.1994,
+    "thr@98": 0.9967,
+    "cov@99": 0.1662,
+    "thr@99": 0.997
+   },
+   "sec": 5588
+  },
+  {
+   "epoch": 4,
+   "loss": 0.0591,
+   "valid": {
+    "acc_all": 0.7895,
+    "cov@95": 0.5263,
+    "thr@95": 0.9893,
+    "cov@97": 0.3241,
+    "thr@97": 0.9967,
+    "cov@98": 0.3019,
+    "thr@98": 0.9972,
+    "cov@99": 0.1717,
+    "thr@99": 0.9979
+   },
+   "sec": 8433
+  }
+ ],
+ "test": {
+  "acc_all": 0.7672,
+  "cov@95": 0.4824,
+  "thr@95": 0.9914,
+  "cov@97": 0.464,
+  "thr@97": 0.9923,
+  "cov@98": 0.3668,
+  "thr@98": 0.9961,
+  "cov@99": 0.0,
+  "thr@99": null
+ },
+ "test_with_valid_threshold": {
+  "valid_thr@95": {
+   "thr": 0.9893,
+   "test_coverage": 0.4925,
+   "test_acc": 0.9422
+  },
+  "valid_thr@97": {
+   "thr": 0.9967,
+   "test_coverage": 0.3484,
+   "test_acc": 0.9808
+  },
+  "valid_thr@98": {
+   "thr": 0.9972,
+   "test_coverage": 0.3384,
+   "test_acc": 0.9851
+  }
+ },
+ "vs_engine": {
+  "engine_cov@thr0.80": 0.4824,
+  "engine_acc@thr0.80": 0.9896,
+  "union_cov": 0.5059,
+  "union_acc": 0.9901
+ }
+}
