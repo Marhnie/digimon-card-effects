@@ -8,8 +8,11 @@ NET = json.load(open('net/effect_sna.json', encoding='utf-8'))
 TRIG_TM = {'등장 시', '진화 시', '소멸 시', '어택 시', '링크 시', '시큐리티', '자신의 턴 개시 시', '상대의 턴 개시 시', '자신의 턴 종료 시',
            '상대의 턴 종료 시', '서로의 턴 종료 시', '자신의 메인 페이즈 개시 시', '상대의 메인 페이즈 개시 시', '어택 종료 시', '이동 시'}
 nodes = [s for s in S if s['분류'] != '카드 정보(효과 아님)']
-assert len(nodes) == len(NET['nodes'])
-clu_of = {s['i']: NET['nodes'][k]['c'] for k, s in enumerate(nodes)}
+# effect-network clusters are matched by (card, text): units added after the network was built (e.g. a new set
+# imported from a translation workbook) get no cluster until effect_sna2.py is re-run
+U3 = json.load(open('units3.json', encoding='utf-8'))
+byct = {(n['card'], n['text']): n['c'] for n in NET['nodes']}
+clu_of = {s['i']: byct.get((U3[s['i']]['card'], U3[s['i']]['text']), -1) for s in nodes}
 st = [None] * len(T['units'])
 for s in S:
     trig = ['【' + x + '】' for x in s.get('타이밍', []) if x in TRIG_TM] + ([s['유발 키']] if s.get('유발 키') else [])
