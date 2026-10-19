@@ -1,0 +1,52 @@
+{
+ "args": {
+  "model": "jhgan/ko-sroberta-multitask",
+  "epochs": 3,
+  "bs": 64,
+  "lr": 2e-05,
+  "name": null,
+  "tiny": false
+ },
+ "pairs": 2296,
+ "curve": [
+  {
+   "cos>=": 0.95,
+   "coverage": 0.5448,
+   "agree": 0.9494
+  },
+  {
+   "cos>=": 0.9,
+   "coverage": 0.5552,
+   "agree": 0.9503
+  },
+  {
+   "cos>=": 0.85,
+   "coverage": 0.5655,
+   "agree": 0.9512
+  },
+  {
+   "cos>=": 0.8,
+   "coverage": 0.5793,
+   "agree": 0.9286
+  },
+  {
+   "cos>=": 0.75,
+   "coverage": 0.5793,
+   "agree": 0.9286
+  },
+  {
+   "cos>=": 0.7,
+   "coverage": 0.6172,
+   "agree": 0.8715
+  },
+  {
+   "cos>=": 0.6,
+   "coverage": 0.6207,
+   "agree": 0.8667
+  }
+ ],
+ "baseline_browser_bigram": {
+  "coverage": 0.421,
+  "agree_on_reuse": "117/118"
+ }
+}

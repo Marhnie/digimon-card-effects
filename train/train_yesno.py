@@ -18,7 +18,7 @@ import argparse, json, os, random, time
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_linear_schedule_with_warmup
+from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification, get_linear_schedule_with_warmup
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ap = argparse.ArgumentParser()
@@ -62,12 +62,16 @@ class DS(Dataset):
 
 
 tok = AutoTokenizer.from_pretrained(a.model)
+# RoBERTa-family models (e.g. klue/roberta-*) have type_vocab_size=1, but the tokenizer still emits token_type_ids=1
+# for the second segment → CUDA index-out-of-range. Drop them when the model has no segment embeddings to use.
+USE_TT = getattr(AutoConfig.from_pretrained(a.model), 'type_vocab_size', 2) > 1
 
 
 def collate(rows):
     e, q = zip(*[text(r) for r in rows])
     # truncate the effect first: the question + precedents carry most of the signal
     enc = tok(list(e), list(q), truncation='only_first' if not a.tiny else True, max_length=a.max_len, padding=True, return_tensors='pt')
+    if not USE_TT: enc.pop('token_type_ids', None)
     enc['labels'] = torch.tensor([r['label'] for r in rows])
     return enc
 
@@ -78,6 +82,7 @@ def safe_collate(rows):
     except Exception:  # question+precedents alone longer than max_len → truncate both sides
         e, q = zip(*[text(r) for r in rows])
         enc = tok(list(e), list(q), truncation=True, max_length=a.max_len, padding=True, return_tensors='pt')
+        if not USE_TT: enc.pop('token_type_ids', None)
         enc['labels'] = torch.tensor([r['label'] for r in rows]); return enc
 
 
