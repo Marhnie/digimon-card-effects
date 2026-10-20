@@ -1,0 +1,31 @@
+A a_raw {'n': 120, 'recall@1': 0.892, 'recall@3': 0.958, 'recall@10': 0.983}
+A b_norm {'n': 120, 'recall@1': 0.85, 'recall@3': 0.933, 'recall@10': 0.983}
+A c_norm+frame {'n': 120, 'recall@1': 0.85, 'recall@3': 0.933, 'recall@10': 0.967}
+A upper_official_raw {'n': 120, 'recall@1': 1.0, 'recall@3': 1.0, 'recall@10': 1.0}
+A upper_official_norm+frame {'n': 120, 'recall@1': 1.0, 'recall@3': 1.0, 'recall@10': 1.0}
+B a_raw {'n': 73, 'recall@1': 0.863, 'recall@3': 0.89, 'recall@10': 0.932}
+B b_norm {'n': 73, 'recall@1': 0.836, 'recall@3': 0.877, 'recall@10': 0.945}
+B c_norm+frame {'n': 73, 'recall@1': 0.836, 'recall@3': 0.89, 'recall@10': 0.918}
+B upper_official_raw {'n': 73, 'recall@1': 0.973, 'recall@3': 0.986, 'recall@10': 0.986}
+B upper_official_norm+frame {'n': 73, 'recall@1': 0.959, 'recall@3': 0.986, 'recall@10': 0.986}
+B 반말+줄임말 a {'n': 10, 'recall@1': 0.7, 'recall@3': 0.7, 'recall@10': 0.8}
+B 반말+줄임말 b {'n': 10, 'recall@1': 0.7, 'recall@3': 0.8, 'recall@10': 0.9}
+B 반말+줄임말 c {'n': 10, 'recall@1': 0.6, 'recall@3': 0.7, 'recall@10': 0.7}
+B 상황을 길게 풀어쓴 구어체 a {'n': 11, 'recall@1': 0.909, 'recall@3': 0.909, 'recall@10': 1.0}
+B 상황을 길게 풀어쓴 구어체 b {'n': 11, 'recall@1': 0.727, 'recall@3': 0.727, 'recall@10': 0.909}
+B 상황을 길게 풀어쓴 구어체 c {'n': 11, 'recall@1': 0.818, 'recall@3': 0.909, 'recall@10': 1.0}
+B 오타 섞은 빠른 타이핑 a {'n': 9, 'recall@1': 1.0, 'recall@3': 1.0, 'recall@10': 1.0}
+B 오타 섞은 빠른 타이핑 b {'n': 9, 'recall@1': 1.0, 'recall@3': 1.0, 'recall@10': 1.0}
+B 오타 섞은 빠른 타이핑 c {'n': 9, 'recall@1': 1.0, 'recall@3': 1.0, 'recall@10': 1.0}
+B 존댓말 커뮤니티 질문(ㅋㅋ/ㅇㅇ 등) a {'n': 19, 'recall@1': 0.895, 'recall@3': 0.947, 'recall@10': 1.0}
+B 존댓말 커뮤니티 질문(ㅋㅋ/ㅇㅇ 등) b {'n': 19, 'recall@1': 0.947, 'recall@3': 0.947, 'recall@10': 1.0}
+B 존댓말 커뮤니티 질문(ㅋㅋ/ㅇㅇ 등) c {'n': 19, 'recall@1': 0.947, 'recall@3': 0.947, 'recall@10': 1.0}
+B 초단문 키워드식 a {'n': 12, 'recall@1': 0.917, 'recall@3': 0.917, 'recall@10': 0.917}
+B 초단문 키워드식 b {'n': 12, 'recall@1': 0.917, 'recall@3': 0.917, 'recall@10': 0.917}
+B 초단문 키워드식 c {'n': 12, 'recall@1': 0.833, 'recall@3': 0.833, 'recall@10': 0.833}
+B 카드명 축약+게임 은어 a {'n': 12, 'recall@1': 0.75, 'recall@3': 0.833, 'recall@10': 0.833}
+B 카드명 축약+게임 은어 b {'n': 12, 'recall@1': 0.667, 'recall@3': 0.833, 'recall@10': 0.917}
+B 카드명 축약+게임 은어 c {'n': 12, 'recall@1': 0.75, 'recall@3': 0.917, 'recall@10': 0.917}
+B low-overlap(raw Jaccard to best gold < 0.3) a {'n': 58, 'recall@1': 0.845, 'recall@3': 0.879, 'recall@10': 0.931}
+B low-overlap(raw Jaccard to best gold < 0.3) b {'n': 58, 'recall@1': 0.828, 'recall@3': 0.879, 'recall@10': 0.966}
+B low-overlap(raw Jaccard to best gold < 0.3) c {'n': 58, 'recall@1': 0.81, 'recall@3': 0.879, 'recall@10': 0.914}

@@ -1,0 +1,605 @@
+{
+"note": "구어체 평가·개발 세트에서 공식 Q&A/카드 데이터에 없는 토큰. 확정 매핑 아님 — 고유명칭(카드명 약칭 등)은 사용자 확인 전까지 사전에 넣지 않음.",
+"tokens": [
+{
+"token": "순서",
+"n": 12,
+"seen_with_card": "마린엔젤몬"
+},
+{
+"token": "기술",
+"n": 12,
+"seen_with_card": "아스타몬"
+},
+{
+"token": "이거",
+"n": 10,
+"seen_with_card": "블래스트몬"
+},
+{
+"token": "안함",
+"n": 10,
+"seen_with_card": "나노머신 브레이크"
+},
+{
+"token": "말하는",
+"n": 9,
+"seen_with_card": "아스타몬"
+},
+{
+"token": "걸린",
+"n": 8,
+"seen_with_card": "호메로스"
+},
+{
+"token": "거임",
+"n": 7,
+"seen_with_card": "아스타몬"
+},
+{
+"token": "거예요",
+"n": 6,
+"seen_with_card": "가루몬"
+},
+{
+"token": "궁금합니다",
+"n": 5,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "정확히",
+"n": 5,
+"seen_with_card": "아바도몬"
+},
+{
+"token": "깔린",
+"n": 5,
+"seen_with_card": "파워드라몬"
+},
+{
+"token": "얻음",
+"n": 5,
+"seen_with_card": "어비스 생크추어리 옥좌의 방"
+},
+{
+"token": "첫번째",
+"n": 5,
+"seen_with_card": "묘티스몬"
+},
+{
+"token": "상황임",
+"n": 5,
+"seen_with_card": "왕쿠가몬"
+},
+{
+"token": "상황인데요",
+"n": 4,
+"seen_with_card": "파워드라몬"
+},
+{
+"token": "턴종료시",
+"n": 4,
+"seen_with_card": "마린엔젤몬"
+},
+{
+"token": "상황인데",
+"n": 4,
+"seen_with_card": "호메로스"
+},
+{
+"token": "궁금하나요",
+"n": 4,
+"seen_with_card": "릴리몬"
+},
+{
+"token": "잇는데",
+"n": 4,
+"seen_with_card": "가루몬"
+},
+{
+"token": "둘다",
+"n": 4,
+"seen_with_card": "키노사키 미라이"
+},
+{
+"token": "못함",
+"n": 4,
+"seen_with_card": "호메로스"
+},
+{
+"token": "이게",
+"n": 4,
+"seen_with_card": "왕쿠가몬"
+},
+{
+"token": "잇는",
+"n": 4,
+"seen_with_card": "묘티스몬"
+},
+{
+"token": "쓰고",
+"n": 3,
+"seen_with_card": "메탈시드라몬"
+},
+{
+"token": "내고",
+"n": 3,
+"seen_with_card": "방어 플러그인 F"
+},
+{
+"token": "포함해서",
+"n": 3,
+"seen_with_card": "파워드라몬"
+},
+{
+"token": "선택",
+"n": 3,
+"seen_with_card": "벨페몬: 슬립 모드"
+},
+{
+"token": "못하는",
+"n": 3,
+"seen_with_card": "호메로스"
+},
+{
+"token": "짜리",
+"n": 3,
+"seen_with_card": "그레이몬"
+},
+{
+"token": "부여",
+"n": 3,
+"seen_with_card": "메탈그레이몬"
+},
+{
+"token": "때요",
+"n": 3,
+"seen_with_card": "파일 섬"
+},
+{
+"token": "써서",
+"n": 3,
+"seen_with_card": "키노사키 미라이"
+},
+{
+"token": "건지",
+"n": 3,
+"seen_with_card": "메탈시드라몬"
+},
+{
+"token": "붙어있는",
+"n": 3,
+"seen_with_card": "와루다몬"
+},
+{
+"token": "텍스트",
+"n": 3,
+"seen_with_card": "이터 아담"
+},
+{
+"token": "이러면",
+"n": 3,
+"seen_with_card": "메두사몬"
+},
+{
+"token": "고르면",
+"n": 3,
+"seen_with_card": "리리스몬"
+},
+{
+"token": "두번째",
+"n": 3,
+"seen_with_card": "스티라코몬"
+},
+{
+"token": "그후",
+"n": 3,
+"seen_with_card": "원뿔몬"
+},
+{
+"token": "쓰면",
+"n": 3,
+"seen_with_card": "코케시몬"
+},
+{
+"token": "터짐",
+"n": 3,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "붙은",
+"n": 3,
+"seen_with_card": "코디몬"
+},
+{
+"token": "턴종",
+"n": 3,
+"seen_with_card": "오유민"
+},
+{
+"token": "썼을때",
+"n": 3,
+"seen_with_card": "샤크라몬"
+},
+{
+"token": "취급",
+"n": 3,
+"seen_with_card": "라이즈그레이몬"
+},
+{
+"token": "쓰는",
+"n": 2,
+"seen_with_card": "방어 플러그인 F"
+},
+{
+"token": "방어",
+"n": 2,
+"seen_with_card": "방어 플러그인 F"
+},
+{
+"token": "그게",
+"n": 2,
+"seen_with_card": "가지몬"
+},
+{
+"token": "셔플하면",
+"n": 2,
+"seen_with_card": "파워드라몬"
+},
+{
+"token": "끼우면서",
+"n": 2,
+"seen_with_card": "책사몬"
+},
+{
+"token": "대체",
+"n": 2,
+"seen_with_card": "아스타몬"
+},
+{
+"token": "알려주세요",
+"n": 2,
+"seen_with_card": "아스타몬"
+},
+{
+"token": "그래도",
+"n": 2,
+"seen_with_card": "피코데블몬"
+},
+{
+"token": "카든",
+"n": 2,
+"seen_with_card": "파일 섬"
+},
+{
+"token": "썼는데",
+"n": 2,
+"seen_with_card": "포세이도몬"
+},
+{
+"token": "궁금한데요",
+"n": 2,
+"seen_with_card": "심쿵 펀치!"
+},
+{
+"token": "맞췄어도",
+"n": 2,
+"seen_with_card": "릴리몬"
+},
+{
+"token": "할수",
+"n": 2,
+"seen_with_card": "카미시로 유코"
+},
+{
+"token": "애를",
+"n": 2,
+"seen_with_card": "릴리몬"
+},
+{
+"token": "거야",
+"n": 2,
+"seen_with_card": "릴리몬"
+},
+{
+"token": "신전",
+"n": 2,
+"seen_with_card": "태초의 신전"
+},
+{
+"token": "터지냐",
+"n": 2,
+"seen_with_card": "플릭몬"
+},
+{
+"token": "메페",
+"n": 2,
+"seen_with_card": "야오 친란"
+},
+{
+"token": "맞아도",
+"n": 2,
+"seen_with_card": "야오 친란"
+},
+{
+"token": "말하는거에요",
+"n": 2,
+"seen_with_card": "데들리액스몬"
+},
+{
+"token": "개인데",
+"n": 2,
+"seen_with_card": "아리에몬"
+},
+{
+"token": "음악",
+"n": 2,
+"seen_with_card": "마음의 음악"
+},
+{
+"token": "있음",
+"n": 2,
+"seen_with_card": "가루몬"
+},
+{
+"token": "취급임",
+"n": 2,
+"seen_with_card": "이터 이브"
+},
+{
+"token": "치는건지",
+"n": 2,
+"seen_with_card": "소울 피어"
+},
+{
+"token": "모르겠어서요",
+"n": 2,
+"seen_with_card": "가루다몬"
+},
+{
+"token": "채워도",
+"n": 2,
+"seen_with_card": "디아나몬"
+},
+{
+"token": "채운",
+"n": 2,
+"seen_with_card": "바알몬"
+},
+{
+"token": "걸로",
+"n": 2,
+"seen_with_card": "바알몬"
+},
+{
+"token": "터지면",
+"n": 2,
+"seen_with_card": "듀나스몬"
+},
+{
+"token": "내는",
+"n": 2,
+"seen_with_card": "오메가몬"
+},
+{
+"token": "레벨",
+"n": 2,
+"seen_with_card": "쉘몬"
+},
+{
+"token": "그냥",
+"n": 2,
+"seen_with_card": "로드나이트몬"
+},
+{
+"token": "궁금해서",
+"n": 2,
+"seen_with_card": "로드나이트몬"
+},
+{
+"token": "틈새",
+"n": 2,
+"seen_with_card": "시간의 틈새 극장"
+},
+{
+"token": "극장",
+"n": 2,
+"seen_with_card": "시간의 틈새 극장"
+},
+{
+"token": "썼을",
+"n": 2,
+"seen_with_card": "구미호몬"
+},
+{
+"token": "기준인지",
+"n": 2,
+"seen_with_card": "구미호몬"
+},
+{
+"token": "궁금해서요",
+"n": 2,
+"seen_with_card": "위치몬"
+},
+{
+"token": "긍지",
+"n": 2,
+"seen_with_card": "해커의 긍지"
+},
+{
+"token": "놓기",
+"n": 2,
+"seen_with_card": "해커의 긍지"
+},
+{
+"token": "말인데",
+"n": 2,
+"seen_with_card": "가루다몬"
+},
+{
+"token": "쌍익",
+"n": 2,
+"seen_with_card": "사랑의 쌍익"
+},
+{
+"token": "천하무적",
+"n": 2,
+"seen_with_card": "천하무적 싸움 대장!"
+},
+{
+"token": "싸움대장",
+"n": 2,
+"seen_with_card": "천하무적 싸움 대장!"
+},
+{
+"token": "시키고",
+"n": 2,
+"seen_with_card": "길몬"
+},
+{
+"token": "줄수",
+"n": 1,
+"seen_with_card": "블래스트몬"
+},
+{
+"token": "안하고",
+"n": 1,
+"seen_with_card": "파워드라몬"
+},
+{
+"token": "깔려",
+"n": 1,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "놓게",
+"n": 1,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "가는지",
+"n": 1,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "가는지요",
+"n": 1,
+"seen_with_card": "바그라몬"
+},
+{
+"token": "안시켰어도",
+"n": 1,
+"seen_with_card": "미네르바몬"
+},
+{
+"token": "달린",
+"n": 1,
+"seen_with_card": "벨페몬: 슬립 모드"
+},
+{
+"token": "앞변으로",
+"n": 1,
+"seen_with_card": "전뇌공간 EDEN"
+},
+{
+"token": "호메",
+"n": 1,
+"seen_with_card": "호메로스"
+},
+{
+"token": "했거든요",
+"n": 1,
+"seen_with_card": "피코데블몬"
+},
+{
+"token": "기술있는",
+"n": 1,
+"seen_with_card": "사이케몬"
+},
+{
+"token": "말하는건지",
+"n": 1,
+"seen_with_card": "사이케몬"
+},
+{
+"token": "포세",
+"n": 1,
+"seen_with_card": "포세이도몬"
+},
+{
+"token": "나오면",
+"n": 1,
+"seen_with_card": "포세이도몬"
+},
+{
+"token": "먹은",
+"n": 1,
+"seen_with_card": "그레이몬"
+},
+{
+"token": "정리해주세요",
+"n": 1,
+"seen_with_card": "그레이몬"
+},
+{
+"token": "내도",
+"n": 1,
+"seen_with_card": "메라몬"
+},
+{
+"token": "침공",
+"n": 1,
+"seen_with_card": "고부리몬"
+},
+{
+"token": "이건",
+"n": 1,
+"seen_with_card": "도사몬"
+},
+{
+"token": "부여해놨고요",
+"n": 1,
+"seen_with_card": "블랙워그레이몬 ACE"
+},
+{
+"token": "채웠다면",
+"n": 1,
+"seen_with_card": "블랙워그레이몬 ACE"
+},
+{
+"token": "부여도",
+"n": 1,
+"seen_with_card": "캅테리몬"
+},
+{
+"token": "지미",
+"n": 1,
+"seen_with_card": "지미KEN"
+},
+{
+"token": "됐는데",
+"n": 1,
+"seen_with_card": "유피테르몬"
+},
+{
+"token": "심쿵",
+"n": 1,
+"seen_with_card": "심쿵 펀치!"
+},
+{
+"token": "펀치",
+"n": 1,
+"seen_with_card": "심쿵 펀치!"
+},
+{
+"token": "세븐스",
+"n": 1,
+"seen_with_card": "세븐스 ･ 페네트레이트"
+},
+{
+"token": "페네트레이트",
+"n": 1,
+"seen_with_card": "세븐스 ･ 페네트레이트"
+}
+]
+}
