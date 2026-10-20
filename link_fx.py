@@ -159,6 +159,56 @@ for it in qa_items:
     else:
         it['general'] = True
         it['rule'] = nearest_rule(re.sub(r'\d{4}/\d{2}/\d{2}.*', '', it['q']))
+# ---- E30 third pass: ordinal / timing in text / only effect / content overlap (high precision, each link tagged with how) ----
+import rule_struct
+EFFECT_CLS = {'유발형', '기동형', '즉시형', '상재형'}
+_cls = {}
+def effect_cls(i):
+    if i not in _cls: _cls[i] = rule_struct.analyse(U[i])['분류']
+    return _cls[i]
+def top_effects(card):
+    """effect units printed in the card's top text, in order (evolution-condition lines count only when an effect follows, keyword abilities and card info do not)"""
+    inline = re.compile(r'코스트\s*\d+\s*(?:《[^》]*》(?:\s*\([^)]*\))?\s*)*(?:패의 이 카드|이 카드[는가]|이 디지몬)')   # 「〔진화〕… : 코스트 1패의 이 카드는 …진화할 수 있다.」: the condition line carries a sentence of its own
+    return [i for i in by_card[card] if U[i]['where'] == '상단' and (effect_cls(i) in EFFECT_CLS or (U[i]['kind'].startswith('특수 진화 조건') and inline.search(U[i]['text'])))]
+ORD = {'첫': 0, '두': 1, '세': 2, '네': 3, '다섯': 4, '1': 0, '2': 1, '3': 2, '4': 3}
+STOP = re.compile(r'\d{4}/\d{2}/\d{2}.*')
+def clean_q(q): return STOP.sub('', q).strip()
+# idf over unit texts for the overlap score
+udf = collections.Counter(g for u in U for g in bigr(u['text']))
+NU = len(U)
+def ov_score(qb, ub):
+    return sum(math.log(1 + NU / udf[g]) for g in (qb & ub) if g in udf)
+for it in qa_items:
+    if it['unit'] is not None or it['card'] not in by_card or not it.get('general'):
+        continue
+    q = clean_q(it['q']); cand = top_effects(it['card']); hit = how = None
+    m = re.search(r'이 카드의\s*(첫|두|세|네|다섯|\d)\s*번째\s*(?:【?효과】?|효과)', q)
+    if m and cand and ORD[m.group(1)] < len(cand):
+        hit, how = cand[ORD[m.group(1)]], 'ordinal'
+    if hit is None:
+        tags = set(re.findall(r'【([^】]+)】', q))
+        if tags and re.search(r'이 카드|이 디지몬|이 테이머|이 옵션', q):
+            c = [i for i in by_card[it['card']] if U[i]['where'] != '진화원 효과' and any(f'【{t}】' in U[i]['text'][:60] for t in tags)]
+            if len(c) == 1: hit, how = c[0], 'timing'
+    selfref = re.search(r'이 (?:카드|디지몬|테이머|옵션)(?:의|에)', q)
+    own = selfref and not re.search(r'진화원 효과|시큐리티 효과', q)                  # 「이 카드의 효과…」 : the question is about this card's own effect
+    if hit is None and own and re.search(r'이 (?:카드|디지몬|테이머|옵션)의 효과', q):
+        if len(cand) == 1: hit, how = cand[0], 'sole'
+    if hit is None and selfref:
+        kind = None
+        if re.search(r'진화원 효과', q): c = [i for i in by_card[it['card']] if U[i]['where'] == '진화원 효과']; kind = 'source'
+        elif re.search(r'시큐리티 효과|【시큐리티】', q): c = [i for i in by_card[it['card']] if U[i]['where'] == '시큐리티 효과' or U[i]['text'].lstrip('[]{}패트래시육성 ').startswith('【시큐리티】')]; kind = 'security'
+        else:
+            mt = re.search(r'(메인|등장 시|진화 시|어택 시|소멸 시|어택 종료 시|카운터)\s*효과', q)
+            c = [i for i in by_card[it['card']] if U[i]['where'] == '상단' and f'【{mt.group(1)}】' in U[i]['text'][:60]] if mt else []; kind = 'tagword'
+        if len(c) == 1: hit, how = c[0], kind
+    if hit is None and own and cand:
+        qb = bigr(q); sc = sorted(((ov_score(qb, bigr(U[i]['text'])), i) for i in cand), reverse=True)
+        if sc and sc[0][0] >= 14 and (len(sc) == 1 or sc[0][0] >= 1.5 * sc[1][0]):
+            hit, how = sc[0][1], 'overlap'
+    if hit is not None:
+        it['unit'] = hit; it['how'] = how; it.pop('general', None); it.pop('rule', None)
+        U[hit].setdefault('qa', []).append(it['id'])
 gen_by_rule = collections.defaultdict(list)
 for it in qa_items:
     if it.get('general') and it.get('rule'):
