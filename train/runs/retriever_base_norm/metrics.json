@@ -1,0 +1,73 @@
+{
+ "args": {
+  "model": "jhgan/ko-sroberta-multitask",
+  "epochs": 3,
+  "bs": 16,
+  "lr": 2e-05,
+  "per_anchor": 3,
+  "ans_jac": 0.5,
+  "hn_cos": 0.55,
+  "aug_p": 0.7,
+  "norm": true,
+  "name": "base_norm",
+  "tiny": false
+ },
+ "triplets": 5981,
+ "zero_shot": {
+  "time_split": {
+   "n": 314,
+   "model": {
+    "recall@1": 0.876,
+    "recall@3": 0.889,
+    "recall@10": 0.93
+   },
+   "browser_2gram": {
+    "recall@1": 0.873,
+    "recall@3": 0.959,
+    "recall@10": 0.99
+   }
+  },
+  "colloquial": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.621,
+    "recall@3": 0.701,
+    "recall@10": 0.747
+   },
+   "browser_2gram": {
+    "recall@1": 0.713,
+    "recall@3": 0.874,
+    "recall@10": 0.931
+   }
+  }
+ },
+ "fine_tuned": {
+  "time_split": {
+   "n": 314,
+   "model": {
+    "recall@1": 0.857,
+    "recall@3": 0.908,
+    "recall@10": 0.994
+   },
+   "browser_2gram": {
+    "recall@1": 0.873,
+    "recall@3": 0.959,
+    "recall@10": 0.99
+   }
+  },
+  "colloquial": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.828,
+    "recall@3": 0.908,
+    "recall@10": 0.966
+   },
+   "browser_2gram": {
+    "recall@1": 0.713,
+    "recall@3": 0.874,
+    "recall@10": 0.931
+   }
+  }
+ },
+ "note": "eval items are never in the training pool; browser_2gram = judge helper baseline on the same queries/corpus"
+}
