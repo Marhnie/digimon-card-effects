@@ -95,3 +95,23 @@ git add train/runs && git commit -m "GPU 학습 결과: <모델>" && git push
 - test(최신 팩)로 하이퍼파라미터를 고르지 마세요. 문턱과 에폭은 valid로 고릅니다.
 - 학습된 모델도 「Claude 없이」라는 조건은 지킵니다. 다만 판정 도우미(브라우저)에 넣으려면 ONNX나 경량 모델로 바꾸거나 서버가 필요합니다. 그건 결과를 보고 정합니다.
 - 데이터는 공식 Q&A·카드 텍스트(공개 정보)와 DCGO 카드 스크립트의 영문 텍스트(MIT)입니다. 검수자 개인 기록은 들어 있지 않습니다.
+
+## 6. 검색 모델 (E31, 아직 실행하지 않음)
+
+「네/아니요를 직접 판정」하는 대신 **같은 판정의 공식 Q&A를 찾는 검색**에 언어 모델을 씁니다(E27에서 직접 판정은 엔진보다 못했음).
+
+```bash
+python train/train_retriever.py --tiny                                                  # CPU 스모크(수 초, 영어 소형 모델이라 수치 무의미)
+python train/train_retriever.py --model jhgan/ko-sroberta-multitask --epochs 3 --bs 64   # GTX 1660 SUPER 6GB 기준 bs 32~64
+python train/train_retriever.py --norm ...                                               # qnorm 정규화를 질문·말뭉치에 적용
+```
+
+- 학습: 긍정 쌍(이유 묶음이 같고 답의 방향이 같음 / 묻는 것·상황·방향이 같고 공식 답이 비슷함) + 어려운 부정(문장은 비슷하고 답이 반대) 3중쌍, MultipleNegativesRankingLoss. 앵커는 확률 0.7로 구어체로 바꿉니다(`colloquialize`).
+- 평가 세트 문항(`paper/results/colloquial_test.json`)과 최신 팩 Q&A 전체는 학습에서 제외합니다.
+- 평가(`train/runs/retriever_<이름>/metrics.json`): `time_split`(최신 팩 공식 질문 → 이전 팩), `colloquial`(구어체 세트, 원문 제외). 각각 `model`, `browser_2gram`(지금 방식), 학습 전(`zero_shot`)과 후(`fine_tuned`)를 같은 질문·말뭉치에서 비교합니다. 이 모델이 의미 있으려면 구어체에서 `browser_2gram`을 넘어야 합니다.
+- 주의: 시간 분할의 `browser_2gram`은 공식 문장 사이의 거의 같은 문항 때문에 높게 나옵니다(스모크에서 @1 0.87). 구어체 쪽이 실제 판단 기준입니다.
+
+**작은 모델로 증류(계획만)**: 브라우저용 10MB 안팎이 목표입니다.
+1. 학습된 ko-sroberta(110M)를 교사로, 말뭉치(5,308문항 + 구어체 증강 수만 개)의 임베딩을 정답으로 하여 학생(문자 2~3-gram 해시 임베딩 + 평균 풀링 + 작은 선형층, 또는 4층·256차원 Transformer)을 코사인/MSE 손실로 학습합니다.
+2. 학생은 int8 양자화한 뒤 ONNX(onnxruntime-web, wasm)나 순수 JS 행렬곱으로 실행하고, 말뭉치 임베딩(5,308×256 int8 ≈ 1.3MB)은 미리 계산해 파일로 넣습니다. 질문 하나는 학생으로만 임베딩하면 됩니다.
+3. 승인 기준: 구어체 세트 recall@3이 교사의 95% 이상, 모델 크기 15MB 이하. 아니면 서버 방식(고정 임베딩 API)으로 갑니다.
