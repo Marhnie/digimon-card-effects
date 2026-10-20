@@ -268,7 +268,7 @@ window.__rulings=CR;   // test hook (tests/tcr.js)
   const db=await use('db');if(!db){CR.state='off';if(ST.res)renderResult();return}
   CR.db=db;try{const user=await use('user');if(user){CR.me=await user.id();CR.canWrite=await user.can('data.write')}}catch(e){}
   renderImport();
-  db.collection('rulings').onSnapshot(s=>{CR.list=s.docs.map(d=>({id:d.id,...d.data()}));const was=CR.state;CR.state='on';if(ST.res){const m=ST.res.level==='sure'?null:crMatch();const had=ST.res.cr;ST.res.cr=m;if(was!=='on'||!!m!==!!had)renderResult()}},
+  db.collection('rulings').onSnapshot(s=>{CR.list=s.docs.map(d=>({id:d.id,...d.data()}));{const st=document.getElementById('crstats');if(st&&st.open)renderStats()}const was=CR.state;CR.state='on';if(ST.res){const m=ST.res.level==='sure'?null:crMatch();const had=ST.res.cr;ST.res.cr=m;if(was!=='on'||!!m!==!!had)renderResult()}},
     e=>{CR.state='off';CR.msg='확인 판정을 불러오지 못했습니다.'})}catch(e){CR.state='off'}})();
 const crKey=()=>extras().map(x=>x.no).sort().join(',');
 // same main card + same other cards; question worded alike (2-gram Jaccard >=0.6, or >=0.45 on the same effect)
@@ -313,7 +313,18 @@ function crReport(ans){const c=crCandidate();if(!c||!ST.cards[0])return;const no
 function renderImport(){if(!CR.db||CR.canWrite===false)return;if(document.getElementById('crimport'))return;
   const el=document.createElement('details');el.id='crimport';el.className='browse';
   el.innerHTML=`<summary>받은 판정 코드 가져오기 (운영자)</summary><div class="crbar"><div class="sub">이용자가 보낸 「JD1:」 코드를 한 줄에 하나씩 붙여 넣고 내용을 확인한 뒤 저장하세요. 저장한 판정은 같은 질문에 Claude 없이 답하는 데 쓰입니다.</div><textarea id="crin" rows="4" aria-label="받은 코드"></textarea><div class="row"><button class="btn2" type="button" id="crpreview">내용 보기</button><button class="btn2 pri" type="button" id="crimp" disabled>확인 판정으로 저장</button></div><div id="crprev"></div></div>`;
-  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor)}
+  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor);
+  const st=document.createElement('details');st.id='crstats';st.className='browse';st.innerHTML='<summary>판정 현황 (운영자)</summary><div id="crstatsb"></div>';
+  anchor.parentNode.insertBefore(st,anchor);st.addEventListener('toggle',()=>{if(st.open)renderStats()})}
+// how many confirmed rulings came from which first verdict, and how often that first verdict was right
+function renderStats(){const el=document.getElementById('crstatsb');if(!el)return;const L=CR.list;
+  if(!L.length){el.innerHTML='<div class="crbar"><div class="sub">아직 저장된 확인 판정이 없습니다.</div></div>';return}
+  const by={};L.forEach(r=>{const k=r.src||'none';const b=by[k]=by[k]||{n:0,ok:0,bad:0};b.n++;if(r.agreed===true)b.ok++;else if(r.agreed===false)b.bad++});
+  const rows=Object.entries(by).sort((a,b)=>b[1].n-a[1].n).map(([k,b])=>`<tr><td>${esc(SRCN[k]||k)}</td><td>${b.n}</td><td>${b.ok+b.bad?Math.round(b.ok/(b.ok+b.bad)*100)+'% ('+b.ok+'/'+(b.ok+b.bad)+')':'—'}</td></tr>`).join('');
+  const cards=new Set(L.map(r=>r.card)).size;const recent=L.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).slice(0,15);
+  el.innerHTML=`<div class="crbar"><div class="sub">확인 판정 ${L.length}건 · 카드 ${cards}장. 「처음 판정 정확도」는 심판이 확인했을 때 처음 판정(엔진·룰 쟁점 등)이 맞았던 비율입니다.</div>
+    <table class="struct"><tr><th>처음 판정</th><th>건수</th><th>처음 판정 정확도</th></tr>${rows}</table>
+    <div class="sub" style="margin-top:8px">최근 확인 판정</div>${recent.map(r=>`<div class="item"><div class="src"><span class="cno">${esc(r.card)}</span><span>${esc(cname(r.card))}</span><span class="yn">답: ${yn(r.ans)}</span><span>· ${esc(SRCN[r.src]||'')}${r.agreed===false?' → 바로잡음':''}</span><span>${esc(String(r.at||'').slice(0,10))}</span></div><div class="q"><b>Q</b><span>${esc(r.q||'')}</span></div>${r.note?`<div class="a"><b>메모</b><span>${esc(r.note)}</span></div>`:''}</div>`).join('')}</div>`}
 let CRIN=[];
 function parseCodes(txt){const out=[],bad=[];for(const line of txt.split(/\s+/).filter(Boolean)){try{if(!line.startsWith('JD1:'))throw 0;const d=JSON.parse(b64d(line.slice(4)));
   if(typeof d.card!=='string'||typeof d.q!=='string'||(d.ans!==0&&d.ans!==1))throw 0;

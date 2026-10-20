@@ -27,7 +27,7 @@ T['st'] = st
 T['clu'] = [[c['name'], co[c['id']]['id'], co[c['id']]['name'], c['n']] for c in NET['clusters']]
 from rule_issues import ISSUES, exemplars
 EX = exemplars(T['qa'])
-T['issues'] = [{**{k: it[k] for k in ('id', 'name', 'desc', 'rules', 'cue', 'ask', 'not', 'needs_trigger')}, 'qa': EX[it['id']]} for it in ISSUES]
+T['issues'] = [{**{k: it[k] for k in ('id', 'name', 'desc', 'rules', 'cue', 'ask', 'not', 'needs_trigger') if k in it}, 'qa': EX[it['id']]} for it in ISSUES]
 print('rule issues', {it['id']: len(EX[it['id']]) for it in ISSUES})
 # reason groups (all Q&A) — only the consistent ones are used by the engine; engine-lite weights (time-split trained)
 RGJ = json.load(open('reason_groups.json', encoding='utf-8'))
