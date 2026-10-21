@@ -40,3 +40,9 @@ train/runs/**
 
 train/export_qemb_tiny/
 train/runs/distill_tiny/
+
+server/judges.json
+server/judge.db
+server/corpus_emb.npy
+server/corpus_emb.stamp
+server/static/

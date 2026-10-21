@@ -262,9 +262,14 @@ function engineLite(sim){if(!ENG||!sim||!sim.length)return null;const u=mainUnit
 
 /* ---------- confirmed rulings (확인 판정): a judge confirms or corrects a verdict → shared db → reused without Claude ---------- */
 const DIST=window.__DIST__===1;   // public distribution build: Claude on request, viewers send report codes
+const SRV=window.__SERVER_API||null;   // E34: page served by server/app.py (this PC) — rulings/reports/search via its API
+const jkey=()=>{try{return localStorage.getItem('judgeKey')||''}catch(e){return ''}};
+const api=(path,opt={})=>fetch(SRV+path,{...opt,headers:{'content-type':'application/json','x-judge-key':jkey(),...(opt.headers||{})}}).then(async r=>{if(r.status===403){const e=new Error('denied');e.code='permission_denied';throw e}if(!r.ok)throw new Error(String(r.status));return r.json()});
+const srvDB={collection:()=>({onSnapshot:(cb,err)=>{const pull=()=>api('rulings').then(L=>cb({docs:L.map(d=>({id:String(d.id),data:()=>d}))})).catch(e=>err&&err(e));pull();setInterval(pull,20000);return ()=>{}},
+  add:d=>api('rulings',{method:'POST',body:JSON.stringify(d)})})};
 const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false,canWrite:null,code:''};
 window.__rulings=CR;   // test hook (tests/tcr.js)
-(async()=>{try{const use=window.claude&&window.claude.use;if(!use){CR.state='off';return}
+(async()=>{try{const use=SRV?(async n=>n==='db'?srvDB:n==='user'?{id:async()=>{try{return (await api('whoami')).judge}catch(e){return null}},can:async()=>{try{return !!(await api('whoami')).judge}catch(e){return false}}}:null):(window.claude&&window.claude.use);if(!use){CR.state='off';return}
   const db=await use('db');if(!db){CR.state='off';if(ST.res)renderResult();return}
   CR.db=db;try{const user=await use('user');if(user){CR.me=await user.id();CR.canWrite=await user.can('data.write')}}catch(e){}
   renderImport();
@@ -303,16 +308,22 @@ const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s),ch=>ch.charCodeAt
 function crDoc(ans,c,note){const u=mainUnit();return {card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
   ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:(c.summary||'').slice(0,500),note:(note||'').slice(0,300),by:CR.me||'',at:new Date().toISOString()}}
 function reportPanel(c){
+  if(CR.code&&SRV)return `<div class="crbar ok"><b>${esc(CR.msg||'보냈습니다.')}</b></div>`;
   if(CR.code)return `<div class="crbar ok"><b>코드를 만들었습니다.</b> 아래 코드를 복사해 운영자(심판)에게 보내 주세요. 운영자가 확인하면 같은 질문에 Claude 없이 바로 답하게 됩니다.<textarea class="crcode" readonly rows="3" aria-label="보낼 코드">${esc(CR.code)}</textarea><div class="row"><button class="btn2 pri" type="button" data-crcopy="1">코드 복사</button></div>${CR.msg?`<div class="sub">${esc(CR.msg)}</div>`:''}</div>`;
   const b=(a,l,cls)=>`<button class="btn2${cls?' '+cls:''}" type="button" data-crrep="${a}">${l}</button>`;
   return `<div class="crbar"><div class="crq"><b>정답을 알고 계신가요?</b> ${c.ans==null?'':`위 판정은 「${yn(c.ans)}」입니다. `}맞는지 틀리는지 알려 주시면 운영자가 확인해 판정으로 쌓습니다.</div>
     <div class="row">${c.ans==null?b(1,'정답은 네','pri')+b(0,'정답은 아니요','pri'):b(c.ans,'맞아요','pri')+b(1-c.ans,`틀려요 · 정답은 「${yn(1-c.ans)}」`)}<input id="crnote" type="text" maxlength="300" placeholder="근거(선택): 공식 Q&A·대회 판정 등" aria-label="근거 메모"></div></div>`}
 function crReport(ans){const c=crCandidate();if(!c||!ST.cards[0])return;const note=(document.getElementById('crnote')||{}).value||'';
+  if(SRV){api('reports',{method:'POST',body:JSON.stringify(crDoc(ans,c,note))}).then(()=>{CR.code=' ';CR.msg='보냈습니다. 심판이 확인하면 판정으로 쌓입니다.';renderResult()}).catch(()=>{CR.msg='보내지 못했습니다. 잠시 뒤 다시 시도해 주세요.';renderResult()});return}
   CR.code='JD1:'+b64e(JSON.stringify(crDoc(ans,c,note)));CR.msg='';renderResult()}
 // operators: paste report codes → saved as confirmed rulings
+function judgeBox(){if(!SRV||document.getElementById('jbox'))return;const el=document.createElement('details');el.id='jbox';el.className='browse';
+  el.innerHTML=`<summary>심판 로그인</summary><div class="crbar"><div class="sub">운영자가 준 심판 키를 넣으면 판정 확인·저장과 제보 검토를 할 수 있습니다(이 브라우저에만 저장).</div><div class="row"><input id="jkey" type="password" aria-label="심판 키" placeholder="심판 키"><button class="btn2 pri" type="button" id="jkeyset">확인</button><button class="btn2" type="button" id="jkeyout">로그아웃</button></div><div class="sub" id="jkeymsg"></div></div>`;
+  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor)}
+if(SRV)setTimeout(judgeBox,0);
 function renderImport(){if(!CR.db||CR.canWrite===false)return;if(document.getElementById('crimport'))return;
   const el=document.createElement('details');el.id='crimport';el.className='browse';
-  el.innerHTML=`<summary>받은 판정 코드 가져오기 (운영자)</summary><div class="crbar"><div class="sub">이용자가 보낸 「JD1:」 코드를 한 줄에 하나씩 붙여 넣고 내용을 확인한 뒤 저장하세요. 저장한 판정은 같은 질문에 Claude 없이 답하는 데 쓰입니다.</div><textarea id="crin" rows="4" aria-label="받은 코드"></textarea><div class="row"><button class="btn2" type="button" id="crpreview">내용 보기</button><button class="btn2 pri" type="button" id="crimp" disabled>확인 판정으로 저장</button></div><div id="crprev"></div></div>`;
+  el.innerHTML=`<summary>받은 판정 코드 가져오기 (운영자)</summary><div class="crbar"><div class="sub">이용자가 보낸 「JD1:」 코드를 한 줄에 하나씩 붙여 넣고 내용을 확인한 뒤 저장하세요. 저장한 판정은 같은 질문에 Claude 없이 답하는 데 쓰입니다.</div><textarea id="crin" rows="4" aria-label="받은 코드"></textarea><div class="row">${SRV?'<button class="btn2" type="button" id="crpull">받은 제보 불러오기</button>':''}<button class="btn2" type="button" id="crpreview">내용 보기</button><button class="btn2 pri" type="button" id="crimp" disabled>확인 판정으로 저장</button></div><div id="crprev"></div></div>`;
   const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor);
   const st=document.createElement('details');st.id='crstats';st.className='browse';st.innerHTML='<summary>판정 현황 (운영자)</summary><div id="crstatsb"></div>';
   anchor.parentNode.insertBefore(st,anchor);st.addEventListener('toggle',()=>{if(st.open)renderStats()})}
@@ -325,7 +336,7 @@ function renderStats(){const el=document.getElementById('crstatsb');if(!el)retur
   el.innerHTML=`<div class="crbar"><div class="sub">확인 판정 ${L.length}건 · 카드 ${cards}장. 「처음 판정 정확도」는 심판이 확인했을 때 처음 판정(엔진·룰 쟁점 등)이 맞았던 비율입니다.</div>
     <table class="struct"><tr><th>처음 판정</th><th>건수</th><th>처음 판정 정확도</th></tr>${rows}</table>
     <div class="sub" style="margin-top:8px">최근 확인 판정</div>${recent.map(r=>`<div class="item"><div class="src"><span class="cno">${esc(r.card)}</span><span>${esc(cname(r.card))}</span><span class="yn">답: ${yn(r.ans)}</span><span>· ${esc(SRCN[r.src]||'')}${r.agreed===false?' → 바로잡음':''}</span><span>${esc(String(r.at||'').slice(0,10))}</span></div><div class="q"><b>Q</b><span>${esc(r.q||'')}</span></div>${r.note?`<div class="a"><b>메모</b><span>${esc(r.note)}</span></div>`:''}</div>`).join('')}</div>`}
-let CRIN=[];
+let CRIN=[],CRREP=[];
 function parseCodes(txt){const out=[],bad=[];for(const line of txt.split(/\s+/).filter(Boolean)){try{if(!line.startsWith('JD1:'))throw 0;const d=JSON.parse(b64d(line.slice(4)));
   if(typeof d.card!=='string'||typeof d.q!=='string'||(d.ans!==0&&d.ans!==1))throw 0;
   out.push({card:d.card.slice(0,20),others:String(d.others||'').slice(0,200),unit:Number.isInteger(d.unit)?d.unit:-1,q:d.q.slice(0,1000),neg:d.neg?1:0,it:d.it==null?null:d.it,slots:Array.isArray(d.slots)?d.slots.filter(Number.isInteger).slice(0,30):[],
@@ -363,9 +374,14 @@ function comboRef(){const u=mainUnit();const xs=extras();if(!u||!xs.length)retur
 
 
 /* ---------- semantic search (E33): distilled student, files under window.__QEMB_BASE (absent → feature off) ---------- */
-const SEM_ON=typeof QEMB!=='undefined'&&!!window.__QEMB_BASE;
-if(SEM_ON)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.arrayBuffer()})).then(ok=>{if(ok){if(ST.res)renderResult();renderSugg()}});
-function semQA(text,k){if(!SEM_ON||!QEMB.st.ready||!String(text).trim())return [];const EXP=window.__exProducts;
+const SEM_ON=!!SRV||(typeof QEMB!=='undefined'&&!!window.__QEMB_BASE);const SEMC=new Map();
+if(SEM_ON&&!SRV)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.arrayBuffer()})).then(ok=>{if(ok){if(ST.res)renderResult();renderSugg()}});
+function semQA(text,k){const EXP=window.__exProducts;const key=String(text||'').trim();if(!SEM_ON||!key)return [];
+  if(SRV){const c=SEMC.get(key);if(c)return c.slice(0,k);if(!SEMC.has('#'+key)){SEMC.set('#'+key,1);
+      api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.s})));
+        renderSugg();if(ST.res&&ST.q.trim()===key)renderResult()}).catch(()=>{})}
+    return []}
+  if(!QEMB.st.ready)return [];
   return QEMB.search(text,k,i=>QA[i]&&!(EXP&&EXP.has((QA[i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(x=>({q:QA[x.i],s:x.s}))}
 /* ---------- question autocomplete (E25): official question wording for this card / same effect pattern ---------- */
 let SUGG=[],SUGI=-1;
@@ -530,11 +546,16 @@ document.addEventListener('click',e=>{const t=e.target;
   const cr=t.closest('[data-crrep]');if(cr){crReport(+cr.dataset.crrep);return}
   if(t.closest('[data-crcopy]')){const ta=document.querySelector('.crcode');const done=()=>{CR.msg='복사했습니다.';renderResult()};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(CR.code).then(done,()=>{if(ta){ta.select();CR.msg='자동 복사가 막혀 있습니다. 코드를 길게 눌러 복사해 주세요.';renderResult()}});else{if(ta)ta.select();CR.msg='코드를 길게 눌러 복사해 주세요.';renderResult()}return}
+  if(t.id==='jkeyset'){const v=($('jkey')||{}).value||'';try{localStorage.setItem('judgeKey',v.trim())}catch(e){}
+    api('whoami').then(j=>{$('jkeymsg').textContent=j.judge?`${j.judge} 님으로 로그인했습니다. 새로고침하면 확인·저장 버튼이 보입니다.`:'키가 맞지 않습니다.';if(j.judge)location.reload()}).catch(()=>{$('jkeymsg').textContent='서버에 연결하지 못했습니다.'});return}
+  if(t.id==='jkeyout'){try{localStorage.removeItem('judgeKey')}catch(e){}location.reload();return}
+  if(t.id==='crpull'){api('reports').then(L=>{CRREP=L;$('crin').value=L.map(d=>'JD1:'+b64e(JSON.stringify({...d,by:d.by||''}))).join('\n');$('crpreview').click()}).catch(()=>{$('crprev').innerHTML='<div class="sub">제보를 불러오지 못했습니다(심판 로그인 확인).</div>'});return}
   if(t.id==='crpreview'){const r=parseCodes(($('crin')||{}).value||'');CRIN=r.out;
     $('crprev').innerHTML=(r.out.map(d=>`<div class="item"><div class="src"><span class="cno">${esc(d.card)}</span><span>${esc(cname(d.card))}</span>${d.others?`<span>+ ${esc(d.others)}</span>`:''}<span class="yn">답: ${yn(d.ans)}</span></div><div class="q"><b>Q</b><span>${esc(d.q)}</span></div>${d.note?`<div class="a"><b>근거</b><span>${esc(d.note)}</span></div>`:''}</div>`).join('')||'')+(r.bad.length?`<div class="sub">읽지 못한 코드 ${r.bad.length}개</div>`:'')+(!r.out.length&&!r.bad.length?'<div class="sub">붙여 넣은 코드가 없습니다.</div>':'');
     $('crimp').disabled=!r.out.length;return}
   if(t.id==='crimp'){if(!CRIN.length||!CR.db)return;t.disabled=true;let n=0,fail=0;
     (async()=>{for(const d of CRIN){try{await CR.db.collection('rulings').add(d);n++}catch(e){fail++}}
+      if(SRV&&CRREP.length){for(const r of CRREP){try{await api('reports/'+r.id+'/done',{method:'POST'})}catch(e){}}CRREP=[]}
       $('crprev').innerHTML=`<div class="sub">${n}건 저장했습니다.${fail?` ${fail}건은 저장하지 못했습니다(권한 확인).`:''}</div>`;$('crin').value='';CRIN=[]})();return}
   if(t.id==='aistop'&&ST.ctl){ST.ctl.abort();return}
   if(t.id==='pmmanage'){(async()=>{try{const pm=await window.claude.use('permissions');if(pm)await pm.manage()}catch(e){}})();return}
