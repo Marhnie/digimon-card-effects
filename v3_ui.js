@@ -452,7 +452,9 @@ function judge(){
   CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
-  if(SRV)saveVerdict({q:ST.q,cards:ST.cards.map(c=>c.no),level:ST.res.level,ans:ST.res.ans===undefined?null:ST.res.ans,top:(ST.res.list||[]).slice(0,3).map(x=>({card:x.card,q:x.q,y:x.y})),at:new Date().toISOString()});
+  if(SRV){const D_=window.__decTest?window.__decTest():null;const pq=ST.pickQ!=null?QA[ST.pickQ]:null;  // what was actually shown: decision path + answer (E36 fix: precedent items are {q:QA,y})
+    saveVerdict({q:ST.q,cards:ST.cards.map(c=>c.no),level:D_&&D_.dec?(D_.by||'decided'):(DIST?'pending':ST.res.level),ans:D_&&D_.dec&&D_.by!=='explain'&&D_.by!=='official'?D_.ans:(pq&&pq.y>=0?pq.y:null),
+      top:(ST.res.list||[]).slice(0,3).map(x=>({card:x.q.card,q:x.q.q,y:x.y})),at:new Date().toISOString()})}
   if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!ST.res.xref&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
