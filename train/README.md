@@ -11,6 +11,9 @@
 
 ## 1. 준비
 
+> **커밋하기 전에(공개 저장소):** `git config user.email "124869504+Marhnie@users.noreply.github.com"`, `git config core.hooksPath .githooks` — 실제 이메일로 된 커밋은 훅이 거부합니다.
+
+
 ```bash
 git clone https://github.com/Marhnie/digimon-card-effects.git
 cd digimon-card-effects

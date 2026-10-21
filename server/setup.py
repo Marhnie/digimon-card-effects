@@ -14,6 +14,15 @@ SHA = 'F26EC77CCBAC1D37F2DE2D239EC8523A0360EFD5F5E574E1FDEE4CCE7B4614E4'
 def step(msg): print('==', msg, flush=True)
 
 
+step('git hooks (public repo: commits must use a noreply e-mail)')
+try:
+    subprocess.run(['git', 'config', 'core.hooksPath', '.githooks'], cwd=ROOT, check=True)
+    em = subprocess.run(['git', 'config', 'user.email'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    if em and not em.endswith('@users.noreply.github.com'):
+        print('!! 이 저장소의 커밋 이메일이 noreply가 아닙니다. 커밋하려면:  git config user.email "<id>+<name>@users.noreply.github.com"')
+except Exception as e:
+    print('git hook setup skipped:', e)
+
 step('python packages')
 missing = []
 for mod in ('fastapi', 'uvicorn', 'numpy', 'sentence_transformers', 'torch'):

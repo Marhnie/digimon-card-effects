@@ -32,3 +32,13 @@ Python 3.11 · scikit-learn · numpy · scipy · networkx · openpyxl · python-
 
 ## GPU 학습
 Claude 없는 판정 모델 학습 데이터·스크립트는 [train/README.md](train/README.md)를 보세요.
+
+## 커밋 이메일 (공개 저장소)
+이 저장소는 공개입니다. 커밋 작성자 이메일은 GitHub noreply 주소만 허용합니다.
+```bash
+git config user.email "124869504+Marhnie@users.noreply.github.com"
+git config core.hooksPath .githooks
+```
+- `.githooks/pre-commit`: noreply가 아닌 작성자·커미터 이메일이면 커밋을 거부합니다.
+- `.githooks/pre-push`: 아직 원격에 없는 커밋 중 실제 이메일이 든 것이 있으면 푸시를 거부합니다.
+- `server/setup.py`를 실행하면 훅이 자동으로 켜집니다. 클론할 때마다 한 번씩 설정하세요.
