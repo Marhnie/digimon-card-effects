@@ -131,3 +131,9 @@ node tests/tqemb.js train/export_qemb                                           
 - **승인 기준:** 구어체 recall@3이 교사의 95% 이상이고, 내보낸 파일이 15MB 이하여야 합니다(`train/runs/distill/metrics.json`의 `approved`).
 - **반영:** `train/export_qemb/`가 있으면 `build_v3.py`가 `window.__QEMB_BASE="qemb/"`를 켭니다. 배포할 때는 이 폴더의 파일을 아티팩트 `qemb/` 경로로 함께 올립니다.
   - 판정 도우미에서는 **질문 추천(「의미가 비슷한 공식 질문」)과 「의미 검색」 근거 탭에만** 씁니다. 판정에는 쓰지 않습니다.
+
+### 6-1. 점수 합치기 실험 (E31 후속, 가중치 파일 필요)
+```bash
+python train/fuse_eval.py --model train/runs/retriever_base/model     # CPU에서도 수 분. 학습된 가중치는 GPU 컴퓨터에 있음
+```
+모델 코사인과 2-gram 점수를 RRF·z점수 평균·가중합으로 합쳐 `time_split`(최신 팩)·`colloquial`(구어체)에서 recall을 비교합니다. 결과는 `train/runs/fuse_eval.json`. 개발 세트는 학습 풀에 원문이 들어 있어 가중치(α) 선택에는 쓸 수 없으므로, 보고는 파라미터가 없는 RRF·z점수 평균 기준으로 합니다.
