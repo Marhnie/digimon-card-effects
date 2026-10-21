@@ -32,6 +32,8 @@ from qfuse import Fuser          # E31: model cosine + 2-gram fused by RRF (coll
 FUSE = Fuser(QA, DOC)
 
 app = FastAPI(docs_url=None, redoc_url=None)
+from fastapi.middleware.gzip import GZipMiddleware
+app.add_middleware(GZipMiddleware, minimum_size=1000)   # the page is ~9 MB of JSON data; ~1.5 MB gzipped
 lock = threading.Lock()
 
 

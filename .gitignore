@@ -46,3 +46,7 @@ server/judge.db
 server/corpus_emb.npy
 server/corpus_emb.stamp
 server/static/
+server/public_url.txt
+server/public_url_history.txt
+server/tunnel.log
+server/server.log
