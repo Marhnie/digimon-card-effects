@@ -21,8 +21,10 @@ import uvicorn
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 MODEL = os.environ.get('QEMB_MODEL', os.path.join(ROOT, 'train', 'runs', 'retriever_cpu', 'model'))
-DB = os.path.join(HERE, 'judge.db')
-JUDGES_F = os.path.join(HERE, 'judges.json')
+DATA = os.environ.get('JUDGE_DATA', HERE)          # judge keys, DB and the corpus-embedding cache (a volume in Docker)
+os.makedirs(DATA, exist_ok=True)
+DB = os.path.join(DATA, 'judge.db')
+JUDGES_F = os.path.join(DATA, 'judges.json')
 PAGE = os.path.join(HERE, 'static', 'index.html')
 
 T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8'))
@@ -66,7 +68,7 @@ def load_model():
             SEM['err'] = f'model not found: {MODEL}'; print(SEM['err']); return
         from sentence_transformers import SentenceTransformer
         m = SentenceTransformer(MODEL, device='cpu')
-        cache = os.path.join(HERE, 'corpus_emb.npy'); stamp = os.path.join(HERE, 'corpus_emb.stamp')
+        cache = os.path.join(DATA, 'corpus_emb.npy'); stamp = os.path.join(DATA, 'corpus_emb.stamp')
         key = f"{os.path.getmtime(MODEL)}|{len(DOC)}"
         if os.path.exists(cache) and os.path.exists(stamp) and open(stamp).read() == key:
             E = np.load(cache)

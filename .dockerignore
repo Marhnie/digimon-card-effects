@@ -1,0 +1,12 @@
+node_modules
+.git
+server/judges.json
+server/judge.db
+server/corpus_emb.*
+server/*.log
+server/public_url*.txt
+train/runs/*/model
+train/export_qemb_tiny
+*.tmp.json
+network
+paper/repro
