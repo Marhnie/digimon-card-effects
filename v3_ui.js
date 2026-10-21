@@ -267,6 +267,19 @@ const jkey=()=>{try{return localStorage.getItem('judgeKey')||''}catch(e){return 
 const api=(path,opt={})=>fetch(SRV+path,{...opt,headers:{'content-type':'application/json','x-judge-key':jkey(),...(opt.headers||{})}}).then(async r=>{if(r.status===403){const e=new Error('denied');e.code='permission_denied';throw e}if(!r.ok)throw new Error(String(r.status));return r.json()});
 const srvDB={collection:()=>({onSnapshot:(cb,err)=>{const pull=()=>api('rulings').then(L=>cb({docs:L.map(d=>({id:String(d.id),data:()=>d}))})).catch(e=>err&&err(e));pull();setInterval(pull,20000);return ()=>{}},
   add:d=>api('rulings',{method:'POST',body:JSON.stringify(d)})})};
+/* ---------- every verdict is saved to the server (E36). Kept in this browser until the server takes it, so a server that is off loses nothing (this browser only) ---------- */
+const VQ_KEY='verdictQueue';
+const vqLoad=()=>{try{return JSON.parse(localStorage.getItem(VQ_KEY)||'[]')}catch(e){return []}};
+const vqSave=L=>{try{localStorage.setItem(VQ_KEY,JSON.stringify(L))}catch(e){}};
+let VQ_BUSY=false;
+function vqFlush(){if(!SRV||VQ_BUSY)return;const L=vqLoad();if(!L.length)return;VQ_BUSY=true;
+  const n=Math.min(50,L.length);
+  fetch(SRV+'verdicts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(L.slice(0,n))})
+    .then(r=>{if(r.ok||(r.status>=400&&r.status<500))vqSave(vqLoad().slice(n))})  // sent, or refused as bad data (drop so it does not block the queue)
+    .catch(()=>{})  // server off or offline: keep, retry later
+    .finally(()=>{VQ_BUSY=false})}
+function saveVerdict(rec){if(!SRV)return;const L=vqLoad();L.push(rec);vqSave(L);vqFlush()}
+if(SRV){vqFlush();setInterval(vqFlush,60000);addEventListener('online',vqFlush)}
 const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false,canWrite:null,code:''};
 window.__rulings=CR;   // test hook (tests/tcr.js)
 (async()=>{try{const use=SRV?(async n=>n==='db'?srvDB:n==='user'?{id:async()=>{try{return (await api('whoami')).judge}catch(e){return null}},can:async()=>{try{return !!(await api('whoami')).judge}catch(e){return false}}}:null):(window.claude&&window.claude.use);if(!use){CR.state='off';return}
@@ -439,6 +452,7 @@ function judge(){
   CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
+  if(SRV)saveVerdict({q:ST.q,cards:ST.cards.map(c=>c.no),level:ST.res.level,ans:ST.res.ans===undefined?null:ST.res.ans,top:(ST.res.list||[]).slice(0,3).map(x=>({card:x.card,q:x.q,y:x.y})),at:new Date().toISOString()});
   if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!ST.res.xref&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }

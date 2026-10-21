@@ -46,6 +46,7 @@ def db():
     c = sqlite3.connect(DB); c.row_factory = sqlite3.Row
     c.execute('create table if not exists rulings (id integer primary key, doc text, at real)')
     c.execute('create table if not exists reports (id integer primary key, doc text, at real, done integer default 0, ip text)')
+    c.execute('create table if not exists verdicts (id integer primary key, doc text, at real)')
     return c
 
 
@@ -128,6 +129,34 @@ async def add_ruling(req: Request):
     with lock, db() as c:
         cur = c.execute('insert into rulings (doc, at) values (?, ?)', (json.dumps(d, ensure_ascii=False), time.time()))
         return {'id': cur.lastrowid}
+
+
+def clean_verdict(d):
+    # every verdict the page shows (E36): the question, the cards, the level and the top precedents
+    if not isinstance(d, dict) or not str(d.get('q', '')).strip(): raise HTTPException(400, 'bad verdict')
+    top = [{'card': str(t.get('card', ''))[:40], 'q': str(t.get('q', ''))[:1000], 'y': t.get('y')} for t in (d.get('top') or [])[:3] if isinstance(t, dict)]
+    return {'q': str(d['q'])[:1000], 'cards': [str(x)[:40] for x in (d.get('cards') or [])][:10], 'level': str(d.get('level', ''))[:20],
+            'ans': d.get('ans') if d.get('ans') in (0, 1, None) else None, 'top': top, 'at': str(d.get('at', ''))[:40]}
+
+
+@app.post('/api/verdicts')
+async def add_verdict(req: Request):
+    body = await req.json()
+    items = body if isinstance(body, list) else [body]
+    if len(items) > 50: raise HTTPException(400, 'too many')
+    ids = []
+    with lock, db() as c:
+        for it in items:
+            d = clean_verdict(it); d['saved_at'] = time.strftime('%Y-%m-%dT%H:%M:%S')
+            ids.append(c.execute('insert into verdicts (doc, at) values (?, ?)', (json.dumps(d, ensure_ascii=False), time.time())).lastrowid)
+    return {'ids': ids}
+
+
+@app.get('/api/verdicts')
+def verdicts(req: Request):
+    if not judge_of(req): raise HTTPException(403, 'judge key required')
+    with lock, db() as c:
+        return [{**json.loads(r['doc']), 'id': r['id']} for r in c.execute('select * from verdicts order by id')]
 
 
 LAST = {}
