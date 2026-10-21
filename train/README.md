@@ -115,3 +115,19 @@ python train/train_retriever.py --norm ...                                      
 1. 학습된 ko-sroberta(110M)를 교사로, 말뭉치(5,308문항 + 구어체 증강 수만 개)의 임베딩을 정답으로 하여 학생(문자 2~3-gram 해시 임베딩 + 평균 풀링 + 작은 선형층, 또는 4층·256차원 Transformer)을 코사인/MSE 손실로 학습합니다.
 2. 학생은 int8 양자화한 뒤 ONNX(onnxruntime-web, wasm)나 순수 JS 행렬곱으로 실행하고, 말뭉치 임베딩(5,308×256 int8 ≈ 1.3MB)은 미리 계산해 파일로 넣습니다. 질문 하나는 학생으로만 임베딩하면 됩니다.
 3. 승인 기준: 구어체 세트 recall@3이 교사의 95% 이상, 모델 크기 15MB 이하. 아니면 서버 방식(고정 임베딩 API)으로 갑니다.
+
+## 7. 검색 모델 증류 → 판정 도우미 (E33)
+
+```bash
+python train/distill_student.py --teacher train/runs/retriever_base/model                 # 평가(시간 분할, 정직한 수치)
+python train/distill_student.py --teacher train/runs/retriever_base/model --final         # 평가 + 전체 Q&A로 다시 학습해 내보내기
+python train/distill_student.py --tiny                                                    # CPU 스모크
+node tests/tqemb.js train/export_qemb                                                     # JS 이식이 Python과 같은지(코사인 > 0.99)
+```
+
+- **학생 모델:** 문자 2·3-gram을 FNV-1a 해시(32,768칸)로 바꾼 뒤, 256차원 임베딩 평균 → 선형층(256→교사 차원) → 정규화합니다. 질문만 학생이 벡터로 바꾸고, 공식 Q&A 쪽은 교사 벡터를 int8로 미리 넣어 둡니다.
+  - 크기: 학생 약 8.6MB + Q&A 벡터 약 4MB.
+  - 브라우저에서는 `v3_qemb.js`로 돌립니다. 순수 JS이고 라이브러리가 필요 없습니다.
+- **승인 기준:** 구어체 recall@3이 교사의 95% 이상이고, 내보낸 파일이 15MB 이하여야 합니다(`train/runs/distill/metrics.json`의 `approved`).
+- **반영:** `train/export_qemb/`가 있으면 `build_v3.py`가 `window.__QEMB_BASE="qemb/"`를 켭니다. 배포할 때는 이 폴더의 파일을 아티팩트 `qemb/` 경로로 함께 올립니다.
+  - 판정 도우미에서는 **질문 추천(「의미가 비슷한 공식 질문」)과 「의미 검색」 근거 탭에만** 씁니다. 판정에는 쓰지 않습니다.

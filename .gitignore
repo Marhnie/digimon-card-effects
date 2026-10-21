@@ -37,3 +37,6 @@ train/runs/**
 !train/runs/*/metrics.json
 !train/runs/*/test_pred.json
 !train/runs/*/test_retrieval.json
+
+train/export_qemb_tiny/
+train/runs/distill_tiny/

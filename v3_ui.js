@@ -362,6 +362,11 @@ function comboRef(){const u=mainUnit();const xs=extras();if(!u||!xs.length)retur
   return best&&best.s>=0.27?best:null}
 
 
+/* ---------- semantic search (E33): distilled student, files under window.__QEMB_BASE (absent → feature off) ---------- */
+const SEM_ON=typeof QEMB!=='undefined'&&!!window.__QEMB_BASE;
+if(SEM_ON)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.arrayBuffer()})).then(ok=>{if(ok){if(ST.res)renderResult();renderSugg()}});
+function semQA(text,k){if(!SEM_ON||!QEMB.st.ready||!String(text).trim())return [];const EXP=window.__exProducts;
+  return QEMB.search(text,k,i=>QA[i]&&!(EXP&&EXP.has((QA[i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(x=>({q:QA[x.i],s:x.s}))}
 /* ---------- question autocomplete (E25): official question wording for this card / same effect pattern ---------- */
 let SUGG=[],SUGI=-1;
 function suggestions(limit=8){const u=mainUnit();const c=ST.cards[0];if(!u||!c)return [];const typed=ST.q.trim();
@@ -372,8 +377,10 @@ function suggestions(limit=8){const u=mainUnit();const c=ST.cards[0];if(!u||!c)r
   // same effect pattern: one representative per (asked, situation) template, the most frequent templates first
   const by=new Map();for(const q of pat){const k=intentOf(q.q)+'|'+slotsOf(q.q).sort((a,b)=>a-b).join(',');const g=by.get(k)||{n:0,best:null,bs:-1};g.n++;const s=sc(q);if(s>g.bs){g.bs=s;g.best=q}by.set(k,g)}
   const patR=[...by.values()].map(g=>({q:g.best,s:g.bs+Math.min(0.1,g.n*0.01),n:g.n,src:'같은 효과 패턴 질문'}));
-  const all=[...ownR,...patR].filter(x=>!typed||x.s>=0.08||x.src==='이 카드 공식 질문').sort((a,b)=>b.s-a.s);
-  return all.slice(0,limit)}
+  const all=[...ownR,...patR].filter(x=>!typed||x.s>=0.08||x.src==='이 카드 공식 질문').sort((a,b)=>b.s-a.s).slice(0,limit);
+  // meaning-alike official questions (any card) — catches colloquial wording the character overlap misses
+  if(typed.length>=4){const seen=new Set(all.map(x=>x.q.i));for(const x of semQA(typed,8)){if(seen.has(x.q.i))continue;seen.add(x.q.i);all.push({q:x.q,s:x.s,src:'의미가 비슷한 공식 질문'});if(all.length>=limit+3)break}}
+  return all}
 function renderSugg(){const el=document.getElementById('sugg');if(!el)return;SUGG=(document.activeElement===$('askq')||ST.suggOpen)?suggestions():[];
   if(!SUGG.length){el.innerHTML='';el.hidden=true;return}el.hidden=false;
   el.innerHTML=`<div class="sugg-h">비슷한 공식 질문 문장으로 고르면 Claude 없이 더 정확하게 답합니다 · ↑↓ Enter</div>`+SUGG.map((x,k)=>`<button type="button" class="sg${k===SUGI?' on':''}" role="option" aria-selected="${k===SUGI}" data-sg="${k}"><span class="sg-src">${esc(x.src)}${x.q.card!==(ST.cards[0]||{}).no?` · ${esc(x.q.card)}`:''}${x.n>1?` · 같은 틀 ${x.n}건`:''}</span>${esc(x.q.q)}</button>`).join('')}
@@ -455,6 +462,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   const own=ownQA();
   const tabs=[(R.issues||[]).length?['issue','같은 룰 쟁점',R.issues.reduce((s,x)=>s+x.qa.length+x.rules.length,0)]:null,['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
   const crl=CR.list.filter(r=>involved().includes(r.card));if(crl.length)tabs.splice(1,0,['cr','확인된 판정',crl.length]);
+  const sem=semQA(ST.q,10);if(sem.length)tabs.splice(2,0,['sem','의미 검색',sem.length]);
   if(!tabs.some(t=>t&&t[0]===ST.tab))ST.tab=tabs.find(Boolean)[0];
   let body='';const myneg=ST.sl.has(NEGI)?1:0;
   if(ST.tab==='issue')body=(R.issues||[]).map(x=>`<div class="empty" style="padding:0 2px"><b>${esc(x.name)}</b> — ${esc(x.desc)}</div>`+x.rules.map(itemRule).join('')+x.qa.map(i=>itemQA(QA[i],'<span>· 같은 룰 쟁점</span>')).join('')).join('');
@@ -469,6 +477,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
     body=`<div class="empty" style="padding:0 2px">${esc(t.replace('유발 · ','유발 조건: '))} · 같은 조건으로 발동하는 효과 ${n}개</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 유발 조건 효과에 연결된 Q&amp;A가 없습니다.</div>')}
   else if(ST.tab==='combo')body=R.combo.length?R.combo.map(q=>itemQA(q,'')).join(''):'<div class="empty">함께 고른 카드 이름이 같이 나오는 Q&amp;A가 없습니다.</div>';
   else if(ST.tab==='cr')body=crl.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(r=>`<div class="item"><div class="src"><span class="cno">${esc(r.card)}</span><span>${esc(cname(r.card))}</span>${r.others?`<span>+ ${esc(r.others)}</span>`:''}<span class="yn">답: ${yn(r.ans)}</span><span>· ${esc(SRCN[r.src]||'')}${r.agreed===false?' → 바로잡음':''}</span><span>${esc(String(r.at||'').slice(0,10))}</span></div><div class="q"><b>Q</b><span>${esc(r.q||'')}</span></div>${r.note?`<div class="a"><b>메모</b><span>${esc(r.note)}</span></div>`:''}</div>`).join('');
+  else if(ST.tab==='sem')body=`<div class="empty" style="padding:0 2px">문장 뜻이 가까운 공식 Q&amp;A입니다(학습한 검색 모델, 판정에는 쓰지 않음). 상황이 같은지 직접 확인하세요.</div>`+sem.map(x=>itemQA(x.q,`<span>· 의미 유사 ${Math.round(x.s*100)}%</span>${x.q.y>=0?`<span class="yn">답: ${yn(x.q.y^(x.q.neg^(ST.sl.has(NEGI)?1:0)))}</span>`:''}`)).join('');
   else if(ST.tab==='struct')body=structHTML(u);
   else if(ST.tab==='clu'){const l=clusterQA(u,40,ST.cards[0]&&ST.cards[0].no);const c=CLU[strOf(u)[6]];
     body=`<div class="empty" style="padding:0 2px">같은 효과 무리: ${esc(c[0])} · 효과 ${c[3]}개 (효과 네트워크 클러스터)</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 무리 효과에 연결된 Q&amp;A가 없습니다.</div>')}
