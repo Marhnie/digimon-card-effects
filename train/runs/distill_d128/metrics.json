@@ -1,0 +1,30 @@
+{
+ "args": {
+  "teacher": "D:\\닼웤롴덬\\digimon-card-effects\\train\\runs\\retriever_base\\model",
+  "dim": 128,
+  "buckets": 16384,
+  "aug": 6,
+  "epochs": 30,
+  "bs": 256,
+  "lr": 0.002,
+  "seed": 13,
+  "name": "d128",
+  "tiny": false
+ },
+ "result": {
+  "time_split": {
+   "n": 314,
+   "recall@1": 0.882,
+   "recall@3": 0.939,
+   "recall@10": 0.987
+  },
+  "colloquial": {
+   "n": 87,
+   "recall@1": 0.483,
+   "recall@3": 0.552,
+   "recall@10": 0.644
+  }
+ },
+ "teacher": "D:\\닼웤롴덬\\digimon-card-effects\\train\\runs\\retriever_base\\model",
+ "n_train": 30849
+}
