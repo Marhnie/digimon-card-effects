@@ -378,7 +378,7 @@ const SEM_ON=!!SRV||(typeof QEMB!=='undefined'&&!!window.__QEMB_BASE);const SEMC
 if(SEM_ON&&!SRV)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.arrayBuffer()})).then(ok=>{if(ok){if(ST.res)renderResult();renderSugg()}});
 function semQA(text,k){const EXP=window.__exProducts;const key=String(text||'').trim();if(!SEM_ON||!key)return [];
   if(SRV){const c=SEMC.get(key);if(c)return c.slice(0,k);if(!SEMC.has('#'+key)){SEMC.set('#'+key,1);
-      api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.s})));
+      api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.cos!=null?h.cos:h.s})));
         renderSugg();if(ST.res&&ST.q.trim()===key)renderResult()}).catch(()=>{})}
     return []}
   if(!QEMB.st.ready)return [];

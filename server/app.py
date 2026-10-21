@@ -27,6 +27,9 @@ PAGE = os.path.join(HERE, 'static', 'index.html')
 
 T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8'))
 QA = T['qa']; DOC = [i for i, r in enumerate(QA) if r[0]]
+import sys; sys.path.insert(0, ROOT)
+from qfuse import Fuser          # E31: model cosine + 2-gram fused by RRF (colloquial @1 0.816 -> 0.874)
+FUSE = Fuser(QA, DOC)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 lock = threading.Lock()
@@ -84,8 +87,8 @@ async def search(req: Request):
     if not q.strip():
         return {'ready': True, 'hits': []}
     v = SEM['model'].encode([q], normalize_embeddings=True, show_progress_bar=False)[0]
-    s = SEM['E'] @ v; o = np.argsort(-s)[:k * 3]
-    return {'ready': True, 'hits': [{'i': DOC[j], 's': round(float(s[j]), 4)} for j in o]}
+    s = SEM['E'] @ v
+    return {'ready': True, 'hits': FUSE.hits(q, s, k * 3)}
 
 
 # ---------------- rulings & reports ----------------
