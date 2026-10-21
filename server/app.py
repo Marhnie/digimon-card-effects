@@ -35,7 +35,10 @@ FUSE = Fuser(QA, DOC)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 from fastapi.middleware.gzip import GZipMiddleware
-app.add_middleware(GZipMiddleware, minimum_size=1000)   # the page is ~9 MB of JSON data; ~1.5 MB gzipped
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+# the claude.ai artifact build calls this API cross-origin (E35); judge writes still need X-Judge-Key
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'POST'], allow_headers=['content-type', 'x-judge-key'])   # the page is ~9 MB of JSON data; ~1.5 MB gzipped
 lock = threading.Lock()
 
 

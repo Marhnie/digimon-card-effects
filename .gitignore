@@ -50,3 +50,4 @@ server/public_url.txt
 server/public_url_history.txt
 server/tunnel.log
 server/server.log
+server/_pages/

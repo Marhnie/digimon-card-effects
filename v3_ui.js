@@ -321,6 +321,9 @@ function judgeBox(){if(!SRV||document.getElementById('jbox'))return;const el=doc
   el.innerHTML=`<summary>심판 로그인</summary><div class="crbar"><div class="sub">운영자가 준 심판 키를 넣으면 판정 확인·저장과 제보 검토를 할 수 있습니다(이 브라우저에만 저장).</div><div class="row"><input id="jkey" type="password" aria-label="심판 키" placeholder="심판 키"><button class="btn2 pri" type="button" id="jkeyset">확인</button><button class="btn2" type="button" id="jkeyout">로그아웃</button></div><div class="sub" id="jkeymsg"></div></div>`;
   const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor)}
 if(SRV)setTimeout(judgeBox,0);
+// artifact build: the claude.ai sandbox cannot call the server, so link to it (E35) — the GitHub Pages page forwards to its current address
+if(DIST&&!SRV&&window.__SERVER_LINK)setTimeout(()=>{const ex=document.getElementById('exs');if(!ex||document.getElementById('srvlink'))return;const d=document.createElement('div');d.id='srvlink';d.className='crbar';
+  d.innerHTML=`<b>말투가 달라도 비슷한 공식 Q&amp;A를 찾아 주는 「의미 검색」</b>과 심판 확인·제보 기능은 서버판에서 쓸 수 있습니다. <a href="${window.__SERVER_LINK}" target="_blank" rel="noopener">서버판 열기 →</a>`;ex.parentNode.insertBefore(d,ex)},0);
 function renderImport(){if(!CR.db||CR.canWrite===false)return;if(document.getElementById('crimport'))return;
   const el=document.createElement('details');el.id='crimport';el.className='browse';
   el.innerHTML=`<summary>받은 판정 코드 가져오기 (운영자)</summary><div class="crbar"><div class="sub">이용자가 보낸 「JD1:」 코드를 한 줄에 하나씩 붙여 넣고 내용을 확인한 뒤 저장하세요. 저장한 판정은 같은 질문에 Claude 없이 답하는 데 쓰입니다.</div><textarea id="crin" rows="4" aria-label="받은 코드"></textarea><div class="row">${SRV?'<button class="btn2" type="button" id="crpull">받은 제보 불러오기</button>':''}<button class="btn2" type="button" id="crpreview">내용 보기</button><button class="btn2 pri" type="button" id="crimp" disabled>확인 판정으로 저장</button></div><div id="crprev"></div></div>`;
