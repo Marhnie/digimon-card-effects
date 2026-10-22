@@ -4,7 +4,7 @@ const {JSDOM}=require('jsdom');const fs=require('fs');const BASE=process.argv[2]
 const html=fs.readFileSync('server/static/index.html','utf8');const key=Object.keys(JSON.parse(fs.readFileSync('server/judges.json','utf8')))[0];
 let fail=0;const ok=(c,m)=>{console.log((c?'PASS ':'FAIL ')+m);if(!c)fail++};const errs=[];const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function page(withKey){const store={};if(withKey)store.judgeKey=key;
-  const dom=new JSDOM('<!doctype html><html><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,url:BASE+'/',beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});
+  const dom=new JSDOM('<!doctype html><html><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,url:BASE+'/',beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.__noVerdictSave=1;
     w.addEventListener('error',e=>errs.push(e.message));w.fetch=(u,o)=>fetch(new URL(u,BASE+'/').href,o);
     if(withKey)w.localStorage.setItem('judgeKey',key);}});
   return dom.window}

@@ -5,7 +5,7 @@ const html=fs.readFileSync('server/static/index.html','utf8');const T=JSON.parse
 const NEW=new Set(['BT22','BT23','BT24','EX9','EX10','ST21','ST22']);const prod=c=>((c||'').match(/^([A-Z]+\d*)-/)||[])[1];
 const items=T.qa.map((r,i)=>({i,card:r[0],q:r[1],unit:r[3],y:r[8]})).filter(x=>x.y>=0&&NEW.has(prod(x.card))&&x.unit!=null&&x.unit>=0);
 const N=+process.argv[2]||items.length;
-const dom=new JSDOM('<!doctype html><html><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,url:BASE+'/',beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.__exProducts=NEW;w.fetch=(u,o)=>fetch(new URL(u,BASE+'/').href,o)}});
+const dom=new JSDOM('<!doctype html><html><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,url:BASE+'/',beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.__noVerdictSave=1;w.__exProducts=NEW;w.fetch=(u,o)=>fetch(new URL(u,BASE+'/').href,o)}});
 const w=dom.window,d=w.document,$=i=>d.getElementById(i);const type=(el,v)=>{el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}))};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{await sleep(1500);const by={};let n=0,dec=0,ok=0;

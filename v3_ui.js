@@ -278,7 +278,8 @@ function vqFlush(){if(!SRV||VQ_BUSY)return;const L=vqLoad();if(!L.length)return;
     .then(r=>{if(r.ok||(r.status>=400&&r.status<500))vqSave(vqLoad().slice(n))})  // sent, or refused as bad data (drop so it does not block the queue)
     .catch(()=>{})  // server off or offline: keep, retry later
     .finally(()=>{VQ_BUSY=false})}
-function saveVerdict(rec){if(!SRV)return;const L=vqLoad();L.push(rec);vqSave(L);vqFlush()}
+function saveVerdict(rec){if(!SRV||window.__noVerdictSave)return;   // tests set __noVerdictSave so they do not fill the server's log
+const L=vqLoad();L.push(rec);vqSave(L);vqFlush()}
 if(SRV){vqFlush();setInterval(vqFlush,60000);addEventListener('online',vqFlush)}
 const CR={list:[],db:null,me:null,state:'loading',saving:false,msg:'',done:false,canWrite:null,code:''};
 window.__rulings=CR;   // test hook (tests/tcr.js)
