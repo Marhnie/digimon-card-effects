@@ -5,7 +5,8 @@
 이상치 기준: 효과의 「처리 행동」 또는 「유발 조건」이 그 클러스터에서 드문 것(처리 행동 비율 < 3% 또는 유발 조건 비율 < 3%; 작은 클러스터는 < 10%)
 편입 원인: 이상치와 같은 클러스터 구성원을 잇는 링크의 이유 중 가장 센 것 (p 같은 처리 단계 · s 구조 유사 · t 같은 유발 조건 · q 같은 Q&A 쟁점 · c 같은 카드 · m 이름 언급)"""
 import json, collections, math, re
-N = json.load(open('net/effect_sna.json', encoding='utf-8'))
+import os
+N = json.load(open(os.environ.get('SNA_IN', 'net/effect_sna.json'), encoding='utf-8'))
 nodes, clusters, coarse = N['nodes'], N['clusters'], N['coarse']
 co_of = {f: c for c in coarse for f in c['fine']}
 mem = collections.defaultdict(list)
@@ -88,5 +89,5 @@ md += ['## 원인 분석', '',
        '- **Q&A 쟁점(q)·이름 언급(m)으로 들어온 경우**는 소수입니다. Q&A 쟁점은 20개 이하 묶음에서만 링크를 만들기 때문에 영향이 작습니다.',
        '- 처리 단계가 둘 이상인 효과는 첫 행동이 아니라 모든 단계의 행동으로 판단했기 때문에(예: BT23-032 토우몬 「효과 부여 → 퇴화」) 이상치로 세지 않았습니다.',
        '- **개선 방향(이번에 하지 않음):** (1) 유발 조건 링크의 이웃 선택에서 처리 행동이 하나도 겹치지 않는 후보를 제외하거나 가중치를 낮추기, (2) 유발 조건이 같은 형제 묶음이 10개 이상이면 별도 클러스터로 분리, (3) 클러스터 확정 후 주제 행동이 없는 구성원을 가장 가까운 주제 클러스터로 재배정하는 후처리. 클러스터는 사용자 지시에 따라 다시 계산하지 않았습니다.', '']
-open('paper/results/cluster_review.md', 'w', encoding='utf-8').write('\n'.join(md) + '\n' + '\n'.join(body) + '\n')
+open(os.environ.get('REVIEW_OUT', 'paper/results/cluster_review.md'), 'w', encoding='utf-8').write('\n'.join(md) + '\n' + '\n'.join(body) + '\n')
 print(out_total, cause_cnt.most_common())

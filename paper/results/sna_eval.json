@@ -1,0 +1,177 @@
+{
+ "net": "net/effect_sna.json",
+ "skip": [
+  "q"
+ ],
+ "test_with_node": 529,
+ "n_test": 597,
+ "cluster": {
+  "answered": 504,
+  "of": 529,
+  "acc": 0.621,
+  "high_precision": [
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   },
+   {
+    "thr": 0.47,
+    "answered": 21,
+    "acc": 0.6667
+   }
+  ]
+ },
+ "link>=0.0": {
+  "answered": 451,
+  "of": 529,
+  "acc": 0.6763,
+  "high_precision": [
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   },
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   }
+  ]
+ },
+ "link>=0.5": {
+  "answered": 419,
+  "of": 529,
+  "acc": 0.6802,
+  "high_precision": [
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   },
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   }
+  ]
+ },
+ "link>=0.7": {
+  "answered": 363,
+  "of": 529,
+  "acc": 0.6722,
+  "high_precision": [
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   },
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   }
+  ]
+ },
+ "link>=0.85": {
+  "answered": 259,
+  "of": 529,
+  "acc": 0.7297,
+  "high_precision": [
+   {
+    "thr": 0.392,
+    "answered": 62,
+    "acc": 0.7742
+   },
+   {
+    "thr": null,
+    "answered": 0,
+    "acc": null
+   }
+  ]
+ },
+ "analog all": {
+  "answered": 529,
+  "of": 529,
+  "acc": 0.7921,
+  "high_precision": [
+   {
+    "thr": 0.455,
+    "answered": 184,
+    "acc": 0.8804,
+    "beyond_engine": 51,
+    "beyond_engine_ok": 32
+   },
+   {
+    "thr": 0.683,
+    "answered": 88,
+    "acc": 1.0,
+    "beyond_engine": 3,
+    "beyond_engine_ok": 3
+   }
+  ]
+ },
+ "analog sna>=0.85": {
+  "answered": 259,
+  "of": 529,
+  "acc": 0.7606,
+  "high_precision": [
+   {
+    "thr": 0.41,
+    "answered": 68,
+    "acc": 0.9265,
+    "beyond_engine": 12,
+    "beyond_engine_ok": 7
+   },
+   {
+    "thr": 0.458,
+    "answered": 68,
+    "acc": 0.9853,
+    "beyond_engine": 1,
+    "beyond_engine_ok": 1
+   }
+  ]
+ },
+ "analog sna>=0.7": {
+  "answered": 363,
+  "of": 529,
+  "acc": 0.7328,
+  "high_precision": [
+   {
+    "thr": 0.339,
+    "answered": 98,
+    "acc": 0.9082,
+    "beyond_engine": 23,
+    "beyond_engine_ok": 16
+   },
+   {
+    "thr": 0.458,
+    "answered": 72,
+    "acc": 0.9861,
+    "beyond_engine": 1,
+    "beyond_engine_ok": 1
+   }
+  ]
+ },
+ "analog sna>=0.5": {
+  "answered": 419,
+  "of": 529,
+  "acc": 0.7017,
+  "high_precision": [
+   {
+    "thr": 0.423,
+    "answered": 104,
+    "acc": 0.8846,
+    "beyond_engine": 25,
+    "beyond_engine_ok": 15
+   },
+   {
+    "thr": 0.521,
+    "answered": 71,
+    "acc": 1.0,
+    "beyond_engine": 1,
+    "beyond_engine_ok": 1
+   }
+  ]
+ }
+}

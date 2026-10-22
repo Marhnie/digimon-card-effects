@@ -38,9 +38,12 @@ X = normalize(hstack([X1, X2 * 0.5]).tocsr())
 
 G = nx.Graph()
 for k, s in enumerate(nodes): G.add_node(k)
+import os
 def link(a, b, typ, w):
     """one link per pair; each reason keeps its own score (the strongest one if repeated)"""
     if a == b: return
+    w = min(0.95, w * float(os.environ.get('SNA_W_' + typ, '1')))   # E42: per-reason weight (tuning)
+    if w <= 0: return
     if not G.has_edge(a, b): G.add_edge(a, b, comp={})
     c = G[a][b]['comp']; c[typ] = max(c.get(typ, 0), w)
 # (s) structure similarity: 4 nearest neighbours, cosine >= 0.55
@@ -96,11 +99,22 @@ bytrig = collections.defaultdict(list)
 for k, s in enumerate(nodes):
     for g in trig_keys(s): bytrig[g].append(k)
 print('유발 조건 축(아이콘 타이밍 포함):', len(bytrig), '종류,', sum(1 for s in nodes if trig_keys(s)), '효과', sorted(((k, len(v)) for k, v in bytrig.items()), key=lambda x: -x[1])[:6])
+import os
+FIX = os.environ.get('SNA_FIX', '0') == '1'   # E42: trigger links only between effects that share a processing action; misfits reassigned
+def acts_of(s):
+    a = {x.replace('키워드 실행: ', '') for p in s.get('처리', []) for x in p['acts']}
+    if s['분류'] == '키워드 효과': a |= {'K:' + k for k in s.get('키워드', [])}
+    return a or {'(처리 없음)'}
+ACT = [acts_of(s) for s in nodes]
 for ks in bytrig.values():
     if len(ks) < 2: continue
     sub = (X[ks] @ X[ks].T).toarray(); np.fill_diagonal(sub, -1)
     for r, a in enumerate(ks):
-        for c in np.argsort(-sub[r])[:5]: link(a, ks[c], 't', 0.5 + 0.5 * max(0.0, float(sub[r, c])))
+        got = 0
+        for c in np.argsort(-sub[r]):
+            if sub[r, c] < 0 or got >= 5: break
+            if FIX and os.environ.get('SNA_FIX_T', '1') == '1' and not (ACT[a] & ACT[ks[c]]): continue
+            link(a, ks[c], 't', 0.5 + 0.5 * max(0.0, float(sub[r, c]))); got += 1
 # (q) the same tight Q&A issue discusses both effects
 iss = collections.defaultdict(set)
 for k, q in enumerate(QI):
@@ -142,6 +156,27 @@ comm = np.zeros(N, int)
 for c_, mem in enumerate(fine):
     for k in mem: comm[k] = c_
 F = len(fine)
+if FIX and os.environ.get('SNA_FIX_R', '1') == '1':
+    # E42: an effect that performs none of its cluster's theme actions (done by >= 10% of members) moves to the most strongly
+    # linked cluster whose themes it shares; clusters keep their ids, so names carry over as before
+    def themes():
+        th = []
+        for f in range(F):
+            mem = [k for k in range(N) if comm[k] == f]; cnt = collections.Counter(a for k in mem for a in ACT[k])
+            th.append({a for a, v in cnt.items() if v >= 0.10 * max(1, len(mem))})
+        return th
+    for _round in range(2):
+        TH = themes(); moved = 0
+        for k in range(N):
+            if ACT[k] & TH[comm[k]]: continue
+            w = collections.Counter()
+            for nb, d in G[k].items(): w[comm[nb]] += d['weight']
+            best = next((f for f, _ in w.most_common() if f != comm[k] and ACT[k] & TH[f]), None)
+            if best is not None: comm[k] = best; moved += 1
+        print('E42 reassigned', moved)
+    fine = [set(k for k in range(N) if comm[k] == f) for f in range(F)]
+    keep = [f for f in range(F) if fine[f]]; remap = {f: i for i, f in enumerate(keep)}; fine = [fine[f] for f in keep]
+    comm = np.array([remap[c] for c in comm]); F = len(fine)
 CG = nx.Graph(); CG.add_nodes_from(range(F))
 for a, b, d in G.edges(data=True):
     ca, cb = comm[a], comm[b]
@@ -299,7 +334,7 @@ out = {
   'links': [[a, b, d['types'], d['strength'], ','.join(f'{k}{round(v * 100)}' for k, v in sorted(d['comp'].items()))] for a, b, d in G.edges(data=True)],
   'clusters': clusters, 'clinks': clinks, 'coarse': [{'id': c_, 'name': cname[c_], 'auto': cauto[c_], 'n': sum(len(fine[f]) for f in mem), 'fine': sorted(int(f) for f in mem)} for c_, mem in enumerate(coarse)],
 }
-json.dump(out, open('net/effect_sna.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+json.dump(out, open(os.environ.get('SNA_OUT', 'net/effect_sna.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 import os; print('json KB', os.path.getsize('net/effect_sna.json') // 1024)
 g2 = nx.Graph()
 for k, s in enumerate(nodes): g2.add_node(k, label=f"{s['card']} {cn(s['card'])}", cls=s['분류'], group=s['group'], trigger=' / '.join(trig_keys(s)), cluster=int(comm[k]), coarse=int(ccomm[comm[k]]), pagerank=float(pr[k] * N))
