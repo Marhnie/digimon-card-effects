@@ -107,15 +107,19 @@ function comboQA(){const cs=involved();if(cs.length<2)return [];
 function precedents(){
   const u=mainUnit();const key=[...ST.sl].sort((a,b)=>a-b).join(',');const myneg=ST.sl.has(NEGI)?1:0;
   const EXP=window.__exProducts;const pool=QA.filter(q=>q.y>=0&&q.it===ST.it&&q.slk===key&&!(EXP&&EXP.has((q.card.match(/^([A-Z]+\d*)-/)||[])[1])));
-  const tierOf=q=>{const v=q.unit>=0?U[q.unit]:null;if(!v||u.p==null)return 2;if(v.p===u.p)return 0;if(v.types.some(t=>u.types.includes(t)))return 1;return 2};
+  // E43: 같은 효과 = ① 같은 효과 패턴(문구 틀) ② 같은 룰북 구조(분류·유발 조건·처리 조건 유무·처리 단계의 행동·편·대상·필터 — 문구는 달라도 됨) ③ 같은 효과 유형
+  const su=structSig(u.i);
+  const tierOf=q=>{const v=q.unit>=0?U[q.unit]:null;if(!v||u.p==null)return 3;if(v.p===u.p)return 0;if(su&&structSig(v.i)===su)return 1;if(v.types.some(t=>u.types.includes(t)))return 2;return 3};
   const combo=comboQA();
-  for(let t=0;t<3;t++){const c=pool.filter(q=>tierOf(q)===t);if(!c.length)continue;
+  for(let t=0;t<4;t++){const c=pool.filter(q=>tierOf(q)===t);if(!c.length)continue;
     let yes=0,no=0;const list=c.map(q=>{const w=0.05+simQ(ST.q,q.q);const y=q.y^(q.neg^myneg);if(y)yes+=w;else no+=w;return {q,w,y}}).sort((a,b)=>b.w-a.w);
     const ans=yes>=no?1:0;const unanimous=list.every(x=>x.y===ans);
-    return {tier:t,ans,unanimous,list,combo,level:(t===0&&unanimous&&!extras().length)?'sure':'ref'}}
+    return {tier:t,ans,unanimous,list,combo,level:(t<=1&&unanimous&&!extras().length)?'sure':'ref'}}
   return {tier:-1,level:'none',list:[],combo};
 }
-const TIERNAME=['같은 효과 패턴','같은 효과 유형','효과는 다르지만 같은 상황'];
+const TIERNAME=['같은 효과 패턴','같은 룰북 구조','같은 효과 유형','효과는 다르지만 같은 상황'];
+const SIGC={};function structSig(i){if(i==null||i<0)return null;if(i in SIGC)return SIGC[i];const s=D.st&&D.st[i];let r=null;
+  if(s&&s[4]&&s[4].length)r=JSON.stringify([s[0],[...s[1]].sort(),s[2].length>0,s[4].map(x=>x.slice(0,4))]);return SIGC[i]=r}
 // questions worded like this one, across all official card Q&A (the strongest signal in the accuracy test)
 let QBG=null;
 function similarQA(limit=15){if(!ST.q.trim())return [];

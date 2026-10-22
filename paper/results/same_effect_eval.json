@@ -1,0 +1,103 @@
+{
+ "n_test": 557,
+ "base": {
+  "answered": 227,
+  "acc_all": 0.8502,
+  "sure": 113,
+  "sure_acc": 1.0,
+  "sure_from_structure": 0,
+  "structure_acc": null,
+  "by_tier": {
+   "0": [
+    113,
+    113
+   ],
+   "1": [
+    80,
+    63
+   ],
+   "2": [
+    34,
+    17
+   ],
+   "3": [
+    0,
+    0
+   ]
+  }
+ },
+ "loose": {
+  "answered": 227,
+  "acc_all": 0.8502,
+  "sure": 115,
+  "sure_acc": 1.0,
+  "sure_from_structure": 2,
+  "structure_acc": 1.0,
+  "by_tier": {
+   "0": [
+    113,
+    113
+   ],
+   "1": [
+    2,
+    2
+   ],
+   "2": [
+    78,
+    61
+   ],
+   "3": [
+    34,
+    17
+   ]
+  }
+ },
+ "strict": {
+  "answered": 227,
+  "acc_all": 0.8502,
+  "sure": 115,
+  "sure_acc": 1.0,
+  "sure_from_structure": 2,
+  "structure_acc": 1.0,
+  "by_tier": {
+   "0": [
+    113,
+    113
+   ],
+   "1": [
+    2,
+    2
+   ],
+   "2": [
+    78,
+    61
+   ],
+   "3": [
+    34,
+    17
+   ]
+  }
+ },
+ "relaxed": {
+  "uncovered": 330,
+  "candidates": 91,
+  "honest": [
+   {
+    "tuned_on": 0,
+    "rule": [
+     0.0,
+     0.4,
+     9
+    ],
+    "eval_n": 5,
+    "eval_acc": 0.8
+   },
+   {
+    "tuned_on": 1,
+    "rule": null,
+    "eval_n": 0,
+    "eval_acc": null
+   }
+  ]
+ }
+}
