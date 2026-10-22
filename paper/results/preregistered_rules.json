@@ -1,0 +1,11 @@
+{
+ "registered": "2026-10-22",
+ "commit_note": "fixed before BT25 official Q&A exist; do not edit — add a new entry instead",
+ "rules": [
+  {"id": "R1-eng-sem-agree",
+   "applies_to": "questions the page leaves undecided (no precedent, ruling, issue, engine-sure, semantic-decide)",
+   "rule": "engine probability max(p, 1-p) >= 0.8 AND semantic top-1 cosine >= 0.8 AND both give the same answer -> answer it",
+   "source": "E46 combo_search.py reference rule (14/14 on BT22-ST22 undecided, chosen among 1,793 rules: biased)",
+   "test": "BT25 (or the next set) official yes/no Q&A, evidence = all older products; success if accuracy >= 97% with n >= 10"}
+ ]
+}
