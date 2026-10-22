@@ -49,6 +49,8 @@ def db():
     c.execute('create table if not exists rulings (id integer primary key, doc text, at real)')
     c.execute('create table if not exists reports (id integer primary key, doc text, at real, done integer default 0, ip text)')
     c.execute('create table if not exists verdicts (id integer primary key, doc text, at real)')
+    # E41: Claude drafts for held questions (made by the operator's scheduled Claude session, never by a visitor's request); a judge approves or drops them
+    c.execute("create table if not exists drafts (id integer primary key, doc text, at real, status text default 'open')")
     return c
 
 
@@ -170,6 +172,42 @@ def verdicts(req: Request):
     if not judge_of(req): raise HTTPException(403, 'judge key required')
     with lock, db() as c:
         return [{**json.loads(r['doc']), 'id': r['id']} for r in c.execute('select * from verdicts order by id')]
+
+
+# ---------------- Claude drafts (E41) ----------------
+@app.get('/api/drafts')
+def drafts(req: Request):
+    if not judge_of(req): raise HTTPException(403, 'judge key required')
+    with lock, db() as c:
+        return [{**json.loads(r['doc']), 'id': r['id']} for r in c.execute("select * from drafts where status='open' order by id")]
+
+
+@app.post('/api/drafts/{did}/approve')
+async def draft_approve(did: int, req: Request):
+    # the judge may correct the answer or the summary; the ruling keeps src 'claude' so Claude-free measurements can leave it out
+    j = judge_of(req)
+    if not j: raise HTTPException(403, 'judge key required')
+    b = await req.json() if (await req.body()) else {}
+    with lock, db() as c:
+        r = c.execute("select doc from drafts where id=? and status='open'", (did,)).fetchone()
+        if not r: raise HTTPException(404, 'no such open draft')
+        d = json.loads(r['doc'])
+        for k in ('ans', 'summary', 'note'):
+            if k in b: d[k] = b[k]
+        doc = clean_doc({**d, 'src': 'claude', 'agreed': True})
+        doc.update(by=j, at=time.strftime('%Y-%m-%dT%H:%M:%S'), drafted_at=d.get('drafted_at', ''), origin='draft')
+        rid = c.execute('insert into rulings (doc, at) values (?, ?)', (json.dumps(doc, ensure_ascii=False), time.time())).lastrowid
+        c.execute("update drafts set status='approved' where id=?", (did,))
+        if d.get('report_id'): c.execute('update reports set done=1 where id=?', (d['report_id'],))
+        return {'ruling': rid}
+
+
+@app.post('/api/drafts/{did}/drop')
+def draft_drop(did: int, req: Request):
+    if not judge_of(req): raise HTTPException(403, 'judge key required')
+    with lock, db() as c:
+        c.execute("update drafts set status='dropped' where id=? and status='open'", (did,))
+    return {'ok': True}
 
 
 LAST = {}

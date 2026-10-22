@@ -334,8 +334,14 @@ function crReport(ans){const c=crCandidate();if(!c||!ST.cards[0])return;const no
   CR.code='JD1:'+b64e(JSON.stringify(crDoc(ans,c,note)));CR.msg='';renderResult()}
 // operators: paste report codes → saved as confirmed rulings
 function judgeBox(){if(!SRV||document.getElementById('jbox'))return;const el=document.createElement('details');el.id='jbox';el.className='browse';
-  el.innerHTML=`<summary>심판 로그인</summary><div class="crbar"><div class="sub">운영자가 준 심판 키를 넣으면 판정 확인·저장과 제보 검토를 할 수 있습니다(이 브라우저에만 저장).</div><div class="row"><input id="jkey" type="password" aria-label="심판 키" placeholder="심판 키"><button class="btn2 pri" type="button" id="jkeyset">확인</button><button class="btn2" type="button" id="jkeyout">로그아웃</button></div><div class="sub" id="jkeymsg"></div></div>`;
-  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor)}
+  el.innerHTML=`<summary>심판 로그인</summary><div class="crbar"><div class="sub">운영자가 준 심판 키를 넣으면 판정 확인·저장과 제보 검토를 할 수 있습니다(이 브라우저에만 저장).</div><div class="row"><input id="jkey" type="password" aria-label="심판 키" placeholder="심판 키"><button class="btn2 pri" type="button" id="jkeyset">확인</button><button class="btn2" type="button" id="jkeyout">로그아웃</button></div><div class="sub" id="jkeymsg"></div><div id="drafts"></div></div>`;
+  const anchor=document.getElementById('browse');anchor.parentNode.insertBefore(el,anchor);el.addEventListener('toggle',()=>{if(el.open)loadDrafts()})}
+// E41: Claude drafts for held questions (made in batches by the operator's scheduled Claude session) — a judge saves them as rulings or drops them
+function loadDrafts(){const box=document.getElementById('drafts');if(!box||!jkey())return;
+  api('drafts').then(L=>{box.innerHTML=!L.length?'<div class="sub">검토할 클로드 초안이 없습니다.</div>':`<div class="sub"><b>클로드 초안 ${L.length}건</b> — 판정 보류된 질문에 운영자의 클로드가 단 답입니다. 맞으면 저장하세요(확인 판정으로 쌓여, 같은 질문에는 다음부터 바로 답합니다).</div>`+
+    L.map(d=>`<div class="crbar" data-drbox="${d.id}"><div><b>${esc(d.card)}${d.others?' + '+esc(d.others):''}</b> ${esc(d.q)}</div><div>클로드: <b>${d.ans===1?'네':d.ans===0?'아니요':'(네/아니요 아님)'}</b> — ${esc(d.summary||'')}</div>${d.note?`<div class="sub">근거: ${esc(d.note)}</div>`:''}<div class="row"><button class="btn2 pri" type="button" data-dr="${d.id}" data-act="1">네로 저장</button><button class="btn2 pri" type="button" data-dr="${d.id}" data-act="0">아니요로 저장</button><button class="btn2" type="button" data-dr="${d.id}" data-act="drop">버리기</button></div></div>`).join('')}).catch(e=>{box.innerHTML='<div class="sub">'+(e.code==='permission_denied'?'심판 키가 맞지 않습니다.':'초안을 불러오지 못했습니다.')+'</div>'})}
+function draftAct(id,act){const p=act==='drop'?api('drafts/'+id+'/drop',{method:'POST'}):api('drafts/'+id+'/approve',{method:'POST',body:JSON.stringify({ans:+act})});
+  p.then(()=>{const b=document.querySelector(`[data-drbox="${id}"]`);if(b)b.remove()}).catch(()=>alert('저장하지 못했습니다.'))}
 if(SRV)setTimeout(judgeBox,0);
 // artifact build: the claude.ai sandbox cannot call the server, so link to it (E35) — the GitHub Pages page forwards to its current address
 if(DIST&&!SRV&&window.__SERVER_LINK)setTimeout(()=>{const ex=document.getElementById('exs');if(!ex||document.getElementById('srvlink'))return;const d=document.createElement('div');d.id='srvlink';d.className='crbar';
@@ -592,6 +598,7 @@ document.addEventListener('click',e=>{const t=e.target;
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(CR.code).then(done,()=>{if(ta){ta.select();CR.msg='자동 복사가 막혀 있습니다. 코드를 길게 눌러 복사해 주세요.';renderResult()}});else{if(ta)ta.select();CR.msg='코드를 길게 눌러 복사해 주세요.';renderResult()}return}
   if(t.id==='jkeyset'){const v=($('jkey')||{}).value||'';try{localStorage.setItem('judgeKey',v.trim())}catch(e){}
     api('whoami').then(j=>{$('jkeymsg').textContent=j.judge?`${j.judge} 님으로 로그인했습니다. 새로고침하면 확인·저장 버튼이 보입니다.`:'키가 맞지 않습니다.';if(j.judge)location.reload()}).catch(()=>{$('jkeymsg').textContent='서버에 연결하지 못했습니다.'});return}
+  if(t.dataset&&t.dataset.dr){draftAct(t.dataset.dr,t.dataset.act);return}
   if(t.id==='jkeyout'){try{localStorage.removeItem('judgeKey')}catch(e){}location.reload();return}
   if(t.id==='crpull'){api('reports').then(L=>{CRREP=L;$('crin').value=L.map(d=>'JD1:'+b64e(JSON.stringify({...d,by:d.by||''}))).join('\n');$('crpreview').click()}).catch(()=>{$('crprev').innerHTML='<div class="sub">제보를 불러오지 못했습니다(심판 로그인 확인).</div>'});return}
   if(t.id==='crpreview'){const r=parseCodes(($('crin')||{}).value||'');CRIN=r.out;
