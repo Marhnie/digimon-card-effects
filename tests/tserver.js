@@ -24,6 +24,9 @@ async function ask(w,card,q){const d=w.document,$=i=>d.getElementById(i);const t
   ok(!d.getElementById('srvlink'),'no 「서버판 열기」 banner on the server itself');
   await ask(V,'EX4-016','이 카드의 효과의 조건은 트래시의 카드를 2장만 덱으로 되돌릴 수 있나요?');
   ok(/룰 쟁점|판정 보류|선례/.test(d.getElementById('result').textContent),'rule issue path reachable');
+  await ask(V,'EX4-016','조건 2장만 돼?');
+  const alt=d.querySelector('[data-alt]');ok(!!alt,'undecided → 「혹시 이런 질문인가요?」 offered');
+  if(alt){alt.click();await sleep(1500);ok(/판정|공식|의미 검색|룰 쟁점/.test(d.querySelector('.verdict .badge')?d.querySelector('.verdict .badge').textContent:''),'picking an alternative re-judges ('+(d.querySelector('.verdict .badge')||{}).textContent+')')}
   const J=page(true);await sleep(2500);
   ok(!!J.document.getElementById('crimport')&&!!J.document.getElementById('crstats'),'judge: import box + 판정 현황');
   await ask(J,'BT1-029','이 카드는 덱이 0장이어도 등장 시 효과를 발휘할 수 있나요?');

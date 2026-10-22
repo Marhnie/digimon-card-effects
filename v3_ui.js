@@ -240,7 +240,7 @@ function issueVerdict(iss){if(!iss)return null;const myneg=ST.sl.has(NEGI)?1:0;c
 const ENG=D.eng||null,RGOF=(D.rg&&D.rg.of)||{},RGG=(D.rg&&D.rg.g)||[];
 const sigm=x=>1/(1+Math.exp(-x));
 window.__decTest=()=>{const R=ST.res;if(!R)return null;const d=decisive();let ans=null,by=null;
-  if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.xref){by='explain';ans=R.xref.q.i}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}
+  if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.xref){by='explain';ans=R.xref.q.i}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}else if(R.sem){by='semantic';ans=R.sem.ans}
   return {dec:d,by,ans}};
 window.__crefTest=()=>({auto:ST.res&&ST.res.auto,cref:ST.res&&ST.res.cref?{ans:ST.res.cref.ans,qi:ST.res.cref.q.i}:null});
 window.__engTest=()=>({card:ST.cards[0]&&ST.cards[0].no,eng:engineLite(similarQA(30))});   // test hook (tests/teng.js)
@@ -302,11 +302,12 @@ function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null||R.xref)retu
   if(R.iv)return {ans:R.iv.ans,src:'issue',summary:R.iv.iss.name};
   if(R.cref)return {ans:R.cref.ans,src:'combo',summary:'Q'+R.cref.q.i};
   if(R.eng&&R.eng.sure)return {ans:R.eng.ans,src:'engine',summary:''};
+  if(R.sem)return {ans:R.sem.ans,src:'semantic',summary:'Q'+R.sem.q.i};
   if(R.level==='ref')return {ans:R.ans,src:'precedent',summary:''};
   if(R.gv)return {ans:R.gv.ans,src:'group',summary:''};
   if(R.est)return {ans:R.est.ans,src:'estimate',summary:''};
   return {ans:null,src:'none',summary:''}}
-const SRCN={combo:'관련 카드 공식 Q&A',report:'이용자 제보',claude:'Claude 판정',issue:'룰 쟁점',engine:'엔진 판정',precedent:'선례 참고',group:'쟁점 그룹',estimate:'비슷한 질문 추정',none:'직접 판정'};
+const SRCN={semantic:'의미 검색',combo:'관련 카드 공식 Q&A',report:'이용자 제보',claude:'Claude 판정',issue:'룰 쟁점',engine:'엔진 판정',precedent:'선례 참고',group:'쟁점 그룹',estimate:'비슷한 질문 추정',none:'직접 판정'};
 function crPanel(){const c=crCandidate();if(!c||!ST.cards[0])return '';
   if(CR.state==='loading')return '';
   if(CR.state!=='on'||CR.canWrite===false)return reportPanel(c);
@@ -392,10 +393,13 @@ function comboRef(){const u=mainUnit();const xs=extras();if(!u||!xs.length)retur
 /* ---------- semantic search (E33): distilled student, files under window.__QEMB_BASE (absent → feature off) ---------- */
 const SEM_ON=!!SRV||(typeof QEMB!=='undefined'&&!!window.__QEMB_BASE);const SEMC=new Map();
 if(SEM_ON&&!SRV)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.arrayBuffer()})).then(ok=>{if(ok){if(ST.res)renderResult();renderSugg()}});
+const SEM_THR=0.885;
+function semDecide(){if(!SRV||!ST.res)return null;const L=semQA(ST.q,10);const top=L.find(x=>x.q.y>=0);if(!top||top.s<SEM_THR)return null;const myneg=ST.sl.has(NEGI)?1:0;
+  return {q:top.q,s:top.s,ans:top.q.y^(top.q.neg^myneg)}}
 function semQA(text,k){const EXP=window.__exProducts;const key=String(text||'').trim();if(!SEM_ON||!key)return [];
   if(SRV){const c=SEMC.get(key);if(c)return c.slice(0,k);if(!SEMC.has('#'+key)){SEMC.set('#'+key,1);
       api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.cos!=null?h.cos:h.s})));
-        renderSugg();if(ST.res&&ST.q.trim()===key)renderResult()}).catch(()=>{})}
+        renderSugg();if(ST.res&&ST.q.trim()===key){ST.res.sem=semDecide();renderResult();if(ST.res.sem&&window.__semDone)window.__semDone()}}).catch(()=>{})}
     return []}
   if(!QEMB.st.ready)return [];
   return QEMB.search(text,k,i=>QA[i]&&!(EXP&&EXP.has((QA[i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(x=>({q:QA[x.i],s:x.s}))}
@@ -449,7 +453,7 @@ const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><spa
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.ai=null;
+  CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.res.sem=semDecide();ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
   if(SRV){const D_=window.__decTest?window.__decTest():null;const pq=ST.pickQ!=null?QA[ST.pickQ]:null;  // what was actually shown: decision path + answer (E36 fix: precedent items are {q:QA,y})
@@ -480,6 +484,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
     h=`<div class="verdict v-sure"><span class="badge">룰 쟁점 · ${esc(V.iss.name)} · 공식 Q&amp;A ${V.n}건 일치</span><div class="ans">${yn(V.ans)}</div><div class="why">${esc(V.iss.desc)}</div><div class="sub">근거 룰 ${V.iss.rules.map(esc).join(' · ')} · 같은 쟁점의 공식 Q&amp;A가 모두 「${yn(V.ans)}」입니다. 상황이 쟁점과 다르면(예: 그 카드가 실제로는 자리를 벗어나지 않음) 결론이 바뀝니다.</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.cref&&!(A&&A.r)){const C=R.cref;
     h=`<div class="verdict v-ref"><span class="badge">참고 · 함께 관련된 카드의 공식 Q&amp;A · ${esc(C.via)} ${esc(cname(C.via))}</span><div class="ans">${yn(C.ans)}</div><div class="why">${esc(C.q.a)}</div><div class="sub">공식 Q&amp;A: ${esc(C.q.q)}${C.q.neg!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}<br>상황이 이 Q&amp;A와 같을 때만 같은 답입니다(예: 실제로 DP가 0이 되는 경우). 최신 팩 시험에서 이런 참고 답은 9건 중 5건만 맞았으니 Claude나 심판에게 확인하세요.</div>${DIST?'':'<div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div>'}</div>`;return h+autoNote()}
+  if(R&&R.sem&&!(R.eng&&R.eng.sure)&&R.level!=='sure'&&!R.cr&&!R.iv&&!(A&&A.r)){const S=R.sem;
+    h=`<div class="verdict v-sure"><span class="badge">의미 검색 · 뜻이 같은 공식 Q&amp;A · ${esc(S.q.card)} ${esc(cname(S.q.card))}</span><div class="ans">${yn(S.ans)}</div><div class="why">${esc(S.q.a)}</div><div class="sub">뜻이 거의 같은 공식 질문(의미 유사도 ${Math.round(S.s*100)}%): ${esc(S.q.q)}${S.q.neg!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}<br>최신 팩 시험에서 이 기준(유사도 88.5% 이상)의 판정은 289문항 중 99%가 맞았습니다. 상황이 다르면 결론이 달라질 수 있습니다.</div></div>`;return h}
   if(R&&R.eng&&R.eng.sure&&R.level!=='sure'&&!(A&&A.r)){const E=R.eng;
     h=`<div class="verdict v-sure"><span class="badge">엔진 판정 · Claude 없이 · 확신 ${Math.round(E.conf*100)}%</span><div class="ans">${yn(E.ans)}</div><div class="why">문구가 가장 가까운 공식 Q&amp;A(유사도 ${Math.round(Math.min(1,E.top[0].s)*100)}%)${E.rg?` 와 같은 이유 묶음 「${esc(E.rg.name.length>70?E.rg.name.slice(0,70)+'…':E.rg.name)}」(Q&amp;A ${E.rg.n}건)`:''}을 근거로 냈습니다.</div><div class="sub">최신 팩 질문 시험(이전 팩만 보고 판정)에서 이 확신 이상인 판정 48%를 정확도 99%로 맞혔습니다. 「쟁점별 비슷한 질문」 탭에서 근거를 확인하세요.</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;
     return h}
@@ -520,10 +526,16 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   else if(ST.tab==='pat'){const l=patternQA(u,30,ST.cards[0]&&ST.cards[0].no);body=l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 패턴의 다른 카드 Q&amp;A가 없습니다.</div>'}
   else if(ST.tab==='ai')body=A.ev.map(it=>it.qa?itemQA(it.qa,''):itemRule(it.id.slice(1))).join('');
   return `<div class="ev"><div class="tabs" role="tablist">${tabs.map(([k,n,c])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${ST.tab===k}">${n}<span class="n">${c}</span></button>`).join('')}</div><div class="tabp" role="tabpanel">${body}</div></div>`}
-function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||!!R.xref||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
+function altOffer(){if(!SRV||!ST.res||decisive())return '';const L=semQA(ST.q,10);const seen=new Set();const alts=[];
+  for(const x of L){if(x.q.y<0&&x.q.it==null)continue;const k=x.q.q.trim();if(seen.has(k)||k===ST.q.trim())continue;seen.add(k);alts.push(x);if(alts.length>=3)break}
+  if(!alts.length)return '';
+  return `<div class="crbar"><div class="crq"><b>혹시 이런 질문인가요?</b> 뜻이 가까운 공식 질문입니다. 같은 뜻이면 골라 주세요 — 그 질문의 공식 답으로 다시 판정합니다.</div>${alts.map(x=>`<button type="button" class="sg" data-alt="${x.q.i}"><span class="sg-src">${esc(x.q.card)} ${esc(cname(x.q.card))} · 의미 유사 ${Math.round(x.s*100)}%</span>${esc(x.q.q)}</button>`).join('')}</div>`}
+function pickAlt(i){const q=QA[i];if(!q)return;ST.q=q.q;$('askq').value=q.q;ST.it=intentOf(q.q);ST.itManual=true;ST.sl=new Set(slotsOf(q.q));ST.manual=new Set(SLOT.map(s=>s.i));
+  ST.pickQ=(ST.cards[0]&&q.card===ST.cards[0].no)?i:null;renderMeta();updateGo();judge()}
+function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||!!R.xref||!!R.sem||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
 function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||decisive())return '';
   return `<div class="verdict v-none"><span class="badge">판정 보류 · 심판 확인 필요</span><div class="why">공식 Q&amp;A·확인된 판정·룰 쟁점 가운데 이 질문에 확실히 맞는 근거가 없습니다. 아래 참고 자료는 정답이 아닐 수 있습니다.</div><div class="sub">질문 칸의 추천 문장으로 다시 물으면 맞는 근거를 찾을 수 있습니다. 정답을 아는 분은 아래에서 알려 주세요 — 심판이 확인하면 판정으로 쌓여 다음부터 바로 답합니다.</div></div>`}
-function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?(DIST?aiOffer()+v:v+aiOffer())+(v.includes('질문에서 「')?'':autoNote())+crPanel()+tabsHTML():''}
+function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?(DIST?aiOffer()+altOffer()+v:v+aiOffer())+(v.includes('질문에서 「')?'':autoNote())+crPanel()+tabsHTML():''}
 
 /* ---------- examples ---------- */
 const EXQ=__EXQ__;
@@ -560,6 +572,7 @@ document.addEventListener('click',e=>{const t=e.target;
   const tb=t.closest('[data-tab]');if(tb){ST.tab=tb.dataset.tab;renderResult();return}
   const ci=t.closest('[data-cite]');if(ci){ST.tab='ai';renderResult();const el=$('it-'+ci.dataset.cite);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'})}return}
   const sg=t.closest('[data-sg]');if(sg){pickSugg(+sg.dataset.sg);return}
+  const al=t.closest('[data-alt]');if(al){pickAlt(+al.dataset.alt);return}
   if(t.closest('[data-askai]')){askClaude();return}
   const cs=t.closest('[data-crsave]');if(cs){crSave(+cs.dataset.crsave);return}
   const cr=t.closest('[data-crrep]');if(cr){crReport(+cr.dataset.crrep);return}

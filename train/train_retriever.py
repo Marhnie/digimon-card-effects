@@ -31,6 +31,9 @@ ap.add_argument('--per_anchor', type=int, default=3, help='positives sampled per
 ap.add_argument('--ans_jac', type=float, default=0.5)
 ap.add_argument('--hn_cos', type=float, default=0.55)
 ap.add_argument('--aug_p', type=float, default=0.7, help='probability an anchor is colloquialized')
+ap.add_argument('--vague_p', type=float, default=0.0, help='probability an anchor is made vague (details dropped, E38)')
+ap.add_argument('--ctx', action='store_true', help='prefix every question with its effect text (card context, E38)')
+ap.add_argument('--eval_only', default=None, help='evaluate an existing model dir (no training)')
 ap.add_argument('--norm', action='store_true', help='run qnorm.normalize on queries/corpus at train and test time')
 ap.add_argument('--name', default=None)
 ap.add_argument('--tiny', action='store_true')
@@ -84,6 +87,28 @@ def colloquialize(q, rng):
     return s
 
 
+def vague(q, rng):
+    """E38: an under-specified version — keep the asking clause and at most one short detail; drop names and numbers."""
+    s = re.sub(r'「[^「」]*」|(?:BT|EX|ST|P|LM|RB|AD)\d*-\d+', '', q)
+    parts = [x.strip() for x in re.split(r'[,，]|(?<=때)|(?<=후)|(?<=서)\s', s) if x.strip()]
+    if not parts: return q
+    keep = [parts[-1]]
+    if len(parts) > 1 and rng.random() < .6:
+        det = rng.choice(parts[:-1]); keep.insert(0, det[:14])
+    out = ' '.join(keep)
+    out = re.sub(r'이 카드의 |이 카드는 |이 카드가 ', '' if rng.random() < .5 else '이거 ', out)
+    return colloquialize(out, rng) if rng.random() < .5 else out
+
+
+CTX = {}
+def ctx(i):
+    if not a.ctx: return ''
+    if i not in CTX:
+        u = QA[i][3]; t_ = T['units'][u][3] if u is not None and u >= 0 else (CARDS.get(QA[i][0]) or [''])[0]
+        CTX[i] = re.sub(r'\s+', ' ', t_)[:100] + ' | '
+    return CTX[i]
+
+
 # ---------------- pair mining ----------------
 def mine(rng):
     ans_bg = {i: bg(cq(QA[i][2])) for i in POOL}
@@ -133,8 +158,9 @@ os.makedirs(RUN, exist_ok=True)
 
 
 # ---------------- evaluation ----------------
-def encode(model, texts):
-    return model.encode([prep(t) for t in texts], normalize_embeddings=True, batch_size=128, show_progress_bar=False)
+def encode(model, pairs):
+    """pairs: (text, qa_index) — the index gives the card context when --ctx"""
+    return model.encode([ctx(i) + prep(t) for t, i in pairs], normalize_embeddings=True, batch_size=128, show_progress_bar=False)
 
 
 def recall(rankfn, items):
@@ -165,57 +191,47 @@ def build_eval():
         c = (poolset | bycard[x['card']]) - {i}
         g = {j for j in GRP.get(OF.get(i), ()) if j in c and (pol(j) == pol(i) or pol(i) is None or pol(j) is None)} if i in OF else set()
         if g:
-            co.append((x['colloquial'], c, g))
-    return ts, co
+            co.append((x['colloquial'], c, g, i))
+    vr = random.Random(7)
+    vg = [(vague(QA[i][1], vr), c, g, i) for _, c, g, i in co]   # E38: under-specified versions of the same questions
+    return ts, co, vg
 
 
 def evaluate(model, tag):
-    ts, co = build_eval()
-    E = dict(zip(DOC, encode(model, [QA[i][1] for i in DOC])))
+    ts, co, vg = build_eval()
+    E = dict(zip(DOC, encode(model, [(QA[i][1], i) for i in DOC])))
     BG = {i: bg(QA[i][1]) for i in DOC}
     res = {}
-    def emb_rank(qv):
-        def f(_, cand):
-            cand = list(cand)
-            s = np.stack([E[j] for j in cand]) @ qv
-            return [cand[k] for k in np.argsort(-s)]
-        return f
-    # time split
-    qv = encode(model, [QA[i][1] for i, _, _ in ts])
-    hit = {1: 0, 3: 0, 10: 0}
-    base = {1: 0, 3: 0, 10: 0}
-    for (i, cand, g), v in zip(ts, qv):
-        rk = emb_rank(v)(None, cand)
-        bk = sorted(cand, key=lambda j: -jac(BG[i], BG[j]))
-        for k in hit:
-            hit[k] += bool(g & set(rk[:k]))
-            base[k] += bool(g & set(bk[:k]))
-    n = len(ts)
-    res['time_split'] = {'n': n, 'model': {f'recall@{k}': round(v / n, 3) for k, v in hit.items()},
-                         'browser_2gram': {f'recall@{k}': round(v / n, 3) for k, v in base.items()}}
-    # colloquial
-    qv = encode(model, [t for t, _, _ in co])
-    hit = {1: 0, 3: 0, 10: 0}
-    base = {1: 0, 3: 0, 10: 0}
-    for (t, cand, g), v in zip(co, qv):
-        rk = emb_rank(v)(None, cand)
-        bq = bg(t)
-        bk = sorted(cand, key=lambda j: -jac(bq, BG[j]))
-        for k in hit:
-            hit[k] += bool(g & set(rk[:k]))
-            base[k] += bool(g & set(bk[:k]))
-    n = len(co)
-    res['colloquial'] = {'n': n, 'model': {f'recall@{k}': round(v / n, 3) for k, v in hit.items()},
-                         'browser_2gram': {f'recall@{k}': round(v / n, 3) for k, v in base.items()}}
+    def run(name, items):
+        qv = encode(model, [(t_, i) for t_, _, _, i in items])
+        hit = {1: 0, 3: 0, 10: 0}; base = {1: 0, 3: 0, 10: 0}
+        for (t_, cand, g, i), v in zip(items, qv):
+            cand = list(cand); s = np.stack([E[j] for j in cand]) @ v
+            rk = [cand[k] for k in np.argsort(-s)]; bq = bg(t_)
+            bk = sorted(cand, key=lambda j: -jac(bq, BG[j]))
+            for k in hit:
+                hit[k] += bool(g & set(rk[:k])); base[k] += bool(g & set(bk[:k]))
+        n = len(items)
+        res[name] = {'n': n, 'model': {f'recall@{k}': round(v / n, 3) for k, v in hit.items()},
+                     'browser_2gram': {f'recall@{k}': round(v / n, 3) for k, v in base.items()}}
+    run('time_split', [(QA[i][1], c, g, i) for i, c, g in ts])
+    run('colloquial', co)
+    run('vague', vg)
     print(tag, json.dumps(res, ensure_ascii=False))
     return res
 
 
+if a.eval_only:
+    res = evaluate(SentenceTransformer(a.eval_only), 'eval-only')
+    json.dump({'args': vars(a), 'eval': res}, open(os.path.join(RUN, 'metrics_eval.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    sys.exit(0)
 model = SentenceTransformer(a.model)
 zero = evaluate(model, 'zero-shot')
 ex = []
 for i, j, n, _ in trip:
-    ex.append(InputExample(texts=[prep(colloquialize(QA[i][1], rng) if rng.random() < a.aug_p else QA[i][1]), prep(QA[j][1]), prep(QA[n][1])]))
+    r_ = rng.random()
+    anc = vague(QA[i][1], rng) if r_ < a.vague_p else (colloquialize(QA[i][1], rng) if rng.random() < a.aug_p else QA[i][1])
+    ex.append(InputExample(texts=[ctx(i) + prep(anc), ctx(j) + prep(QA[j][1]), ctx(n) + prep(QA[n][1])]))
 dl = DataLoader(ex, shuffle=True, batch_size=a.bs)
 model.fit(train_objectives=[(dl, losses.MultipleNegativesRankingLoss(model))], epochs=a.epochs, warmup_steps=int(0.1 * len(dl) * a.epochs),
           optimizer_params={'lr': a.lr}, show_progress_bar=True)

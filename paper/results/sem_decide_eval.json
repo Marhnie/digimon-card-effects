@@ -1,0 +1,140 @@
+{
+ "n_test": 597,
+ "rules": {
+  "cos": [
+   {
+    "tune_half": 0,
+    "thr": 0.707,
+    "eval_n": 388,
+    "answered": 230,
+    "acc": 0.9391,
+    "beyond_engine": 67,
+    "beyond_engine_ok": 56
+   },
+   {
+    "tune_half": 1,
+    "thr": 0.885,
+    "eval_n": 209,
+    "answered": 116,
+    "acc": 1.0,
+    "beyond_engine": 5,
+    "beyond_engine_ok": 5
+   },
+   {
+    "page_thr": 0.885,
+    "answered_all": 289,
+    "acc_all": 0.9896,
+    "beyond_engine": 27,
+    "beyond_engine_acc": 1.0
+   }
+  ],
+  "cos+it": [
+   {
+    "tune_half": 0,
+    "thr": 0.708,
+    "eval_n": 388,
+    "answered": 222,
+    "acc": 0.9459,
+    "beyond_engine": 59,
+    "beyond_engine_ok": 50
+   },
+   {
+    "tune_half": 1,
+    "thr": 0.885,
+    "eval_n": 209,
+    "answered": 116,
+    "acc": 1.0,
+    "beyond_engine": 5,
+    "beyond_engine_ok": 5
+   },
+   {
+    "page_thr": 0.885,
+    "answered_all": 288,
+    "acc_all": 0.9896,
+    "beyond_engine": 26,
+    "beyond_engine_acc": 1.0
+   }
+  ],
+  "cos+it+sl": [
+   {
+    "tune_half": 0,
+    "thr": 0.663,
+    "eval_n": 388,
+    "answered": 135,
+    "acc": 0.9778,
+    "beyond_engine": 16,
+    "beyond_engine_ok": 13
+   },
+   {
+    "tune_half": 1,
+    "thr": 0.791,
+    "eval_n": 209,
+    "answered": 95,
+    "acc": 1.0,
+    "beyond_engine": 4,
+    "beyond_engine_ok": 4
+   },
+   {
+    "page_thr": 0.791,
+    "answered_all": 229,
+    "acc_all": 0.9913,
+    "beyond_engine": 19,
+    "beyond_engine_acc": 0.8947
+   }
+  ],
+  "cos+it+sl+agree2": [
+   {
+    "tune_half": 0,
+    "thr": 0.663,
+    "eval_n": 388,
+    "answered": 131,
+    "acc": 0.9771,
+    "beyond_engine": 12,
+    "beyond_engine_ok": 9
+   },
+   {
+    "tune_half": 1,
+    "thr": 0.791,
+    "eval_n": 209,
+    "answered": 93,
+    "acc": 1.0,
+    "beyond_engine": 2,
+    "beyond_engine_ok": 2
+   },
+   {
+    "page_thr": 0.791,
+    "answered_all": 223,
+    "acc_all": 0.991,
+    "beyond_engine": 13,
+    "beyond_engine_acc": 0.8462
+   }
+  ],
+  "cos+it+agree2": [
+   {
+    "tune_half": 0,
+    "thr": 0.708,
+    "eval_n": 388,
+    "answered": 205,
+    "acc": 0.9463,
+    "beyond_engine": 44,
+    "beyond_engine_ok": 36
+   },
+   {
+    "tune_half": 1,
+    "thr": 0.885,
+    "eval_n": 209,
+    "answered": 112,
+    "acc": 1.0,
+    "beyond_engine": 3,
+    "beyond_engine_ok": 3
+   },
+   {
+    "page_thr": 0.885,
+    "answered_all": 279,
+    "acc_all": 0.9892,
+    "beyond_engine": 21,
+    "beyond_engine_acc": 1.0
+   }
+  ]
+ }
+}
