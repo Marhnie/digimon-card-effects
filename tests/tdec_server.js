@@ -15,4 +15,4 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   type($('askq'),it.q);$('go').click();
   for(let k=0;k<40;k++){await sleep(50);const R=w.__decTest();if(R&&(R.dec||k>30))break}   // wait for the async search
   const R=w.__decTest();n++;if(R&&R.dec){dec++;const b=by[R.by]=by[R.by]||[0,0];b[0]++;if(R.ans===it.y){ok++;b[1]++}}}
- console.log('asked',n,'decisive',dec,(dec/n*100).toFixed(1)+'%','acc',(ok/dec*100).toFixed(1)+'%');console.log(JSON.stringify(by))})();
+ console.log('asked',n,'decisive',dec,(dec/n*100).toFixed(1)+'%','acc',(ok/dec*100).toFixed(1)+'%');console.log(JSON.stringify(by));process.exit(0)})();

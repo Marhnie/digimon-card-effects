@@ -33,5 +33,10 @@ print('rule issues', {it['id']: len(EX[it['id']]) for it in ISSUES})
 RGJ = json.load(open('reason_groups.json', encoding='utf-8'))
 T['rg'] = {'of': RGJ['of'], 'g': [[g['name'], g['yes'], g['cons'], g['ny'], g['cards']] for g in RGJ['groups']]}
 T['eng'] = json.load(open('net/engine_lite.json')); T['eng']['thr'] = 0.80
+# E39: community nicknames (user-confirmed) -> official wording / cards
+AL = json.load(open('aliases.json', encoding='utf-8'))['alias']
+for x in AL:
+    assert all(n in T['cards'] for n in x.get('nos', [])), x
+T['alias'] = [[x['a'], x['to'], x.get('nos', []), 1 if x.get('deck') else 0] for x in AL]
 json.dump(T, open('test_data4.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('units', len(st), 'clusters', len(T['clu']), 'with cluster', sum(x[6] >= 0 for x in st))

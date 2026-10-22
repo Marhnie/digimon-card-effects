@@ -33,6 +33,12 @@ gold = lambda i, c: {j for j in GRP.get(OF.get(i), ()) if j in c and (pol(j) == 
 ts = [(QA[i][1], POOL, gold(i, POOL)) for i in TESTQ]
 co = [(x['colloquial'], (POOL | bycard[x['card']]) - {x['qid']}, gold(x['qid'], (POOL | bycard[x['card']]) - {x['qid']})) for x in CS]
 SETS = {'time_split': [t for t in ts if t[2]], 'colloquial': [t for t in co if t[2]]}
+# E38: under-specified versions of the colloquial items (same generator and seed as train_retriever.build_eval)
+import random
+_src = open(os.path.join(HERE, 'train_retriever.py'), encoding='utf-8').read()
+exec(_src[_src.index('SUBS = '):_src.index('CTX = {}')])
+_vr = random.Random(7)
+SETS['vague'] = [(vague(QA[x['qid']][1], _vr), c, g) for x, (_, c, g) in zip(CS, co) if g]
 if a.tiny: SETS = {k: v[:30] for k, v in SETS.items()}
 from sentence_transformers import SentenceTransformer
 m = SentenceTransformer(a.model)

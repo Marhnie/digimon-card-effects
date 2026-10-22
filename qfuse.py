@@ -4,6 +4,7 @@
     F = Fuser(QA, DOC)                      # once: 2-gram sets of the official questions
     hits = F.hits(q, cos_scores, k)         # cos_scores aligned with DOC  ->  [{'i': qa_index, 's': rrf, 'cos': .., 'jac': ..}]
 Same fusion as train/fuse_eval.py 'rrf' (k=60): 1/(60+rank_cos) + 1/(60+rank_jac).
+E38: extra=[cos2, ...] adds more retrievers to the RRF (e.g. the vague-question model); 'cos' stays the first model's score.
 """
 import re
 import numpy as np
@@ -23,9 +24,11 @@ class Fuser:
         A = _bg(q)
         return np.array([len(A & B) / ((len(A) + len(B) - len(A & B)) or 1) for B in self.BG], dtype=np.float32)
 
-    def hits(self, q, cos, k=10):
+    def hits(self, q, cos, k=10, extra=()):
         cos = np.asarray(cos, dtype=np.float32); jc = self.jac(q)
         rk = lambda s: np.argsort(np.argsort(-s, kind='stable'), kind='stable') + 1
         f = 1 / (self.k0 + rk(cos)) + 1 / (self.k0 + rk(jc))
+        for x in extra:
+            f = f + 1 / (self.k0 + rk(np.asarray(x, dtype=np.float32)))
         o = np.argsort(-f, kind='stable')[:k]
         return [{'i': self.DOC[j], 's': round(float(f[j]), 5), 'cos': round(float(cos[j]), 4), 'jac': round(float(jc[j]), 4)} for j in o]

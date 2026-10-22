@@ -4,12 +4,13 @@ const label=no=>no+' '+cname(no);
 const CARD_LIST=Object.keys(D.cards).map(no=>{const nm=cname(no);return {no,nm,ty:D.cards[no][1],kno:no.toLowerCase().replace(/[-\s]/g,''),knm:nm.replace(/\s/g,'').toLowerCase()}});
 function acSearch(t){
   const k=t.toLowerCase().replace(/\s/g,'');const kno=k.replace(/-/g,'').replace(/^(bt|ex|st|rb|lm|ad)0(\d)/,'$1$2');if(!k)return [];
-  const sc=[];
+  const sc=[];const al=(D.alias||[]).find(x=>!x[3]&&x[0].toLowerCase()===k);   // E39: 「메디벌」「바황드」 → the cards it names
+  if(al){const nos=al[2].length?al[2]:CARD_LIST.filter(c=>c.knm===al[1].replace(/\s/g,'').toLowerCase()).map(c=>c.no);nos.forEach(no=>{const c=CARD_LIST.find(c=>c.no===no);if(c)sc.push([-1,c])})}
   for(const c of CARD_LIST){let s=-1;
     if(c.kno===kno)s=0;else if(c.kno.startsWith(kno))s=1;else if(c.knm===k)s=0.5;else if(c.knm.startsWith(k))s=2;else if(c.knm.includes(k))s=3;else if(c.kno.includes(kno))s=4;
     if(s>=0)sc.push([s,c])}
   sc.sort((a,b)=>a[0]-b[0]||(a[0]>=2&&a[0]<4?a[1].nm.length-b[1].nm.length:0)||a[1].no.localeCompare(b[1].no,undefined,{numeric:true}));
-  return sc.slice(0,12).map(x=>x[1]);
+  const seen=new Set();return sc.filter(x=>!seen.has(x[1].no)&&seen.add(x[1].no)).slice(0,12).map(x=>x[1]);
 }
 function hlm(text,q){const k=q.replace(/\s/g,'');if(!k)return esc(text);const i=text.replace(/\s/g,'').toLowerCase().indexOf(k.toLowerCase());if(i<0)return esc(text);
   let a=-1,b=-1,n=0;for(let j=0;j<text.length;j++){if(/\s/.test(text[j]))continue;if(n===i)a=j;if(n===i+k.length-1){b=j+1;break}n++}
@@ -374,13 +375,23 @@ async function crSave(ans){const c=crCandidate();const u=mainUnit();if(!CR.db||!
 const nrm=s=>String(s||'').replace(/[\s:：・·\-–—「」『』()（）\[\].,!?~]/g,'');
 const QACNT={};QA.forEach(q=>{QACNT[q.card]=(QACNT[q.card]||0)+1});
 const NAMEIDX=(()=>{const m={};for(const no of Object.keys(D.cards)){const k=nrm(cname(no));if(k.length<3)continue;(m[k]=m[k]||[]).push(no)}
-  return Object.entries(m).map(([k,nos])=>({k,no:nos.slice().sort((a,b)=>(QACNT[b]||0)-(QACNT[a]||0))[0]})).sort((a,b)=>b.k.length-a.k.length)})();
-function qCards(){const q=nrm(ST.q);if(!q)return [];const main=ST.cards[0]?nrm(cname(ST.cards[0].no)):'';const have=new Set(ST.cards.map(c=>nrm(cname(c.no))));
+  return Object.entries(m).map(([k,nos])=>({k,nos,no:nos.slice().sort((a,b)=>(QACNT[b]||0)-(QACNT[a]||0))[0]})).sort((a,b)=>b.k.length-a.k.length)})();
+// E39: community nicknames (aliases.json, user-confirmed): 「바황드」→ official wording; the alias must stand alone (particles allowed after it)
+const ALIAS=(D.alias||[]).map(([a,to,nos,deck])=>({a,to,nos,deck,re:new RegExp('(^|[^가-힣])'+a+'(?=$|[^가-힣]|(?:이랑|랑|으로|로|에서|에게|에|은|는|이|가|을|를|의|도|와|과|만|하고|vs)(?![가-힣]))','g')})).sort((x,y)=>y.a.length-x.a.length);
+// aliases that name particular printings: 「바이러스종 황제드라몬: 드래곤 모드」 → the name key plus the words written before it
+const ALIASNOS=ALIAS.filter(x=>x.nos&&x.nos.length).flatMap(x=>{const t=nrm(x.to);return [...new Set(x.nos.map(no=>nrm(cname(no))))].filter(k=>t.endsWith(k)).map(k=>({k,pre:t.slice(0,-k.length),nos:x.nos.filter(no=>nrm(cname(no))===k)}))});
+function dealias(q){let s=String(q||'');for(const x of ALIAS)s=s.replace(x.re,(m,p)=>p+x.to);return s}
+window.__aliasTest={dealias,qc:q=>{const c=ST.cards,o=ST.q;ST.cards=[];ST.q=q;const r=qCards();ST.cards=c;ST.q=o;return r},ac:t=>acSearch(t).map(c=>c.no)};   // tests/talias.js
+function qCards(){const q=nrm(dealias(ST.q));if(!q)return [];const main=ST.cards[0]?nrm(cname(ST.cards[0].no)):'';const have=new Set(ST.cards.map(c=>nrm(cname(c.no))));
   const used=new Array(q.length).fill(false);const out=[];
   for(const e of NAMEIDX){const skip=e.k===main||have.has(e.k);if(!skip&&main.includes(e.k))continue;let i=q.indexOf(e.k);
     while(i>=0){let free=true;for(let j=i;j<i+e.k.length;j++)if(used[j]){free=false;break}
-      if(free){for(let j=i;j<i+e.k.length;j++)used[j]=true;if(!skip){out.push(e.no);break}}i=q.indexOf(e.k,i+1)}}
+      if(free){for(let j=i;j<i+e.k.length;j++)used[j]=true;if(!skip){out.push(pickNo(e,q.slice(0,i)));break}}i=q.indexOf(e.k,i+1)}}
   return out}
+// 「23마스테몬」「EX10 마그네틱드라몬」: a set number right before the name picks that printing; aliases may restrict the printings
+function pickNo(e,before){const al=ALIASNOS.find(x=>x.k===e.k&&x.pre&&before.endsWith(x.pre));let c=al?al.nos:e.nos;const m=before.match(/(BT|EX|ST|RB|LM|AD|P)?(\d{1,2})$/i);
+  if(m){const set=(m[1]||'BT').toUpperCase()+(+m[2]);const f=c.filter(no=>no.startsWith(set+'-'));if(f.length)c=f}
+  return c.length===1?c[0]:c.slice().sort((a,b)=>(QACNT[b]||0)-(QACNT[a]||0))[0]}
 // the other card's official Q&A that asks about the timing the main effect has (e.g. 【등장 시】) — strongest single hint for combo questions
 function comboRef(){const u=mainUnit();const xs=extras();if(!u||!xs.length)return null;const myneg=ST.sl.has(NEGI)?1:0;
   const tms=(u.timing||[]).map(x=>'【'+x+'】');const mn=ST.cards[0]?cname(ST.cards[0].no):'';let best=null;
@@ -397,7 +408,7 @@ if(SEM_ON&&!SRV)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw
 const SEM_THR=0.885;
 function semDecide(){if(!SRV||!ST.res)return null;const L=semQA(ST.q,10);const top=L.find(x=>x.q.y>=0);if(!top||top.s<SEM_THR)return null;const myneg=ST.sl.has(NEGI)?1:0;
   return {q:top.q,s:top.s,ans:top.q.y^(top.q.neg^myneg)}}
-function semQA(text,k){const EXP=window.__exProducts;const key=String(text||'').trim();if(!SEM_ON||!key)return [];
+function semQA(text,k){const EXP=window.__exProducts;const key=dealias(text).trim();if(!SEM_ON||!key)return [];
   if(SRV){const c=SEMC.get(key);if(c)return c.slice(0,k);if(!SEMC.has('#'+key)){SEMC.set('#'+key,1);
       api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.cos!=null?h.cos:h.s})));
         renderSugg();if(ST.res&&ST.q.trim()===key){ST.res.sem=semDecide();renderResult();if(ST.res.sem&&window.__semDone)window.__semDone()}}).catch(()=>{})}

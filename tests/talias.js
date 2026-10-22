@@ -1,0 +1,22 @@
+// E39: community nicknames → official names (dealias), card recognition in the question (qCards), card search box (acSearch). node tests/talias.js
+const {JSDOM}=require('jsdom');const fs=require('fs');
+const html=fs.readFileSync('card-effect-dist.html','utf8');
+const dom=new JSDOM(html,{runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false})}});
+const w=dom.window;let bad=0;const ok=(c,m)=>{console.log((c?'PASS ':'FAIL ')+m);if(!c)bad++};
+setTimeout(()=>{const A=w.__aliasTest;const ev=s=>{const m=s.match(/^dealias\((.*)\)$/);return A.dealias(JSON.parse(m[1].replace(/^'|'$/g,'"')))};
+ ok(ev("dealias('바황드 vs 황퍼펫')")==='바이러스종 황제드라몬: 드래곤 모드 vs 황색 퍼펫형 덱','바황드·황퍼펫 펼침');
+ ok(ev("dealias('여로랑 트레 중복 사용 가능?')")==='사제의 여행길랑 트레이닝 중복 사용 가능?','조사 붙은 별명');
+ ok(ev("dealias('트레이닝 효과')")==='트레이닝 효과','긴 단어 속 별명은 안 바꿈');
+ ok(ev("dealias('카리나는')")==='카리나는','앞에 한글이 붙으면 안 바꿈');
+ ok(ev("dealias('11리나 효과로')")==='11시노미야 리나 효과로','숫자 접두 별명');
+ const qc=q=>A.qc(q);
+ ok(['EX3-063','BT3-111'].includes(qc('바황드 조그레스 진화 시')[0]),'바황드 → 바이러스종 드래곤 모드 '+qc('바황드 조그레스 진화 시'));
+ ok(JSON.stringify(qc('23마스테몬 효과 유발'))==='["BT23-102"]','23마스테몬 → BT23-102 '+qc('23마스테몬 효과 유발'));
+ ok(JSON.stringify(qc('11리나 효과로 재발휘'))==='["BT11-112"]','11리나 → BT11-112 '+qc('11리나 효과로 재발휘'));
+ ok(qc('메디벌 효과로 등장해도').length===1,'메디벌 인식 '+qc('메디벌 효과로 등장해도'));
+ ok(qc('왕룡검 ACE 시큐에서').length>=1,'왕룡검 인식 '+qc('왕룡검 ACE 시큐에서'));
+ const ac=t=>A.ac(t);
+ ok(ac('바황파')[0]==='BT20-020'&&ac('바황파').includes('EX3-073'),'카드 검색 「바황파」 '+ac('바황파').slice(0,3));
+ ok(ac('프긴정')[0]==='EX1-072','카드 검색 「프긴정」');
+ ok(ac('공플').includes('ST22-08'),'카드 검색 「공플」');
+ console.log(bad?bad+' failed':'all passed');process.exit(bad?1:0)},800);

@@ -1,0 +1,102 @@
+{
+ "args": {
+  "model": "jhgan/ko-sroberta-multitask",
+  "epochs": 3,
+  "bs": 16,
+  "lr": 2e-05,
+  "per_anchor": 3,
+  "ans_jac": 0.5,
+  "hn_cos": 0.55,
+  "aug_p": 0.7,
+  "vague_p": 0.3,
+  "ctx": false,
+  "eval_only": null,
+  "norm": false,
+  "name": "cpu_vague",
+  "tiny": false
+ },
+ "triplets": 5981,
+ "zero_shot": {
+  "time_split": {
+   "n": 314,
+   "model": {
+    "recall@1": 0.876,
+    "recall@3": 0.901,
+    "recall@10": 0.93
+   },
+   "browser_2gram": {
+    "recall@1": 0.873,
+    "recall@3": 0.959,
+    "recall@10": 0.99
+   }
+  },
+  "colloquial": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.609,
+    "recall@3": 0.701,
+    "recall@10": 0.713
+   },
+   "browser_2gram": {
+    "recall@1": 0.713,
+    "recall@3": 0.874,
+    "recall@10": 0.931
+   }
+  },
+  "vague": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.402,
+    "recall@3": 0.563,
+    "recall@10": 0.655
+   },
+   "browser_2gram": {
+    "recall@1": 0.644,
+    "recall@3": 0.816,
+    "recall@10": 0.954
+   }
+  }
+ },
+ "fine_tuned": {
+  "time_split": {
+   "n": 314,
+   "model": {
+    "recall@1": 0.889,
+    "recall@3": 0.943,
+    "recall@10": 0.99
+   },
+   "browser_2gram": {
+    "recall@1": 0.873,
+    "recall@3": 0.959,
+    "recall@10": 0.99
+   }
+  },
+  "colloquial": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.77,
+    "recall@3": 0.862,
+    "recall@10": 0.931
+   },
+   "browser_2gram": {
+    "recall@1": 0.713,
+    "recall@3": 0.874,
+    "recall@10": 0.931
+   }
+  },
+  "vague": {
+   "n": 87,
+   "model": {
+    "recall@1": 0.69,
+    "recall@3": 0.759,
+    "recall@10": 0.931
+   },
+   "browser_2gram": {
+    "recall@1": 0.644,
+    "recall@3": 0.816,
+    "recall@10": 0.954
+   }
+  }
+ },
+ "note": "eval items are never in the training pool; browser_2gram = judge helper baseline on the same queries/corpus"
+}

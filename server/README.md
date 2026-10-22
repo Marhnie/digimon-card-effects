@@ -17,6 +17,7 @@ python server/setup.py
 `setup.py`가 하는 일:
 1. 필요한 패키지가 설치돼 있는지 확인합니다.
 2. 검색 모델(약 390MB)을 [GitHub 릴리스 retriever-cpu-v1](https://github.com/Marhnie/digimon-card-effects/releases/tag/retriever-cpu-v1)에서 내려받아 `train/runs/retriever_cpu/model`에 풉니다. sha256으로 파일이 맞는지 검사합니다.
+   - 두 번째 검색 모델(설명이 부족한 질문용, 약 400MB)도 [retriever-cpu-vague-v1](https://github.com/Marhnie/digimon-card-effects/releases/tag/retriever-cpu-vague-v1)에서 내려받아 `train/runs/retriever_cpu_vague/model`에 풉니다. 메모리가 부족하면 `python server/setup.py --no-model2`로 건너뛰세요. 없으면 서버는 모델 하나로 돌아갑니다.
 3. 페이지를 빌드합니다(`build_v3.py --server` → `server/static/index.html`).
 4. 처음이면 심판 키를 만들어 `server/judges.json`에 저장하고 화면에 보여 줍니다.
 
@@ -50,7 +51,7 @@ GPU는 필요 없습니다. 검색 한 번에 CPU로 0.05초 안팎입니다.
 
 | 경로 | 설명 |
 |---|---|
-| `POST /api/search {"q","k"}` | 의미가 가까운 공식 Q&A 인덱스를 돌려줍니다. 검색 모델 코사인과 2-gram을 RRF로 합칩니다(qfuse.py). 판정은 하지 않습니다 |
+| `POST /api/search {"q","k"}` | 의미가 가까운 공식 Q&A 인덱스를 돌려줍니다. 검색 모델 코사인(두 번째 모델이 있으면 그것도)과 2-gram을 RRF로 합칩니다(qfuse.py). 판정은 하지 않습니다 |
 | `GET /api/rulings` | 확인 판정 목록(누구나) |
 | `POST /api/rulings` | 확인 판정 저장(헤더 `X-Judge-Key` 필요) |
 | `POST /api/reports` | 이용자 제보(누구나, 5초 간격 제한) |

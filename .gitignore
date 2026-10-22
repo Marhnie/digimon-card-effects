@@ -43,11 +43,17 @@ train/runs/distill_tiny/
 
 server/judges.json
 server/judge.db
-server/corpus_emb.npy
-server/corpus_emb.stamp
+server/corpus_emb*.npy
+server/corpus_emb*.stamp
 server/static/
 server/public_url.txt
 server/public_url_history.txt
 server/tunnel.log
 server/server.log
 server/_pages/
+
+# E39: questions people typed into the server (user data, keep local)
+train/data/log_pairs.jsonl
+train/data/community_q.txt
+train/data/community_eval.json
+train/runs/retriever_tinyv/

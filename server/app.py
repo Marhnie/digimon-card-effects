@@ -21,6 +21,8 @@ import uvicorn
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 MODEL = os.environ.get('QEMB_MODEL', os.path.join(ROOT, 'train', 'runs', 'retriever_cpu', 'model'))
+# E38: optional second retriever trained on under-specified questions, fused in by RRF (skipped when absent or QEMB_MODEL2=none)
+MODEL2 = os.environ.get('QEMB_MODEL2', os.path.join(ROOT, 'train', 'runs', 'retriever_cpu_vague', 'model'))
 DATA = os.environ.get('JUDGE_DATA', HERE)          # judge keys, DB and the corpus-embedding cache (a volume in Docker)
 os.makedirs(DATA, exist_ok=True)
 DB = os.path.join(DATA, 'judge.db')
@@ -63,23 +65,33 @@ def judge_of(req):
 
 
 # ---------------- semantic search ----------------
-SEM = {'model': None, 'E': None, 'err': None}
+SEM = {'model': None, 'E': None, 'err': None, 'model2': None, 'E2': None}
+
+
+def encode_corpus(path, tag):
+    from sentence_transformers import SentenceTransformer
+    m = SentenceTransformer(path, device='cpu')
+    cache = os.path.join(DATA, f'corpus_emb{tag}.npy'); stamp = os.path.join(DATA, f'corpus_emb{tag}.stamp')
+    key = f"{os.path.getmtime(path)}|{len(DOC)}"
+    if os.path.exists(cache) and os.path.exists(stamp) and open(stamp).read() == key:
+        E = np.load(cache)
+    else:
+        t0 = time.time(); E = m.encode([QA[i][1] for i in DOC], normalize_embeddings=True, batch_size=64, show_progress_bar=False)
+        np.save(cache, E); open(stamp, 'w').write(key); print(f'corpus{tag} encoded in {time.time() - t0:.0f}s')
+    return m, E.astype(np.float32)
 
 
 def load_model():
     try:
         if not os.path.exists(MODEL):
             SEM['err'] = f'model not found: {MODEL}'; print(SEM['err']); return
-        from sentence_transformers import SentenceTransformer
-        m = SentenceTransformer(MODEL, device='cpu')
-        cache = os.path.join(DATA, 'corpus_emb.npy'); stamp = os.path.join(DATA, 'corpus_emb.stamp')
-        key = f"{os.path.getmtime(MODEL)}|{len(DOC)}"
-        if os.path.exists(cache) and os.path.exists(stamp) and open(stamp).read() == key:
-            E = np.load(cache)
-        else:
-            t0 = time.time(); E = m.encode([QA[i][1] for i in DOC], normalize_embeddings=True, batch_size=64, show_progress_bar=False)
-            np.save(cache, E); open(stamp, 'w').write(key); print(f'corpus encoded in {time.time() - t0:.0f}s')
-        SEM.update(model=m, E=E.astype(np.float32)); print('semantic search ready', E.shape)
+        m, E = encode_corpus(MODEL, '')
+        if MODEL2 != 'none' and os.path.exists(MODEL2):
+            try:
+                m2, E2 = encode_corpus(MODEL2, '_2'); SEM.update(model2=m2, E2=E2); print('second retriever ready', MODEL2)
+            except Exception as e:
+                print('second retriever skipped', e)
+        SEM.update(model=m, E=E); print('semantic search ready', E.shape)
     except Exception as e:
         SEM['err'] = str(e); print('model load failed', e)
 
@@ -96,7 +108,8 @@ async def search(req: Request):
         return {'ready': True, 'hits': []}
     v = SEM['model'].encode([q], normalize_embeddings=True, show_progress_bar=False)[0]
     s = SEM['E'] @ v
-    return {'ready': True, 'hits': FUSE.hits(q, s, k * 3)}
+    extra = [SEM['E2'] @ SEM['model2'].encode([q], normalize_embeddings=True, show_progress_bar=False)[0]] if SEM['model2'] is not None else []
+    return {'ready': True, 'hits': FUSE.hits(q, s, k * 3, extra)}
 
 
 # ---------------- rulings & reports ----------------
@@ -197,7 +210,7 @@ def page():
 
 @app.get('/health')
 def health():
-    return {'semantic': SEM['model'] is not None, 'err': SEM['err'], 'qa': len(DOC)}
+    return {'semantic': SEM['model'] is not None, 'retrievers': 1 + (SEM['model2'] is not None), 'err': SEM['err'], 'qa': len(DOC)}
 
 
 if __name__ == '__main__':
