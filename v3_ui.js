@@ -248,6 +248,11 @@ window.__decTest=()=>{const R=ST.res;if(!R)return null;const d=decisive();let an
   if(ST.pickQ!=null){by='official';ans=QA[ST.pickQ].y}else if(R.xref){by='explain';ans=R.xref.q.i}else if(R.level==='sure'){by='precedent';ans=R.ans}else if(R.cr){by='ruling';ans=R.cr.ans}else if(R.iv){by='issue';ans=R.iv.ans}else if(R.eng&&R.eng.sure){by='engine';ans=R.eng.ans}else if(R.sem){by='semantic';ans=R.sem.ans}
   return {dec:d,by,ans}};
 window.__crefTest=()=>({auto:ST.res&&ST.res.auto,cref:ST.res&&ST.res.cref?{ans:ST.res.cref.ans,qi:ST.res.cref.q.i}:null});
+// E45: every signal the page computed for the last question (tests/tdec.js TDEC_FULL) — for the offline accuracy search
+window.__sigTest=()=>{const R=ST.res;if(!R)return {};const E=engineLite(similarQA(30));const g=(R.groups||[])[0];
+  return {prec:{level:R.level,tier:R.tier,ans:R.ans,unan:R.unanimous,n:(R.list||[]).length},est:R.est,iv:R.iv?R.iv.ans:null,gv:R.gv?R.gv.ans:null,
+    g:g?{ans:g.ans,cons:g.cons,best:g.best,n:g.mem.filter(q=>q.y>=0).length,yes:g.yes,no:g.no}:null,
+    eng:E?{ans:E.ans,p:E.pA,conf:E.conf,f:E.f,rg:E.rg?E.rg.ans:null}:null,cref:R.cref?R.cref.ans:null,xref:!!R.xref,neg:ST.sl.has(NEGI)?1:0,nauto:(R.auto||[]).length}};
 window.__engTest=()=>({card:ST.cards[0]&&ST.cards[0].no,eng:engineLite(similarQA(30))});   // test hook (tests/teng.js)
 function engineLite(sim){if(!ENG||!sim||!sim.length)return null;const u=mainUnit();const main=ST.cards[0]?ST.cards[0].no:'';
   const top=sim.filter(x=>x.y>=0).slice(0,10);if(!top.length)return null;

@@ -1,0 +1,186 @@
+{
+ "clause|tw0.0": {
+  "answered": 557,
+  "acc_all": 0.707,
+  "honest": [
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "clause|tw0.3": {
+  "answered": 557,
+  "acc_all": 0.695,
+  "honest": [
+   {
+    "rule": [
+     0.5,
+     0.4,
+     10
+    ],
+    "n": 9,
+    "ok": 5,
+    "new_on_undecided": 9,
+    "new_ok": 5
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "inter+clause|tw0.0": {
+  "answered": 557,
+  "acc_all": 0.72,
+  "honest": [
+   {
+    "rule": [
+     0.7,
+     0.2,
+     7
+    ],
+    "n": 7,
+    "ok": 4,
+    "new_on_undecided": 7,
+    "new_ok": 4
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "inter+clause|tw0.3": {
+  "answered": 557,
+  "acc_all": 0.691,
+  "honest": [
+   {
+    "rule": [
+     0.5,
+     0.4,
+     13
+    ],
+    "n": 12,
+    "ok": 7,
+    "new_on_undecided": 12,
+    "new_ok": 7
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "inter+clause2|tw0.0": {
+  "answered": 557,
+  "acc_all": 0.727,
+  "honest": [
+   {
+    "rule": [
+     0.7,
+     0.2,
+     8
+    ],
+    "n": 9,
+    "ok": 5,
+    "new_on_undecided": 9,
+    "new_ok": 5
+   },
+   {
+    "rule": [
+     0.5,
+     0.4,
+     8
+    ],
+    "n": 6,
+    "ok": 6,
+    "new_on_undecided": 6,
+    "new_ok": 6
+   }
+  ]
+ },
+ "inter+clause2|tw0.3": {
+  "answered": 557,
+  "acc_all": 0.702,
+  "honest": [
+   {
+    "rule": [
+     0.5,
+     0.4,
+     6
+    ],
+    "n": 13,
+    "ok": 9,
+    "new_on_undecided": 13,
+    "new_ok": 9
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "inter+clause+trig|tw0.0": {
+  "answered": 557,
+  "acc_all": 0.722,
+  "honest": [
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ },
+ "inter+clause+trig|tw0.3": {
+  "answered": 557,
+  "acc_all": 0.722,
+  "honest": [
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   },
+   {
+    "rule": null,
+    "n": 0,
+    "ok": 0,
+    "new_on_undecided": 0,
+    "new_ok": 0
+   }
+  ]
+ }
+}

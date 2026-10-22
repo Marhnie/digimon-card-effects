@@ -1,0 +1,98 @@
+{
+ "undecided": 294,
+ "honest": [
+  {
+   "tuned_on": 0,
+   "rule": [
+    "eng p>=0.7",
+    "semantic cos>=0.7"
+   ],
+   "tune_n": 11,
+   "eval_n": 33,
+   "eval_ok": 29
+  },
+  {
+   "tuned_on": 1,
+   "rule": [
+    "eng p>=0.8",
+    "group best>=0.4 cons1"
+   ],
+   "tune_n": 8,
+   "eval_n": 8,
+   "eval_ok": 7
+  }
+ ],
+ "reference_top": [
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.6",
+    "eng p>=0.8",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.7",
+    "eng p>=0.8",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "eng conf>=0.5",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "eng conf>=0.6",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "eng conf>=0.7",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "semantic cos>=0.6",
+    "semantic cos>=0.8"
+   ]
+  ],
+  [
+   14,
+   14,
+   [
+    "eng p>=0.8",
+    "semantic cos>=0.7",
+    "semantic cos>=0.8"
+   ]
+  ]
+ ]
+}

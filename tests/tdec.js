@@ -11,5 +11,6 @@ const DUMP=[];(async()=>{await sleep(300);const by={};let n=0,dec=0,ok=0;
  for(const it of items.slice(0,N)){for(let g=0;g<8;g++){const b=[...d.querySelectorAll('button')].find(b=>/빼기/.test(b.textContent));if(!b)break;b.click()}
   await sleep(2);type($('cardq'),it.card);$('cardq').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));await sleep(2);
   const r=[...d.querySelectorAll('input[name=mainEff]')].find(r=>+r.value===it.unit);if(!r)continue;r.checked=true;r.dispatchEvent(new w.Event('change',{bubbles:true}));
-  type($('askq'),it.q);$('go').click();await sleep(2);const R=w.__decTest();n++;DUMP.push({i:it.i,by:R&&R.dec?R.by:null,ans:R&&R.dec?R.ans:null});if(R&&R.dec){dec++;const b=by[R.by]=by[R.by]||[0,0];b[0]++;if(R.ans===it.y){ok++;b[1]++}}}
+  type($('askq'),it.q);$('go').click();await sleep(2);const R=w.__decTest();n++;DUMP.push({i:it.i,by:R&&R.dec?R.by:null,ans:R&&R.dec?R.ans:null});
+  if(process.env.TDEC_FULL){const X=w.__sigTest();Object.assign(DUMP[DUMP.length-1],X)}if(R&&R.dec){dec++;const b=by[R.by]=by[R.by]||[0,0];b[0]++;if(R.ans===it.y){ok++;b[1]++}}}
  if(process.env.TDEC_DUMP)fs.writeFileSync(process.env.TDEC_DUMP,JSON.stringify(DUMP));console.log('asked',n,'decisive',dec,(dec/n*100).toFixed(1)+'%','acc',(ok/dec*100).toFixed(1)+'%','claude calls',calls);console.log(JSON.stringify(by))})();
