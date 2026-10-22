@@ -59,3 +59,4 @@ train/data/community_eval.json
 train/runs/retriever_tinyv/
 server/drafts_todo.json
 server/drafts_done.json*
+server/drafts_parts/

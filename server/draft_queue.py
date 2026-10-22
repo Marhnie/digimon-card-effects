@@ -24,6 +24,37 @@ def known():
     return ks
 
 
+import re
+AL = json.load(open(os.path.join(ROOT, 'aliases.json'), encoding='utf-8'))['alias'] if os.path.exists(os.path.join(ROOT, 'aliases.json')) else []
+PART = r'(?:이랑|랑|으로|로|에서|에게|에|은|는|이|가|을|를|의|도|와|과|만|하고|vs)'
+def dealias(q):
+    for x in sorted(AL, key=lambda x: -len(x['a'])):
+        q = re.sub(r'(^|[^가-힣])' + re.escape(x['a']) + r'(?=$|[^가-힣]|' + PART + r'(?![가-힣]))', lambda m: m.group(1) + x['to'], q)
+    return q
+_nrm = lambda s: re.sub(r'[\s:：・·\-–—「」『』()（）\[\].,!?~]', '', s or '')
+def find_cards(q, T):
+    names = {}
+    for no, c in T['cards'].items():
+        k = _nrm(c[0])
+        if len(k) >= 3: names.setdefault(k, []).append(no)
+    qa_n = {}
+    for r in T['qa']: qa_n[r[0]] = qa_n.get(r[0], 0) + 1
+    s = _nrm(q); used = [0] * len(s); out = []
+    for k in sorted(names, key=len, reverse=True):
+        p = s.find(k)
+        if p < 0 or any(used[p:p + len(k)]): continue
+        for x in range(p, p + len(k)): used[x] = 1
+        nos = names[k]; m = re.search(r'(BT|EX|ST|P)?(\d{1,2})$', s[:p])
+        if m:
+            f = [n for n in nos if n.startswith((m.group(1) or 'BT') + str(int(m.group(2))) + '-')]
+            nos = f or nos
+        out.append((p, max(nos, key=lambda n: qa_n.get(n, 0))))
+    return [no for _, no in sorted(out)]
+
+
+FROM = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else None
+
+
 def export(mx):
     T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8')); QA = T['qa']
     C = {c['no']: c for c in json.load(open(os.path.join(ROOT, 'cards.json'), encoding='utf-8'))}
@@ -36,6 +67,12 @@ def export(mx):
         d = json.loads(d)
         items.append({'kind': 'report', 'report_id': rid, 'q': d['q'], 'cards': [d['card']] + [x for x in (d.get('others') or '').split(',') if x],
                       'reported_ans': d.get('ans'), 'reported_summary': d.get('summary')})
+    if FROM:
+        # E47: questions collected elsewhere (one per line, kept local) — community nicknames resolved, card names detected
+        items = []
+        for q in [l.strip() for l in open(FROM, encoding='utf-8') if l.strip()]:
+            cards = find_cards(dealias(q), T)
+            if cards: items.append({'kind': 'community', 'q': q, 'cards': cards})
     out, seen = [], set()
     for it in items:
         k = key(it['q'], it['cards'][0])
