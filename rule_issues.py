@@ -49,6 +49,12 @@ ISSUES = [
      'cue': r'링크(하는|할) ?(효과로|때)[^?？]{0,40}(이미 링크|링크되어 있던)[^?？]{0,30}(바꿔|교체)[^?？]{0,20}파기', 'ask': r'유발|발휘', 'not': r'^$', 'needs_trigger': False},
 ]
 
+
+# E44: written from older products' questions only (rule_issues_cand.py, issue_eval.py); older exemplars unanimous (n >= 10).
+# 「어떤 진화든 진화 드로우」 was left out: on the newest products it added one wrong answer.
+from rule_issues_cand import CANDS as _C
+ISSUES += [c for c in _C if c['id'] != 'evolution_draw_always']
+
 def exemplars(qa_rows):
     """qa_rows: the judge helper's D.qa rows [card, q, a, ...]; returns {issue id: [row indices]}"""
     out = {}
