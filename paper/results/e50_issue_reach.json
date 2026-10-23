@@ -1,0 +1,62 @@
+{
+ "reason group (now) min2": {
+  "any_member": 115,
+  "reach": 96,
+  "acc": 1.0
+ },
+ "reason group (now) min3": {
+  "any_member": 115,
+  "reach": 75,
+  "acc": 1.0
+ },
+ "rule clause min2": {
+  "any_member": 37,
+  "reach": 19,
+  "acc": 1.0
+ },
+ "rule clause min3": {
+  "any_member": 37,
+  "reach": 19,
+  "acc": 1.0
+ },
+ "clause + asked-thing min2": {
+  "any_member": 35,
+  "reach": 31,
+  "acc": 0.871
+ },
+ "clause + asked-thing min3": {
+  "any_member": 35,
+  "reach": 19,
+  "acc": 1.0
+ },
+ "unit pattern min2": {
+  "any_member": 239,
+  "reach": 44,
+  "acc": 0.773
+ },
+ "unit pattern min3": {
+  "any_member": 239,
+  "reach": 33,
+  "acc": 0.879
+ },
+ "asked-thing + situation (precedent rule) min2": {
+  "any_member": 268,
+  "reach": 185,
+  "acc": 0.919
+ },
+ "asked-thing + situation (precedent rule) min3": {
+  "any_member": 268,
+  "reach": 150,
+  "acc": 0.933
+ },
+ "Q&A cluster (qa_group) min2": {
+  "any_member": 216,
+  "reach": 155,
+  "acc": 0.974
+ },
+ "Q&A cluster (qa_group) min3": {
+  "any_member": 216,
+  "reach": 120,
+  "acc": 1.0
+ }
+}
