@@ -60,3 +60,6 @@ train/runs/retriever_tinyv/
 server/drafts_todo.json
 server/drafts_done.json*
 server/drafts_parts/
+
+# E51: Claude API key for the AI opinion (never commit)
+server/anthropic_key.txt
