@@ -105,8 +105,21 @@ def imp():
     print(n, 'drafts added')
 
 
+def review_import(paths):
+    """E49: attach Claude review recommendations to open drafts (rec yes/no/ex/drop/human, rec_summary, rec_why); judges apply them"""
+    n = 0
+    for p_ in paths:
+        for r in json.load(open(p_, encoding='utf-8')):
+            row = db.execute("select doc from drafts where id=? and status='open'", (r['id'],)).fetchone()
+            if not row or r.get('rec') not in ('yes', 'no', 'ex', 'drop', 'human'): continue
+            d = json.loads(row[0]); d.update(rec=r['rec'], rec_summary=str(r.get('summary', ''))[:1000], rec_why=str(r.get('why', ''))[:300])
+            db.execute('update drafts set doc=? where id=?', (json.dumps(d, ensure_ascii=False), r['id'])); n += 1
+    db.commit(); print(n, 'recommendations attached')
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     if cmd == 'export': export(int(sys.argv[sys.argv.index('--max') + 1]) if '--max' in sys.argv else 15)
     elif cmd == 'import': imp()
+    elif cmd == 'review-import': review_import(sys.argv[2:])
     else: print(__doc__)

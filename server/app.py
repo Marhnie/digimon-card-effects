@@ -200,6 +200,7 @@ async def draft_approve(did: int, req: Request):
         # agreed: the judge kept Claude's answer (same yes/no, or both explanation) — for measuring draft accuracy
         doc = clean_doc({**d, 'src': 'claude', 'agreed': d.get('ans') == orig})
         doc.update(by=j, at=time.strftime('%Y-%m-%dT%H:%M:%S'), drafted_at=d.get('drafted_at', ''), origin='draft')
+        if b.get('reviewed') == 'claude': doc['review'] = 'claude-rec'   # E49: judge applied a Claude review recommendation (bulk)
         rid = c.execute('insert into rulings (doc, at) values (?, ?)', (json.dumps(doc, ensure_ascii=False), time.time())).lastrowid
         c.execute("update drafts set status='approved' where id=?", (did,))
         if d.get('report_id'): c.execute('update reports set done=1 where id=?', (d['report_id'],))
