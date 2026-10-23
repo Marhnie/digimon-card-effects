@@ -108,10 +108,15 @@ async def search(req: Request):
         return JSONResponse({'ready': False, 'err': SEM['err'], 'hits': []}, status_code=503)
     if not q.strip():
         return {'ready': True, 'hits': []}
+    return {'ready': True, 'hits': fused_hits(q, k * 3)}
+
+
+def fused_hits(q, k):
+    # the server's retrieval (both models + 2-gram, RRF) — also the evidence search of the AI opinion (E51)
     v = SEM['model'].encode([q], normalize_embeddings=True, show_progress_bar=False)[0]
     s = SEM['E'] @ v
     extra = [SEM['E2'] @ SEM['model2'].encode([q], normalize_embeddings=True, show_progress_bar=False)[0]] if SEM['model2'] is not None else []
-    return {'ready': True, 'hits': FUSE.hits(q, s, k * 3, extra)}
+    return FUSE.hits(q, s, k, extra)
 
 
 # ---------------- rulings & reports ----------------
@@ -213,6 +218,23 @@ def draft_drop(did: int, req: Request):
     with lock, db() as c:
         c.execute("update drafts set status='dropped' where id=? and status='open'", (did,))
     return {'ok': True}
+
+
+# ---------------- AI opinion (E51, user decision 2026-10-23): Claude's reference opinion on request, shown as 「AI 의견 · 비공식」 ----------------
+def insert_draft(d):
+    d = {**d, 'kind': 'ai', 'drafted_at': time.strftime('%Y-%m-%dT%H:%M:%S')}
+    with lock, db() as c:
+        c.execute('insert into drafts (doc, at) values (?, ?)', (json.dumps(d, ensure_ascii=False), time.time()))
+
+
+try:
+    sys.path.insert(0, HERE)
+    from ai_opinion import register as register_ai
+    register_ai(app, dict(db_path=DB, QA=QA, search=lambda q, k: [h['i'] for h in fused_hits(q, k)] if SEM['model'] is not None else [],
+                          cards={c['no']: c for c in json.load(open(os.path.join(ROOT, 'cards.json'), encoding='utf-8'))},
+                          rules=json.load(open(os.path.join(ROOT, 'rules2.json'), encoding='utf-8'))['rules'], queue_draft=insert_draft))
+except Exception as e:
+    print('AI opinion not available', e)
 
 
 LAST = {}

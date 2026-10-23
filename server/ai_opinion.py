@@ -116,8 +116,11 @@ class AiOpinion:
         if self.ip_count(ip) >= PER_IP: return {'error': 'rate', 'message': '하루 이용 한도를 넘었습니다.'}
         ev, text = self.evidence(q, card_nos)
         msg = f"질문: {q}\n\n근거:\n{text}"
-        r = self.client.messages.create(model=MODEL, max_tokens=1500, system=SYSTEM, messages=[{'role': 'user', 'content': msg}],
+        # max_tokens covers adaptive thinking + the JSON answer, so leave room (1500 could cut the answer off)
+        r = self.client.messages.create(model=MODEL, max_tokens=16000, system=SYSTEM, messages=[{'role': 'user', 'content': msg}],
                                         output_config={'effort': EFFORT}, thinking={'type': 'adaptive'})
+        if getattr(r, 'stop_reason', None) == 'refusal':
+            return {'error': 'refusal', 'message': 'AI 의견을 받을 수 없는 질문입니다.'}
         out = next((b.text for b in r.content if b.type == 'text'), '')
         m = re.search(r'\{.*\}', out, re.S)
         try:
@@ -148,8 +151,12 @@ def register(app, ctx):
         b = await req.json(); q = str(b.get('q', '')); cards = [str(x) for x in (b.get('cards') or [])][:4]
         ip = req.headers.get('cf-connecting-ip') or (req.client.host if req.client else '-')
         if not q.strip(): return JSONResponse({'error': 'empty'}, status_code=400)
-        res = ai.ask(q, cards, ip)
-        if res.get('error'): return JSONResponse(res, status_code=429)
+        try:
+            res = ai.ask(q, cards, ip)
+        except Exception as e:   # missing key, network, API error: the page keeps its plain 보류 view
+            print('ai opinion failed', type(e).__name__, e)
+            return JSONResponse({'error': 'unavailable', 'message': 'AI 의견을 지금 받을 수 없습니다.'}, status_code=503)
+        if res.get('error'): return JSONResponse(res, status_code=429 if res['error'] in ('budget', 'rate') else 422)
         if not res.get('cached') and ctx.get('queue_draft'):
             ctx['queue_draft']({'q': q, 'card': cards[0] if cards else '', 'others': ','.join(cards[1:]), 'ans': res['ans'], 'summary': res['summary'],
                                 'src': 'claude', 'note': 'AI 의견(이용자 요청)'})

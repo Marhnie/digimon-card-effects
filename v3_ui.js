@@ -38,7 +38,7 @@ const ST={cards:[],pasted:null,pasteOpen:false,sel:null,q:'',it:null,itManual:fa
 const mainUnit=()=>ST.pasted?(ST.pasted.units[ST.sel]||null):(ST.cards[0]&&ST.sel!=null?U[ST.sel]:null);
 const extras=()=>ST.cards.slice(1);
 const involved=()=>ST.cards.map(c=>c.no);
-function resetResult(){ST.res=null;ST.ai=null;if(ST.ctl)ST.ctl.abort();renderResult()}
+function resetResult(){ST.res=null;ST.ai=null;ST.aiop=null;if(ST.ctl)ST.ctl.abort();renderResult()}
 
 /* ---------- step 1: cards ---------- */
 function addCard(no){
@@ -492,7 +492,7 @@ const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><spa
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';CR.code='';ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.res.sem=semDecide();ST.ai=null;
+  CR.done=false;CR.msg='';CR.code='';ST.aiop=null;ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.res.sem=semDecide();ST.ai=null;
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
   if(SRV){const D_=window.__decTest?window.__decTest():null;const pq=ST.pickQ!=null?QA[ST.pickQ]:null;  // what was actually shown: decision path + answer (E36 fix: precedent items are {q:QA,y})
@@ -574,8 +574,20 @@ function altOffer(){if(!SRV||!ST.res||decisive())return '';const L=semQA(ST.q,10
 function pickAlt(i){const q=QA[i];if(!q)return;ST.q=q.q;$('askq').value=q.q;ST.it=intentOf(q.q);ST.itManual=true;ST.sl=new Set(slotsOf(q.q));ST.manual=new Set(SLOT.map(s=>s.i));
   ST.pickQ=(ST.cards[0]&&q.card===ST.cards[0].no)?i:null;renderMeta();updateGo();judge()}
 function decisive(){const R=ST.res;return !!R&&(ST.pickQ!=null||!!R.xref||!!R.sem||R.level==='sure'||!!R.cr||!!R.iv||!!(R.eng&&R.eng.sure))}
+// E51: AI opinion on request (server build, held questions only, when the server has an API key) — always labeled unofficial
+let AIREADY=false;if(SRV)setTimeout(()=>api('ai/usage').then(j=>{AIREADY=!!(j&&j.ready);if(ST.res)renderResult()}).catch(()=>{}),0);
+function aiOpinionHTML(){if(!SRV||!AIREADY)return '';const O=ST.aiop;
+  if(!O)return `<div class="row" style="margin:6px 0"><button class="btn2" type="button" id="aiopbtn">AI 의견 보기</button><span class="sub">Claude의 참고 의견입니다. 공식 판정이 아니며, 심판 확인 대기열에도 올라갑니다.</span></div>`;
+  if(O.wait)return '<div class="sub">AI 의견을 받는 중…</div>';
+  if(O.err)return `<div class="sub">${esc(O.err)}</div>`;
+  const a=O.ans===1?'네':O.ans===0?'아니요':'판단 불가';const low=O.confidence==='low'||O.ans==null;
+  return `<div class="verdict v-ref" style="border-style:dashed"><span class="badge">${esc(O.label||'AI 의견 · 비공식')}</span><div class="ans">${low&&O.ans!=null?'판단 불가 (확신 낮음)':a}</div><div class="why">${esc(O.summary||'')}</div>${(O.refs||[]).length?`<div class="sub">근거: ${O.refs.map(r=>esc(String(r.id)+' '+String(r.ref))).join(' · ')}</div>`:''}<div class="sub">공식 판정이 아닙니다. 대회에서는 심판에게 확인하세요.</div></div>`}
+async function askAiOpinion(){const q=ST.q,cards=ST.cards.map(c=>c.no);ST.aiop={wait:1};renderResult();
+  try{const r=await fetch(SRV+'ai',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({q,cards})});const j=await r.json().catch(()=>({}));
+    ST.aiop=r.ok?j:{err:j.message||'AI 의견을 지금 받을 수 없습니다.'}}catch(e){ST.aiop={err:'AI 의견을 지금 받을 수 없습니다.'}}
+  if(ST.q===q)renderResult()}
 function aiOffer(){const R=ST.res,A=ST.ai;if(!DIST||!R||A||decisive())return '';
-  return `<div class="verdict v-none"><span class="badge">판정 보류 · 심판 확인 필요</span><div class="why">공식 Q&amp;A·확인된 판정·룰 쟁점 가운데 이 질문에 확실히 맞는 근거가 없습니다. 아래 참고 자료는 정답이 아닐 수 있습니다.</div><div class="sub">질문 칸의 추천 문장으로 다시 물으면 맞는 근거를 찾을 수 있습니다. 정답을 아는 분은 아래에서 알려 주세요 — 심판이 확인하면 판정으로 쌓여 다음부터 바로 답합니다.</div></div>`}
+  return `<div class="verdict v-none"><span class="badge">판정 보류 · 심판 확인 필요</span><div class="why">공식 Q&amp;A·확인된 판정·룰 쟁점 가운데 이 질문에 확실히 맞는 근거가 없습니다. 아래 참고 자료는 정답이 아닐 수 있습니다.</div><div class="sub">질문 칸의 추천 문장으로 다시 물으면 맞는 근거를 찾을 수 있습니다. 정답을 아는 분은 아래에서 알려 주세요 — 심판이 확인하면 판정으로 쌓여 다음부터 바로 답합니다.</div>${aiOpinionHTML()}</div>`}
 function renderResult(){const v=ST.res||ST.ai?verdictHTML():'';$('result').innerHTML=ST.res||ST.ai?(DIST?aiOffer()+altOffer()+v:v+aiOffer())+(v.includes('질문에서 「')?'':autoNote())+crPanel()+tabsHTML():''}
 
 /* ---------- examples ---------- */
@@ -622,6 +634,7 @@ document.addEventListener('click',e=>{const t=e.target;
   if(t.id==='jkeyset'){const v=($('jkey')||{}).value||'';try{localStorage.setItem('judgeKey',v.trim())}catch(e){}
     api('whoami').then(j=>{$('jkeymsg').textContent=j.judge?`${j.judge} 님으로 로그인했습니다. 새로고침하면 확인·저장 버튼이 보입니다.`:'키가 맞지 않습니다.';if(j.judge)location.reload()}).catch(()=>{$('jkeymsg').textContent='서버에 연결하지 못했습니다.'});return}
   if(t.id==='drbulk'){draftBulk();return}
+  if(t.id==='aiopbtn'){askAiOpinion();return}
   if(t.dataset&&t.dataset.dr){draftAct(t.dataset.dr,t.dataset.act);return}
   if(t.id==='jkeyout'){try{localStorage.removeItem('judgeKey')}catch(e){}location.reload();return}
   if(t.id==='crpull'){api('reports').then(L=>{CRREP=L;$('crin').value=L.map(d=>'JD1:'+b64e(JSON.stringify({...d,by:d.by||''}))).join('\n');$('crpreview').click()}).catch(()=>{$('crprev').innerHTML='<div class="sub">제보를 불러오지 못했습니다(심판 로그인 확인).</div>'});return}
