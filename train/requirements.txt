@@ -7,3 +7,6 @@ sentence-transformers>=3.0
 datasets>=2.19
 numpy
 scikit-learn
+# E52 own AI-opinion model (train_gen.py): LoRA / 4-bit QLoRA
+peft>=0.11
+bitsandbytes>=0.43

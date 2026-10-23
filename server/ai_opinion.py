@@ -42,6 +42,48 @@ def key_ready():
     return bool(os.environ.get('ANTHROPIC_API_KEY') or _key_from_file())
 
 
+# E52: our own fine-tuned model (train/train_gen.py → merged weights) as a free backend; used when there is no API key
+LOCAL_DIR = os.environ.get('AI_LOCAL_MODEL', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ai_local_model'))
+local_ready = lambda: os.path.exists(os.path.join(LOCAL_DIR, 'config.json'))
+
+
+def backend():
+    b = os.environ.get('AI_BACKEND', 'auto')
+    if b == 'auto': return 'api' if key_ready() else 'local' if local_ready() else None
+    return b if (b == 'api' and key_ready()) or (b == 'local' and local_ready()) else None
+
+
+class LocalGen:
+    """CPU inference of the fine-tuned model; the same prompt as training (gen_prompt.py). Loaded on first use."""
+    def __init__(self):
+        self.tok = self.model = None; self.lock = threading.Lock()
+
+    def load(self):
+        if self.model is None:
+            import torch
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+            self.torch = torch
+            self.tok = AutoTokenizer.from_pretrained(LOCAL_DIR)
+            self.model = AutoModelForCausalLM.from_pretrained(LOCAL_DIR, torch_dtype=torch.bfloat16).eval()
+            t = self.tok
+            self.yes = list({t('네', add_special_tokens=False)['input_ids'][0], t('예', add_special_tokens=False)['input_ids'][0]})
+            self.no = list({t('아니요', add_special_tokens=False)['input_ids'][0], t('아니', add_special_tokens=False)['input_ids'][0]})
+
+    def answer(self, system, user):
+        with self.lock:
+            self.load(); torch = self.torch
+            p = self.tok.apply_chat_template([{'role': 'system', 'content': system}, {'role': 'user', 'content': user}], tokenize=False, add_generation_prompt=True)
+            ids = self.tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -1280:]
+            with torch.no_grad():
+                pr = self.model(input_ids=ids).logits[0, -1].float().softmax(-1)
+                py, pn = float(pr[self.yes].sum()), float(pr[self.no].sum())
+                g = self.model.generate(input_ids=ids, max_new_tokens=200, do_sample=False, pad_token_id=self.tok.pad_token_id or self.tok.eos_token_id)
+            return self.tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True).strip(), py / ((py + pn) or 1)
+
+
+LOCAL = LocalGen()
+
+
 def _bg(s):
     t = re.sub(r'\s+', '', s)
     return {t[i:i + 2] for i in range(len(t) - 1)}
@@ -112,6 +154,8 @@ class AiOpinion:
             row = c.execute('select doc from ai_cache where key=?', (key,)).fetchone()
         if row:
             return {**json.loads(row[0]), 'cached': True}
+        if backend() == 'local':
+            return self.ask_local(q, card_nos, key, ip)
         if self.spent_today() >= DAILY_USD: return {'error': 'budget', 'message': '오늘 AI 의견 한도에 도달했습니다.'}
         if self.ip_count(ip) >= PER_IP: return {'error': 'rate', 'message': '하루 이용 한도를 넘었습니다.'}
         ev, text = self.evidence(q, card_nos)
@@ -139,6 +183,32 @@ class AiOpinion:
         return {**doc, 'cached': False, 'usd': round(usd, 4)}
 
 
+def _ask_local(self, q, card_nos, key, ip):
+    """E52: free opinion from our own model. Confidence = P(네) vs P(아니요) at the first token; below LOCAL_CONF it says 판단 불가."""
+    if self.ip_count(ip) >= PER_IP: return {'error': 'rate', 'message': '하루 이용 한도를 넘었습니다.'}
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from gen_prompt import SYSTEM as GSYS, prompt as gprompt
+    c = self.cards.get(card_nos[0]) if card_nos else None
+    nb = [{'id': i, 'card': self.QA[i][0], 'question': self.QA[i][1]} for i in [i for i in self.search(q, 8) if self.QA[i][0]][:4]]
+    x = {'question': q, 'card': card_nos[0] if card_nos else '', 'card_name': (c or {}).get('name', ''), 'effect': '',
+         'card_text': ((c or {}).get('상단 텍스트', '') + ' / 진화원: ' + ((c or {}).get('하단 텍스트', '') or '-')) if c else '', 'neighbours': nb}
+    out, p = LOCAL.answer(GSYS, gprompt(x, self.QA))
+    conf = max(p, 1 - p); thr = float(os.environ.get('LOCAL_CONF', '0.9'))
+    head = out[:6]
+    ans = 1 if head.startswith(('네', '예')) else 0 if head.startswith('아니') else None
+    doc = {'ans': ans if conf >= thr else None, 'confidence': 'high' if conf >= 0.97 else 'medium' if conf >= thr else 'low',
+           'summary': out[:1500], 'refs': [{'id': f'Q{n + 1}', 'ref': d['id']} for n, d in enumerate(nb)],
+           'model': 'local:' + os.path.basename(os.path.normpath(LOCAL_DIR)), 'label': 'AI 의견 (자체 모델) · 비공식', 'p_yes': round(p, 3)}
+    with self._db() as cdb:
+        cdb.execute('insert or replace into ai_cache values (?,?,?)', (key, json.dumps(doc, ensure_ascii=False), time.time()))
+        cdb.execute('insert into ai_spend (at, ip, usd, key) values (?,?,?,?)', (time.time(), ip, 0.0, key))
+    return {**doc, 'cached': False, 'usd': 0.0}
+
+
+AiOpinion.ask_local = _ask_local
+
+
 def register(app, ctx):
     """ctx: dict(db_path, QA, cards, rules, search, queue_draft). search(q,k)->qa indices; queue_draft(doc) inserts a draft row (optional).
     Adds POST /api/ai {q, cards:[no,...]} and GET /api/ai/usage (spend today)."""
@@ -164,5 +234,7 @@ def register(app, ctx):
 
     @app.get('/api/ai/usage')
     def api_ai_usage():
-        return {'ready': key_ready(), 'spent_today_usd': round(ai.spent_today(), 3), 'daily_cap_usd': DAILY_USD, 'model': MODEL}
+        b = backend()
+        return {'ready': b is not None, 'backend': b, 'spent_today_usd': round(ai.spent_today(), 3), 'daily_cap_usd': DAILY_USD,
+                'model': MODEL if b == 'api' else ('local:' + os.path.basename(os.path.normpath(LOCAL_DIR)) if b == 'local' else None)}
     return ai

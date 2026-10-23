@@ -50,6 +50,13 @@ GPU는 필요 없습니다. 검색 한 번에 CPU로 0.05초 안팎입니다.
   - 저장된 판정에는 `src: claude` 표시가 남습니다. 클로드 없는 성능을 잴 때는 이 판정들을 빼야 합니다.
 - **데이터:** 확인 판정과 이용자 제보는 `server/judge.db`(SQLite)에 쌓입니다. 백업할 때는 이 파일과 judges.json만 복사하면 됩니다. Docker에서는 `JUDGE_DATA` 경로(볼륨)에 저장됩니다.
 
+## 4-1. AI 의견 (선택)
+
+판정이 보류된 질문에서 이용자가 「AI 의견 보기」를 누르면 참고 의견을 보여 줍니다. 항상 「비공식」으로 표시되고, 의견은 심판 확인 대기열(클로드 초안)에도 들어갑니다. 백엔드는 둘 중 하나를 씁니다(`/api/ai/usage`의 `backend`).
+- **자체 모델(무료, E52):** GPU PC에서 `python train/train_gen.py`로 학습한 `train/runs/gen_<이름>/merged` 폴더를 이 PC의 `server/ai_local_model/`로 복사하면 자동으로 켜집니다. 질문 하나에 CPU로 수십 초 걸리고, 확신이 낮으면(`LOCAL_CONF`, 기본 0.9) 「판단 불가」로 답합니다.
+- **Anthropic API(유료, E51):** `server/anthropic_key.txt`에 키 한 줄을 넣으면 켜집니다. 하루 한도 `AI_DAILY_USD`(기본 3달러).
+- 둘 다 있으면 API를 씁니다. 바꾸려면 서버 환경 변수 `AI_BACKEND=local` 또는 `api`를 씁니다.
+
 ## 5. API
 
 | 경로 | 설명 |
