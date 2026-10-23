@@ -27,6 +27,21 @@ SYSTEM = """당신은 디지몬 카드게임(한국판)의 룰 판정 보조입�
 - refs는 입력에 붙은 근거 번호(C1, Q2, R3 등)만 쓰세요."""
 
 
+KEY_FILE = os.environ.get('AI_KEY_FILE', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'anthropic_key.txt'))
+
+
+def _key_from_file():
+    """Fallback for a server started at logon (its environment never sees a later `setx`): server/anthropic_key.txt (git-ignored), one line."""
+    try:
+        return open(KEY_FILE, encoding='utf-8').read().strip() or None
+    except OSError:
+        return None
+
+
+def key_ready():
+    return bool(os.environ.get('ANTHROPIC_API_KEY') or _key_from_file())
+
+
 def _bg(s):
     t = re.sub(r'\s+', '', s)
     return {t[i:i + 2] for i in range(len(t) - 1)}
@@ -55,7 +70,8 @@ class AiOpinion:
     def client(self):
         if self._client is None:
             import anthropic
-            self._client = anthropic.Anthropic()
+            key = os.environ.get('ANTHROPIC_API_KEY') or _key_from_file()
+            self._client = anthropic.Anthropic(api_key=key) if key else anthropic.Anthropic()
         return self._client
 
     # ---------- evidence ----------
@@ -141,5 +157,5 @@ def register(app, ctx):
 
     @app.get('/api/ai/usage')
     def api_ai_usage():
-        return {'spent_today_usd': round(ai.spent_today(), 3), 'daily_cap_usd': DAILY_USD, 'model': MODEL}
+        return {'ready': key_ready(), 'spent_today_usd': round(ai.spent_today(), 3), 'daily_cap_usd': DAILY_USD, 'model': MODEL}
     return ai

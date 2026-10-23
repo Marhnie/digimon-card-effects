@@ -4,7 +4,7 @@
 
 ## 준비 (사용자가 해야 할 것)
 1. `pip install anthropic`
-2. `ANTHROPIC_API_KEY` 환경 변수 설정(서버 프로세스에만; 저장소·페이지에 넣지 않음). 모델 기본 `claude-opus-5-5`, effort `medium`; 바꾸려면 `AI_MODEL=claude-sonnet-5-5`(비용 절반), `AI_EFFORT=high`.
+2. API 키 설정(저장소·페이지에 넣지 않음). 가장 쉬운 방법: 메모장으로 `servernthropic_key.txt`를 만들어 키 한 줄만 저장(.gitignore에 들어 있음, 서버 재시작 불필요 수준으로 호출 때마다 읽음 — 단 `/api/ai` 연결 뒤). 또는 서버 프로세스의 `ANTHROPIC_API_KEY` 환경 변수(로그온 때 뜬 서버는 나중에 `setx`한 값을 못 보므로 키 파일이 더 안전). `GET /api/ai/usage`의 `ready`가 키 유무를 알려 줍니다. 모델 기본 `claude-opus-5-5`, effort `medium`; 바꾸려면 `AI_MODEL=claude-sonnet-5-5`(비용 절반), `AI_EFFORT=high`.
 3. 한도: `AI_DAILY_USD`(기본 3.0달러/일), `AI_PER_IP_PER_DAY`(기본 10회). 한 번 호출은 입력 약 3천·출력 약 0.4천 토큰이라 Opus 5.5 기준 약 0.02달러(Sonnet 5.5는 약 0.01달러)이고, 3달러 한도면 하루 약 150회입니다. 같은 질문은 캐시되어 다시 과금되지 않습니다.
 
 ## server/app.py (두 군데; 허브 세션 파일이라 직접 고치지 않았습니다)
