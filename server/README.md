@@ -53,7 +53,7 @@ GPU는 필요 없습니다. 검색 한 번에 CPU로 0.05초 안팎입니다.
 ## 4-1. AI 의견 (선택)
 
 판정이 보류된 질문에서 이용자가 「AI 의견 보기」를 누르면 참고 의견을 보여 줍니다. 항상 「비공식」으로 표시되고, 의견은 심판 확인 대기열(클로드 초안)에도 들어갑니다. 백엔드는 둘 중 하나를 씁니다(`/api/ai/usage`의 `backend`).
-- **자체 모델(무료, E52):** GPU PC에서 `python train/train_gen.py`로 학습한 `train/runs/gen_<이름>/merged` 폴더를 이 PC의 `server/ai_local_model/`로 복사하면 자동으로 켜집니다. 질문 하나에 CPU로 수십 초 걸리고, 확신이 낮으면(`LOCAL_CONF`, 기본 0.9) 「판단 불가」로 답합니다.
+- **자체 모델(무료, E52):** GPU PC에서 `python train/train_gen.py`로 학습하면 LoRA 어댑터 압축 파일(`train/runs/gen_<이름>/gen_<이름>_adapter.zip`, 수십 MB)과 `.sha256`이 나옵니다. 이를 GitHub 릴리스에 올리고, 이 PC에서 `python server/fetch_ai_model.py <릴리스 파일 주소> <sha256>`를 실행한 뒤 서버를 다시 시작하면 켜집니다. 기본 모델(Qwen, 약 3GB)은 첫 호출 때 Hugging Face에서 한 번 받아 캐시합니다. 질문 하나에 CPU로 수십 초 걸리고, 확신이 낮으면(`LOCAL_CONF`, 기본 0.9) 「판단 불가」로 답합니다.
 - **Anthropic API(유료, E51):** `server/anthropic_key.txt`에 키 한 줄을 넣으면 켜집니다. 하루 한도 `AI_DAILY_USD`(기본 3달러).
 - 둘 다 있으면 API를 씁니다. 바꾸려면 서버 환경 변수 `AI_BACKEND=local` 또는 `api`를 씁니다.
 

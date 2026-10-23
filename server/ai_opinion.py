@@ -44,7 +44,7 @@ def key_ready():
 
 # E52: our own fine-tuned model (train/train_gen.py → merged weights) as a free backend; used when there is no API key
 LOCAL_DIR = os.environ.get('AI_LOCAL_MODEL', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ai_local_model'))
-local_ready = lambda: os.path.exists(os.path.join(LOCAL_DIR, 'config.json'))
+local_ready = lambda: any(os.path.exists(os.path.join(LOCAL_DIR, f)) for f in ('config.json', 'adapter_config.json'))
 
 
 def backend():
@@ -64,7 +64,15 @@ class LocalGen:
             from transformers import AutoTokenizer, AutoModelForCausalLM
             self.torch = torch
             self.tok = AutoTokenizer.from_pretrained(LOCAL_DIR)
-            self.model = AutoModelForCausalLM.from_pretrained(LOCAL_DIR, torch_dtype=torch.bfloat16).eval()
+            if os.path.exists(os.path.join(LOCAL_DIR, 'adapter_config.json')):
+                # LoRA adapter (what train_gen.py ships): the public base model is fetched from Hugging Face once (cached), then merged
+                from peft import PeftModel
+                info = os.path.join(LOCAL_DIR, 'gen_info.json')
+                base_id = json.load(open(info, encoding='utf-8'))['base_model'] if os.path.exists(info) else                     json.load(open(os.path.join(LOCAL_DIR, 'adapter_config.json'), encoding='utf-8'))['base_model_name_or_path']
+                base = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16)
+                self.model = PeftModel.from_pretrained(base, LOCAL_DIR).merge_and_unload().eval()
+            else:
+                self.model = AutoModelForCausalLM.from_pretrained(LOCAL_DIR, torch_dtype=torch.bfloat16).eval()
             t = self.tok
             self.yes = list({t('네', add_special_tokens=False)['input_ids'][0], t('예', add_special_tokens=False)['input_ids'][0]})
             self.no = list({t('아니요', add_special_tokens=False)['input_ids'][0], t('아니', add_special_tokens=False)['input_ids'][0]})

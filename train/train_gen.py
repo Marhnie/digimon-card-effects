@@ -9,7 +9,8 @@ Report (train/runs/gen_<name>/metrics.json):
   * yes/no accuracy on the newest products, read from the generated first word, and coverage at 95 / 97 / 98 %
     using the first-token probability P(네) vs P(아니요) as confidence (thresholds chosen on valid, applied to test);
   * a sample of generated explanations (test_samples.json) to read by eye.
-Output model: train/runs/gen_<name>/merged (full weights, fp16) — copy it to the server PC (see server/README.md, 「자체 AI 의견」).
+Output: train/runs/gen_<name>/gen_<name>_adapter.zip (LoRA adapter, tens of MB) + .sha256 — publish it as a GitHub release asset;
+  the server PC installs it with `python server/fetch_ai_model.py <url> <sha256>` (base model comes from Hugging Face).
 
 GPU PC (GTX 1660 SUPER 6GB):
   pip install -r train/requirements.txt peft bitsandbytes accelerate
@@ -36,6 +37,7 @@ ap.add_argument('--rulings', action='store_true', help='add confirmed rulings fr
 ap.add_argument('--eval_n', type=int, default=0, help='limit test items for a quick run (0 = all)')
 ap.add_argument('--name', default=None)
 ap.add_argument('--tiny', action='store_true')
+ap.add_argument('--save_merged', action='store_true', help='also write full merged fp16 weights (several GB)')
 a = ap.parse_args()
 if a.tiny:
     a.model, a.epochs, a.max_len, a.k, a.no_4bit, a.eval_n, a.grad_accum = 'hf-internal-testing/tiny-random-LlamaForCausalLM', 0.02, 384, 2, True, 6, 1
@@ -180,14 +182,22 @@ for x in random.sample(test, min(12, len(test))):
 json.dump(res, open(os.path.join(RUN, 'metrics.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 json.dump(samples, open(os.path.join(RUN, 'test_samples.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
-# ---------- save: merged fp16 weights for the CPU server ----------
-if not a.tiny:
-    merged = model.merge_and_unload() if not kw else None
-    if merged is None:   # 4-bit: reload the base in fp16 and merge the adapter onto it
-        model.save_pretrained(os.path.join(RUN, 'adapter'))
-        from peft import PeftModel
-        base = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.float16)
-        merged = PeftModel.from_pretrained(base, os.path.join(RUN, 'adapter')).merge_and_unload()
+# ---------- save: the LoRA adapter (tens of MB) — the server downloads the public base model itself and merges (E52) ----------
+import hashlib, shutil, zipfile
+AD = os.path.join(RUN, 'adapter')
+model.save_pretrained(AD); tok.save_pretrained(AD)
+json.dump({'base_model': a.model, 'name': NAME, 'k': a.k, 'max_len': a.max_len, 'metrics': res, 'trained_at': time.strftime('%Y-%m-%d %H:%M')},
+          open(os.path.join(AD, 'gen_info.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+ZIP = os.path.join(RUN, f'gen_{NAME}_adapter.zip')
+with zipfile.ZipFile(ZIP, 'w', zipfile.ZIP_DEFLATED) as z:
+    for f in os.listdir(AD): z.write(os.path.join(AD, f), f)
+h = hashlib.sha256(open(ZIP, 'rb').read()).hexdigest().upper()
+open(ZIP + '.sha256', 'w').write(h + chr(10))
+print('adapter zip', ZIP, f'{os.path.getsize(ZIP) / 1e6:.1f} MB', 'sha256', h)
+if a.save_merged and not a.tiny:   # optional: full fp16 weights (GBs) for a machine without internet
+    from peft import PeftModel
+    base = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.float16)
+    merged = PeftModel.from_pretrained(base, AD).merge_and_unload()
     merged.save_pretrained(os.path.join(RUN, 'merged'), safe_serialization=True); tok.save_pretrained(os.path.join(RUN, 'merged'))
     print('saved', os.path.join(RUN, 'merged'))
 print('done')

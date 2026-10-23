@@ -64,3 +64,5 @@ server/drafts_parts/
 # E51: Claude API key for the AI opinion (never commit)
 server/anthropic_key.txt
 server/ai_local_model/
+server/ai_local_model.prev/
+train/runs/gen_tiny/
