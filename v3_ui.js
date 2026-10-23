@@ -302,9 +302,9 @@ window.__rulings=CR;   // test hook (tests/tcr.js)
 const crKey=()=>extras().map(x=>x.no).sort().join(',');
 // same main card + same other cards; question worded alike (2-gram Jaccard >=0.6, or >=0.45 on the same effect)
 function crMatch(){const c=ST.cards[0];if(!c||!ST.q.trim()||!CR.list.length)return null;const u=mainUnit();const myneg=ST.sl.has(NEGI)?1:0;const key=crKey();
-  let best=null;for(const r of CR.list){if(r.card!==c.no||(r.others||'')!==key||(r.ans!==0&&r.ans!==1))continue;
+  let best=null;for(const r of CR.list){const ex=r.ans==null;if(r.card!==c.no||(r.others||'')!==key||(!ex&&r.ans!==0&&r.ans!==1)||(ex&&!r.summary))continue;
     const s=simQ(ST.q,r.q||'');const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
-    if(!best||s>best.s)best={r,s,ans:r.ans^((r.neg?1:0)^myneg)}}
+    if(!best||s>best.s)best={r,s,ans:ex?null:r.ans^((r.neg?1:0)^myneg),ex}}
   return best}
 function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null||R.xref)return null;
   if(A&&A.r){const v=A.r.verdict;return {ans:v==='네'?1:v==='아니요'?0:null,src:'claude',summary:String(A.r.summary||'')}}
@@ -348,8 +348,10 @@ function judgeBox(){if(!SRV||document.getElementById('jbox'))return;const el=doc
 // E41: Claude drafts for held questions (made in batches by the operator's scheduled Claude session) — a judge saves them as rulings or drops them
 function loadDrafts(){const box=document.getElementById('drafts');if(!box||!jkey())return;
   api('drafts').then(L=>{box.innerHTML=!L.length?'<div class="sub">검토할 클로드 초안이 없습니다.</div>':`<div class="sub"><b>클로드 초안 ${L.length}건</b> — 판정 보류된 질문에 운영자의 클로드가 단 답입니다. 맞으면 저장하세요(확인 판정으로 쌓여, 같은 질문에는 다음부터 바로 답합니다).</div>`+
-    L.map(d=>`<div class="crbar" data-drbox="${d.id}"><div><b>${esc(d.card)}${d.others?' + '+esc(d.others):''}</b> ${esc(d.q)}</div><div>클로드: <b>${d.ans===1?'네':d.ans===0?'아니요':'(네/아니요 아님)'}</b> — ${esc(d.summary||'')}</div>${d.note?`<div class="sub">근거: ${esc(d.note)}</div>`:''}<div class="row"><button class="btn2 pri" type="button" data-dr="${d.id}" data-act="1">네로 저장</button><button class="btn2 pri" type="button" data-dr="${d.id}" data-act="0">아니요로 저장</button><button class="btn2" type="button" data-dr="${d.id}" data-act="drop">버리기</button></div></div>`).join('')}).catch(e=>{box.innerHTML='<div class="sub">'+(e.code==='permission_denied'?'심판 키가 맞지 않습니다.':'초안을 불러오지 못했습니다.')+'</div>'})}
-function draftAct(id,act){const p=act==='drop'?api('drafts/'+id+'/drop',{method:'POST'}):api('drafts/'+id+'/approve',{method:'POST',body:JSON.stringify({ans:+act})});
+    L.map(d=>`<div class="crbar" data-drbox="${d.id}"><div><b>${esc(d.card)}${d.others?' + '+esc(d.others):''}</b> ${esc(d.q)}</div><div>클로드: <b>${d.ans===1?'네':d.ans===0?'아니요':'설명형(네/아니요 아님)'}</b></div><textarea class="field" data-drtext="${d.id}" rows="4" aria-label="판정 설명" style="width:100%">${esc(d.summary||'')}</textarea>${d.note?`<div class="sub">근거: ${esc(d.note)}</div>`:''}<div class="sub">설명을 고친 뒤 저장할 수 있습니다. 네/아니요로 답할 질문이 아니면 「설명으로 저장」을 쓰세요.</div><div class="row">${d.ans==null?`<button class="btn2 pri" type="button" data-dr="${d.id}" data-act="ex">설명으로 저장</button>`:''}<button class="btn2 ${d.ans===1?'pri':''}" type="button" data-dr="${d.id}" data-act="1">네로 저장</button><button class="btn2 ${d.ans===0?'pri':''}" type="button" data-dr="${d.id}" data-act="0">아니요로 저장</button>${d.ans!=null?`<button class="btn2" type="button" data-dr="${d.id}" data-act="ex">설명으로 저장</button>`:''}<button class="btn2" type="button" data-dr="${d.id}" data-act="drop">버리기</button></div></div>`).join('')}).catch(e=>{box.innerHTML='<div class="sub">'+(e.code==='permission_denied'?'심판 키가 맞지 않습니다.':'초안을 불러오지 못했습니다.')+'</div>'})}
+function draftAct(id,act){const ta=document.querySelector(`[data-drtext="${id}"]`);const summary=ta?ta.value.trim():undefined;
+  if(act==='ex'&&!summary){alert('설명을 적어 주세요.');return}
+  const p=act==='drop'?api('drafts/'+id+'/drop',{method:'POST'}):api('drafts/'+id+'/approve',{method:'POST',body:JSON.stringify({ans:act==='ex'?null:+act,summary})});
   p.then(()=>{const b=document.querySelector(`[data-drbox="${id}"]`);if(b)b.remove()}).catch(()=>alert('저장하지 못했습니다.'))}
 if(SRV)setTimeout(judgeBox,0);
 // artifact build: the claude.ai sandbox cannot call the server, so link to it (E35) — the GitHub Pages page forwards to its current address
@@ -475,7 +477,8 @@ function structExplain(){const u=mainUnit();if(!u||!/어떤 효과|무슨 효과
   return {parts,steps:s[4].map(p=>`${p[4]?'(임의) ':''}${stepTxt(p)}`),text:u.text}}
 
 /* ---------- result ---------- */
-const yn=a=>a?'네':'아니요';
+const yn=a=>a==null?'설명':a?'네':'아니요';
+const M_EX=m=>!!(m&&m.ex);
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
 function judge(){
@@ -505,6 +508,8 @@ function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
     h=`<div class="verdict v-sure"><span class="badge">공식 답변 · 같은 질문 · ${esc(q.card)} ${esc(cname(q.card))}</span><div class="why" style="font-size:16px;color:var(--ink)">${esc(q.a)}</div><div class="sub">거의 같은 질문(문구 유사도 ${Math.round(Math.min(1,X.s)*100)}%)에 대한 공식 답변입니다: ${esc(q.q)}</div></div>`;return h}
   if(R&&R.sx&&!(A&&A.r)&&!R.cr){const S=R.sx;
     h=`<div class="verdict v-ref"><span class="badge">효과 구조 설명 · 카드 텍스트에서 자동 정리</span><div class="why">${S.parts.map(esc).join('<br>')}${S.steps.length?'<br>처리 순서:<ol style="margin:4px 0 0 18px;padding:0">'+S.steps.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>':''}</div><div class="sub">카드 텍스트를 종합 룰 15장 구조로 나눈 것입니다(판정이 아니라 정리). 원문: ${esc(S.text)}</div></div>`}
+  if(R&&R.cr&&M_EX(R.cr)&&!(A&&A.r)){const M=R.cr,r=M.r;const d=String(r.at||'').slice(0,10);
+    h=`<div class="verdict v-sure"><span class="badge">확인된 설명 · 심판 확인 · 질문 유사도 ${Math.round(M.s*100)}%</span><div class="why" style="font-size:1.02em">${esc(r.summary)}</div><div class="sub">같은 카드에 대해 사람이 확인한 설명입니다${r.src&&SRCN[r.src]?` (처음 초안: ${esc(SRCN[r.src])})`:''}. 확인한 질문: ${esc(r.q||'')}${r.note?`<br>근거: ${esc(r.note)}`:''}${d?` · ${esc(d)}`:''}</div></div>`;return h}
   if(R&&R.cr&&!(A&&A.r)){const M=R.cr,r=M.r;const d=String(r.at||'').slice(0,10);
     h=`<div class="verdict v-sure"><span class="badge">확인된 판정 · Claude 없이 · 질문 유사도 ${Math.round(M.s*100)}%</span><div class="ans">${yn(M.ans)}</div><div class="why">같은 카드에 대해 사람이 확인한 판정입니다${r.src&&SRCN[r.src]?` (처음 판정: ${esc(SRCN[r.src])}${r.agreed===false?' → 확인 때 바로잡음':''})`:''}.</div><div class="sub">확인한 질문: ${esc(r.q||'')}${r.note?`<br>메모: ${esc(r.note)}`:''}${d?` · ${esc(d)}`:''}${(r.neg?1:0)!==(ST.sl.has(NEGI)?1:0)?' · 반대로 물은 질문이라 뒤집음':''}</div><div class="row"><button class="btn2" type="button" data-askai="1">Claude에게도 묻기</button></div></div>`;return h}
   if(R&&R.iv&&!(A&&A.r)){const V=R.iv;

@@ -118,8 +118,10 @@ async def search(req: Request):
 def clean_doc(d):
     keep = ('card', 'others', 'unit', 'q', 'neg', 'it', 'slots', 'ans', 'src', 'agreed', 'summary', 'note', 'reporter', 'reported_at')
     d = {k: d.get(k) for k in keep if k in d}
-    if not isinstance(d.get('card'), str) or not isinstance(d.get('q'), str) or d.get('ans') not in (0, 1):
+    # E48: ans 1/0 = yes/no ruling; ans None = explanation ruling (the confirmed answer is the summary text itself)
+    if not isinstance(d.get('card'), str) or not isinstance(d.get('q'), str) or d.get('ans') not in (0, 1, None)             or (d.get('ans') is None and not str(d.get('summary') or '').strip()):
         raise HTTPException(400, 'bad ruling')
+    d.setdefault('ans', None)
     for k in ('card', 'others', 'q', 'summary', 'note', 'reporter', 'reported_at', 'src'):
         if k in d and d[k] is not None: d[k] = str(d[k])[:1000]
     return d
@@ -192,9 +194,11 @@ async def draft_approve(did: int, req: Request):
         r = c.execute("select doc from drafts where id=? and status='open'", (did,)).fetchone()
         if not r: raise HTTPException(404, 'no such open draft')
         d = json.loads(r['doc'])
+        orig = d.get('ans')
         for k in ('ans', 'summary', 'note'):
-            if k in b: d[k] = b[k]
-        doc = clean_doc({**d, 'src': 'claude', 'agreed': True})
+            if k in b and b[k] is not None or k == 'ans' and 'ans' in b: d[k] = b[k]
+        # agreed: the judge kept Claude's answer (same yes/no, or both explanation) — for measuring draft accuracy
+        doc = clean_doc({**d, 'src': 'claude', 'agreed': d.get('ans') == orig})
         doc.update(by=j, at=time.strftime('%Y-%m-%dT%H:%M:%S'), drafted_at=d.get('drafted_at', ''), origin='draft')
         rid = c.execute('insert into rulings (doc, at) values (?, ?)', (json.dumps(doc, ensure_ascii=False), time.time())).lastrowid
         c.execute("update drafts set status='approved' where id=?", (did,))
