@@ -1,0 +1,24 @@
+{
+ "model": "ai_local_model",
+ "n_test": 597,
+ "acc_all": 0.7722,
+ "majority_baseline": 0.5025,
+ "at": {
+  "0.9": {
+   "thr": 0.9241,
+   "answered": 179,
+   "acc": 0.933
+  },
+  "0.95": {
+   "thr": 0.974,
+   "answered": 27,
+   "acc": 0.9259
+  },
+  "0.97": {
+   "thr": 1.01,
+   "answered": 0,
+   "acc": null
+  }
+ },
+ "sec": 17429
+}
