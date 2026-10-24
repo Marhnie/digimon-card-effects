@@ -2,7 +2,11 @@
 const {JSDOM}=require('jsdom');const fs=require('fs');
 const html=fs.readFileSync('card-effect-dist.html','utf8');const T=JSON.parse(fs.readFileSync('test_data4.json','utf8'));
 const NEW=new Set(['BT22','BT23','BT24','EX9','EX10','ST21','ST22']);const prod=c=>((c||'').match(/^([A-Z]+\d*)-/)||[])[1];
-const items=T.qa.map((r,i)=>({i,card:r[0],q:r[1],unit:r[3],y:r[8]})).filter(x=>x.y>=0&&NEW.has(prod(x.card))&&x.unit!=null&&x.unit>=0);
+let items=T.qa.map((r,i)=>({i,card:r[0],q:r[1],unit:r[3],y:r[8]})).filter(x=>x.y>=0&&NEW.has(prod(x.card))&&x.unit!=null&&x.unit>=0);
+// E53: TDEC_SET=official|colloquial — the colloquial test set (same newest-product questions), asked in official or colloquial wording
+if(process.env.TDEC_SET){const CS=JSON.parse(fs.readFileSync('paper/results/colloquial_test.json','utf8')).items;
+  const TR=process.env.TDEC_SET.endsWith('.json')?Object.fromEntries(JSON.parse(fs.readFileSync(process.env.TDEC_SET,'utf8')).map(o=>[o.id,o.translated])):null;  // translator output
+  items=CS.map(x=>{const r=T.qa[x.qid];return {i:x.qid,card:x.card,q:TR?(TR[x.qid]||x.colloquial):process.env.TDEC_SET==='official'?x.official:x.colloquial,unit:r[3],y:r[8]}}).filter(x=>x.y>=0&&x.unit!=null&&x.unit>=0)}
 const N=+process.argv[2]||items.length;let calls=0;
 const dom=new JSDOM('<!doctype html><html><body>'+html+'</body></html>',{runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=function(){};w.matchMedia=()=>({matches:false});w.__exProducts=NEW;const f=async()=>{};f.json=async()=>{calls++;return {}};w.claude={use:async n=>n==='sample'?f:null}}});
 const w=dom.window,d=w.document,$=i=>d.getElementById(i);const type=(el,v)=>{el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}))};

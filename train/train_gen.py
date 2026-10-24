@@ -36,6 +36,7 @@ ap.add_argument('--no_4bit', action='store_true', help='plain LoRA in fp16/fp32 
 ap.add_argument('--rulings', action='store_true', help='add confirmed rulings from server/judge.db to train')
 ap.add_argument('--eval_n', type=int, default=0, help='limit test items for a quick run (0 = all)')
 ap.add_argument('--name', default=None)
+ap.add_argument('--task', default='judge', choices=['judge', 'translate'], help='translate (E53): community wording -> official Q&A wording')
 ap.add_argument('--tiny', action='store_true')
 ap.add_argument('--save_merged', action='store_true', help='also write full merged fp16 weights (several GB)')
 a = ap.parse_args()
@@ -43,11 +44,11 @@ if a.tiny:
     a.model, a.epochs, a.max_len, a.k, a.no_4bit, a.eval_n, a.grad_accum = 'hf-internal-testing/tiny-random-LlamaForCausalLM', 0.02, 384, 2, True, 6, 1
 random.seed(13); np.random.seed(13); torch.manual_seed(13)
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
-NAME = a.name or ('tiny' if a.tiny else re.sub(r'[^A-Za-z0-9]+', '_', a.model.split('/')[-1]).lower())
+NAME = a.name or (('tiny' if a.tiny else re.sub(r'[^A-Za-z0-9]+', '_', a.model.split('/')[-1]).lower()) + ('_tr' if a.task == 'translate' else ''))
 RUN = os.path.join(HERE, 'runs', 'gen_' + NAME); os.makedirs(RUN, exist_ok=True)
 
 import sys; sys.path.insert(0, ROOT)
-from gen_prompt import SYSTEM, clean, prompt as _prompt
+from gen_prompt import SYSTEM, clean, prompt as _prompt, TSYSTEM, tprompt
 T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8')); QA = T['qa']
 prompt = lambda x: _prompt(x, QA, a.k)
 
@@ -62,7 +63,10 @@ def load(split):
 
 
 train, valid, test = load('train'), load('valid'), [x for x in load('test') if x['kind'] == 'yesno']
-if a.rulings and os.path.exists(os.path.join(ROOT, 'server', 'judge.db')):
+if a.task == 'translate':
+    lt = lambda sp: [json.loads(l) for l in open(os.path.join(HERE, 'data', f'translate_{sp}.jsonl'), encoding='utf-8')]
+    train, valid, test = lt('train'), lt('valid'), lt('test')
+if a.task == 'judge' and a.rulings and os.path.exists(os.path.join(ROOT, 'server', 'judge.db')):
     c = sqlite3.connect(os.path.join(ROOT, 'server', 'judge.db'))
     for (d,) in c.execute('select doc from rulings'):
         d = json.loads(d)
@@ -70,7 +74,7 @@ if a.rulings and os.path.exists(os.path.join(ROOT, 'server', 'judge.db')):
         head = '네, ' if d.get('ans') == 1 else '아니요, ' if d.get('ans') == 0 else ''
         train.append({'card': d.get('card'), 'card_name': '', 'question': d['q'], 'effect': '', 'card_text': '',
                       'neighbours': [], 'answer': head + d['summary'], 'kind': 'ruling'})
-if a.tiny: train, valid = train[:24], [x for x in valid if x['kind'] == 'yesno'][:6]
+if a.tiny: train, valid = train[:24], ([x for x in valid if x.get('kind') == 'yesno'] if a.task == 'judge' else valid)[:6]
 print('train', len(train), 'valid', len(valid), 'test (yes/no)', len(test), 'device', dev)
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -81,9 +85,14 @@ if not getattr(tok, 'chat_template', None):   # tiny test model has none
 
 
 def chat(x, with_answer):
-    msgs = [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt(x)}]
+    if a.task == 'translate':
+        msgs = [{'role': 'system', 'content': TSYSTEM}, {'role': 'user', 'content': tprompt(x)}]
+        tgt = x['target']
+    else:
+        msgs = [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt(x)}]
+        tgt = clean(x['answer'])[:600]
     p = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
-    return p, (clean(x['answer'])[:600] + tok.eos_token if with_answer else '')
+    return p, (tgt + tok.eos_token if with_answer else '')
 
 
 def encode(x):
@@ -165,28 +174,47 @@ def coverage(rows, thr):
     return {'thr': round(thr, 4), 'answered': len(s), 'share': round(len(s) / max(1, len(rows)), 4), 'acc': round(np.mean([r['ok'] for r in s]), 4) if s else None}
 
 
-vrows = scored([x for x in valid if x['kind'] == 'yesno'])
-trows = scored(test[:a.eval_n] if a.eval_n else test)
-res = {'model': a.model, 'name': NAME, 'train': len(train), 'test': len(trows), 'acc_all': round(np.mean([r['ok'] for r in trows]), 4), 'at': {}}
-for target in (0.95, 0.97, 0.98):
-    cand = sorted({r['conf'] for r in vrows}, reverse=True); thr = 1.01
-    for t in cand:
-        s = [r for r in vrows if r['conf'] >= t]
-        if len(s) >= 10 and np.mean([r['ok'] for r in s]) >= target: thr = t
-    res['at'][str(target)] = coverage(trows, thr)       # threshold from valid, measured on test
-print(json.dumps(res, ensure_ascii=False, indent=1))
-samples = []
-for x in random.sample(test, min(12, len(test))):
-    p, out = judge(x, gen=True)
-    samples.append({'card': x['card'], 'q': x['question'], 'official': clean(x['answer'])[:300], 'generated': out, 'p_yes': round(p, 3)})
-json.dump(res, open(os.path.join(RUN, 'metrics.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-json.dump(samples, open(os.path.join(RUN, 'test_samples.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+if a.task == 'translate':
+    bgs = lambda t: (lambda u: {u[i:i + 2] for i in range(len(u) - 1)})(re.sub(r'\s+', '', t))
+    jac = lambda x, y: len(bgs(x) & bgs(y)) / (len(bgs(x) | bgs(y)) or 1)
+    outs = []
+    for x in (test[:a.eval_n] if a.eval_n else test):
+        p, _ = chat(x, False)
+        ids = tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -a.max_len:].to(dev)
+        with torch.no_grad():
+            g = model.generate(input_ids=ids, max_new_tokens=160, do_sample=False, pad_token_id=tok.pad_token_id)
+        t = tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True).strip().split(chr(10))[0]
+        outs.append({'id': x['id'], 'card': x['card'], 'source': x['source'], 'official': x['target'], 'translated': t,
+                     'sim_src': round(jac(x['source'], x['target']), 4), 'sim_tr': round(jac(t, x['target']), 4)})
+    res = {'model': a.model, 'name': NAME, 'task': 'translate', 'train': len(train), 'test': len(outs),
+           'bigram_sim_source': round(float(np.mean([o['sim_src'] for o in outs])), 4), 'bigram_sim_translated': round(float(np.mean([o['sim_tr'] for o in outs])), 4)}
+    print(json.dumps(res, ensure_ascii=False, indent=1))
+    json.dump(outs, open(os.path.join(RUN, 'test_translations.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    vrows = None
+else:
+    vrows = scored([x for x in valid if x['kind'] == 'yesno'])
+trows = scored(test[:a.eval_n] if a.eval_n else test) if vrows is not None else None
+if vrows is not None: res = {'model': a.model, 'name': NAME, 'train': len(train), 'test': len(trows), 'acc_all': round(np.mean([r['ok'] for r in trows]), 4), 'at': {}}
+if vrows is not None:
+    for target in (0.95, 0.97, 0.98):
+        cand = sorted({r['conf'] for r in vrows}, reverse=True); thr = 1.01
+        for t in cand:
+            s = [r for r in vrows if r['conf'] >= t]
+            if len(s) >= 10 and np.mean([r['ok'] for r in s]) >= target: thr = t
+        res['at'][str(target)] = coverage(trows, thr)       # threshold from valid, measured on test
+    print(json.dumps(res, ensure_ascii=False, indent=1))
+    samples = []
+    for x in random.sample(test, min(12, len(test))):
+        p, out = judge(x, gen=True)
+        samples.append({'card': x['card'], 'q': x['question'], 'official': clean(x['answer'])[:300], 'generated': out, 'p_yes': round(p, 3)})
+    json.dump(res, open(os.path.join(RUN, 'metrics.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    json.dump(samples, open(os.path.join(RUN, 'test_samples.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
 # ---------- save: the LoRA adapter (tens of MB) — the server downloads the public base model itself and merges (E52) ----------
 import hashlib, shutil, zipfile
 AD = os.path.join(RUN, 'adapter')
 model.save_pretrained(AD); tok.save_pretrained(AD)
-json.dump({'base_model': a.model, 'name': NAME, 'k': a.k, 'max_len': a.max_len, 'metrics': res, 'trained_at': time.strftime('%Y-%m-%d %H:%M')},
+json.dump({'base_model': a.model, 'name': NAME, 'task': a.task, 'k': a.k, 'max_len': a.max_len, 'metrics': res, 'trained_at': time.strftime('%Y-%m-%d %H:%M')},
           open(os.path.join(AD, 'gen_info.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 ZIP = os.path.join(RUN, f'gen_{NAME}_adapter.zip')
 with zipfile.ZipFile(ZIP, 'w', zipfile.ZIP_DEFLATED) as z:
