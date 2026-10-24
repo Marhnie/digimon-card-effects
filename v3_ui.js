@@ -303,7 +303,7 @@ const crKey=()=>extras().map(x=>x.no).sort().join(',');
 // same main card + same other cards; question worded alike (2-gram Jaccard >=0.6, or >=0.45 on the same effect)
 function crMatch(){const c=ST.cards[0];if(!c||!ST.q.trim()||!CR.list.length)return null;const u=mainUnit();const myneg=ST.sl.has(NEGI)?1:0;const key=crKey();
   let best=null;for(const r of CR.list){const ex=r.ans==null;if(r.card!==c.no||(r.others||'')!==key||(!ex&&r.ans!==0&&r.ans!==1)||(ex&&!r.summary))continue;
-    const s=simQ(ST.q,r.q||'');const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
+    const s=Math.max(simQ(ST.q,r.q||''),ST.qraw?simQ(ST.qraw,r.q||''):0);const need=(u&&r.unit===u.i)?0.45:0.6;if(s<need)continue;
     if(!best||s>best.s)best={r,s,ans:ex?null:r.ans^((r.neg?1:0)^myneg),ex}}
   return best}
 function crCandidate(){const R=ST.res,A=ST.ai;if(!R||ST.pickQ!=null||R.xref)return null;
@@ -330,7 +330,7 @@ function crPanel(){const c=crCandidate();if(!c||!ST.cards[0])return '';
 // viewers without write access: build a report code (JD1:base64 JSON) to send to an operator, who imports it
 const b64e=s=>{const b=new TextEncoder().encode(s);let x='';for(let i=0;i<b.length;i+=8192)x+=String.fromCharCode.apply(null,b.subarray(i,i+8192));return btoa(x)};
 const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s),ch=>ch.charCodeAt(0)));
-function crDoc(ans,c,note){const u=mainUnit();return {card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
+function crDoc(ans,c,note){const u=mainUnit();return {card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:(ST.qraw||ST.q).slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
   ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:(c.summary||'').slice(0,500),note:(note||'').slice(0,300),by:CR.me||'',at:new Date().toISOString()}}
 function reportPanel(c){
   if(CR.code&&SRV)return `<div class="crbar ok"><b>${esc(CR.msg||'보냈습니다.')}</b></div>`;
@@ -390,7 +390,7 @@ function parseCodes(txt){const out=[],bad=[];for(const line of txt.split(/\s+/).
 async function crSave(ans){const c=crCandidate();const u=mainUnit();if(!CR.db||!c||!ST.cards[0]||CR.saving)return;
   const note=(document.getElementById('crnote')||{}).value||'';
   CR.saving=true;CR.msg='';renderResult();
-  const doc={card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:ST.q.slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
+  const doc={card:ST.cards[0].no,others:crKey(),unit:u?u.i:-1,q:(ST.qraw||ST.q).slice(0,1000),neg:ST.sl.has(NEGI)?1:0,it:ST.it,slots:[...ST.sl].sort((a,b)=>a-b),
     ans,src:c.src,agreed:c.ans==null?null:(c.ans===ans),summary:c.summary.slice(0,500),note:note.slice(0,300),by:CR.me||'',at:new Date().toISOString()};
   try{await CR.db.collection('rulings').add(doc);CR.done=true}
   catch(e){if(e&&e.code==='permission_denied'){CR.canWrite=false;CR.msg='저장 권한이 없어 운영자에게 보낼 코드로 바꿨습니다.'}else CR.msg='저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'}
@@ -490,18 +490,34 @@ const yn=a=>a==null?'설명':a?'네':'아니요';
 const M_EX=m=>!!(m&&m.ex);
 const itemQA=(q,extra)=>`<div class="item" id="it-Q${q.i}"><div class="src"><span class="cno">${esc(q.card)}</span><span>${esc(cname(q.card))}</span>${extra||''}</div><div class="q"><b>Q</b><span>${esc(q.q)}</span></div><div class="a"><b>A</b><span>${esc(q.a)}</span></div></div>`;
 const itemRule=n=>`<div class="item" id="it-R${esc(n)}"><div class="src"><span class="cno">종합 룰 ${esc(n)}</span></div><div class="tx">${esc(D.rules[n]||'')}${(()=>{const kids=RULE_KEYS.filter(k=>k.startsWith(n+'-')&&k.split('-').length===n.split('-').length+1).slice(0,4);return (D.rules[n]||'').length<40&&kids.length?'\n'+kids.map(k=>k+' '+(D.rules[k].length>120?D.rules[k].slice(0,120)+'…':D.rules[k])).join('\n'):''})()}</div></div>`;
+// E53: the engine is accurate on official Q&A wording (0.8% -> 7.5%+ decided on colloquial questions after this step):
+// nicknames -> official names, colloquial terms -> rulebook terms (qnorm rules), the selected card's name -> 「이 카드」
+const QN=(D.qnorm||[]).map(([p,r])=>{try{return [new RegExp(p,'g'),r]}catch(e){return null}}).filter(Boolean);
+const PART={'이':'가','가':'가','은':'는','는':'는','을':'를','를':'를','의':'의','로':'로','으로':'로','에':'에','도':'도'};
+function normQ(q){let s=dealias(q);for(const [re,r] of QN)s=s.replace(re,r);
+  const c=ST.cards[0];if(c&&!/이 카드/.test(s)){const n=cname(c.no);const al=(D.alias||[]).filter(x=>!x[3]&&x[1].endsWith(n)).map(x=>x[1]);
+    for(const k of [n,...al].filter(Boolean).sort((a,b)=>b.length-a.length)){const i=s.indexOf(k);if(i<0)continue;const m=s.slice(i+k.length).match(/^(으로|이|가|은|는|을|를|의|로|에|도)?\s*/);
+      s=s.slice(0,i)+'이 카드'+(m&&m[1]?PART[m[1]]:'')+' '+s.slice(i+k.length+(m?m[0].length:0));break}}
+  return s.replace(/\s+/g,' ').trim()}
+function computeRes(){
+  CR.done=false;CR.msg='';CR.code='';ST.aiop=null;ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.res.sem=semDecide();ST.ai=null;
+}
 function judge(){
   if(!mainUnit()||!ST.q.trim())return;
-  CR.done=false;CR.msg='';CR.code='';ST.aiop=null;ST.xref=null;ST.sx=null;if(ST.pickQ!=null&&QA[ST.pickQ]&&QA[ST.pickQ].q!==ST.q)ST.pickQ=null;ST.cards=ST.cards.filter(c=>!c.auto);const auto=qCards();auto.forEach(no=>ST.cards.push({no,unit:-1,auto:true}));if(auto.length)renderCards();ST.res=precedents();ST.res.auto=auto;ST.res.cref=comboRef();ST.res.xref=explainRef();ST.res.sx=ST.res.xref?null:structExplain();ST.res.cr=ST.res.level==='sure'?null:crMatch();ST.res.issues=detectIssues();ST.res.iv=ST.res.level==='sure'?null:issueVerdict(ST.res.issues[0]);ST.res.similar=similarQA(30);ST.res.est=similarEstimate(ST.res.similar);ST.res.eng=(ST.res.level==='sure'||ST.res.iv||extras().length)?null:engineLite(ST.res.similar);ST.res.groups=issueGroups(ST.res.similar);ST.res.gv=groupVerdict(ST.res.groups);ST.res.sem=semDecide();ST.ai=null;
+  ST.qraw=$('askq')?$('askq').value:ST.q;const raw=ST.qraw.trim(),norm=ST.pickQ==null?normQ(ST.qraw):ST.q;
+  // E53: judge the normalized wording first; if that decides nothing, try the user's own wording (official-style text can lose a match when normalized)
+  const run=q=>{if(q!==ST.q){ST.q=q;syncMeta()}computeRes()};run(norm);
+  if(ST.pickQ==null&&norm!==raw&&!decisive()){run(raw);if(!decisive())run(norm)}
   ST.tab=ST.res.iv?'issue':ST.res.list.length?'prec':(ST.res.similar.length?'sim':(ST.res.combo.length?'combo':'own'));
   renderResult();
   if(SRV){const D_=window.__decTest?window.__decTest():null;const pq=ST.pickQ!=null?QA[ST.pickQ]:null;  // what was actually shown: decision path + answer (E36 fix: precedent items are {q:QA,y})
-    saveVerdict({q:ST.q,cards:ST.cards.map(c=>c.no),level:D_&&D_.dec?(D_.by||'decided'):(DIST?'pending':ST.res.level),ans:D_&&D_.dec&&D_.by!=='explain'&&D_.by!=='official'?D_.ans:(pq&&pq.y>=0?pq.y:null),
+    saveVerdict({q:ST.qraw||ST.q,cards:ST.cards.map(c=>c.no),level:D_&&D_.dec?(D_.by||'decided'):(DIST?'pending':ST.res.level),ans:D_&&D_.dec&&D_.by!=='explain'&&D_.by!=='official'?D_.ans:(pq&&pq.y>=0?pq.y:null),
       top:(ST.res.list||[]).slice(0,3).map(x=>({card:x.q.card,q:x.q.q,y:x.y})),at:new Date().toISOString()})}
   if(!DIST&&(ST.res.level==='none'||extras().length)&&!ST.res.cr&&!ST.res.iv&&!ST.res.xref&&!(ST.res.eng&&ST.res.eng.sure))askClaude();
   $('result').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
-function autoNote(){const a=ST.res&&ST.res.auto||[];return a.length?`<div class="sub" style="padding:0 4px 8px">질문에서 ${a.map(no=>`「${esc(cname(no))}」(${esc(no)})`).join(', ')}를 찾아 함께 판단했습니다. 다른 카드라면 1단계에서 빼거나 바꿔 주세요.</div>`:''}
+function autoNote(){const a=ST.res&&ST.res.auto||[];const und=ST.qraw&&ST.qraw.trim()!==ST.q?`<div class="sub" style="padding:0 4px 4px">질문을 이렇게 이해했습니다: ${esc(ST.q)}</div>`:'';
+  return und+(a.length?`<div class="sub" style="padding:0 4px 8px">질문에서 ${a.map(no=>`「${esc(cname(no))}」(${esc(no)})`).join(', ')}를 찾아 함께 판단했습니다. 다른 카드라면 1단계에서 빼거나 바꿔 주세요.</div>`:'')}
 function verdictHTML(){const R=ST.res,A=ST.ai;let h='';
   if(A&&(A.r||A.wait||A.err)){
     if(A.wait)h+=`<div class="verdict v-ai"><span class="badge">Claude 판정</span><div class="why"><span class="spin"></span>근거 자료를 모아 판정하고 있습니다… 보통 30초~1분</div><div class="sub">처음 한 번은 Claude 사용 허락을 묻습니다. 이 페이지를 연 사람의 Claude 사용량을 씁니다.</div><div class="row"><button class="btn2" type="button" id="aistop">중지</button></div></div>`;

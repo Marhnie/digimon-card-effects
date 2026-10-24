@@ -38,5 +38,8 @@ AL = json.load(open('aliases.json', encoding='utf-8'))['alias']
 for x in AL:
     assert all(n in T['cards'] for n in x.get('nos', [])), x
 T['alias'] = [[x['a'], x['to'], x.get('nos', []), 1 if x.get('deck') else 0] for x in AL]
+# E53: question normalization rules (qnorm_dict.json, E31) for the page: colloquial terms -> official terms before matching
+QD = json.load(open('qnorm_dict.json', encoding='utf-8'))
+T['qnorm'] = [[x['p'], x['r']] for x in QD['pre']] + [[x['p'], x['r']] for x in QD['rules'] if x.get('g', '') in ('num', 'timing', 'keyword', 'term', 'ending')]
 json.dump(T, open('test_data4.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('units', len(st), 'clusters', len(T['clu']), 'with cluster', sum(x[6] >= 0 for x in st))
