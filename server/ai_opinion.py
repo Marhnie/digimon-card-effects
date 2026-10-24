@@ -63,12 +63,16 @@ class LocalGen:
             import torch
             from transformers import AutoTokenizer, AutoModelForCausalLM
             self.torch = torch
-            self.tok = AutoTokenizer.from_pretrained(LOCAL_DIR)
-            if os.path.exists(os.path.join(LOCAL_DIR, 'adapter_config.json')):
-                # LoRA adapter (what train_gen.py ships): the public base model is fetched from Hugging Face once (cached), then merged
-                from peft import PeftModel
+            is_adapter = os.path.exists(os.path.join(LOCAL_DIR, 'adapter_config.json'))
+            base_id = None
+            if is_adapter:
                 info = os.path.join(LOCAL_DIR, 'gen_info.json')
                 base_id = json.load(open(info, encoding='utf-8'))['base_model'] if os.path.exists(info) else                     json.load(open(os.path.join(LOCAL_DIR, 'adapter_config.json'), encoding='utf-8'))['base_model_name_or_path']
+            has_tok = any(os.path.exists(os.path.join(LOCAL_DIR, f)) for f in ('tokenizer.json', 'tokenizer_config.json'))
+            self.tok = AutoTokenizer.from_pretrained(LOCAL_DIR if has_tok or not base_id else base_id)   # older adapters ship no tokenizer
+            if is_adapter:
+                # LoRA adapter (what train_gen.py ships): the public base model is fetched from Hugging Face once (cached), then merged
+                from peft import PeftModel
                 base = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16)
                 self.model = PeftModel.from_pretrained(base, LOCAL_DIR).merge_and_unload().eval()
             else:

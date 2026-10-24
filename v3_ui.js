@@ -581,7 +581,9 @@ function aiOpinionHTML(){if(!SRV||!AIREADY)return '';const O=ST.aiop;
   if(O.wait)return '<div class="sub">AI 의견을 받는 중…</div>';
   if(O.err)return `<div class="sub">${esc(O.err)}</div>`;
   const a=O.ans===1?'네':O.ans===0?'아니요':'판단 불가';const low=O.confidence==='low'||O.ans==null;
-  return `<div class="verdict v-ref" style="border-style:dashed"><span class="badge">${esc(O.label||'AI 의견 · 비공식')}</span><div class="ans">${low&&O.ans!=null?'판단 불가 (확신 낮음)':a}</div><div class="why">${esc(O.summary||'')}</div>${(O.refs||[]).length?`<div class="sub">근거: ${O.refs.map(r=>esc(String(r.id)+' '+String(r.ref))).join(' · ')}</div>`:''}<div class="sub">공식 판정이 아닙니다. 대회에서는 심판에게 확인하세요.</div></div>`}
+  return `<div class="verdict v-ref" style="border-style:dashed"><span class="badge">${esc(O.label||'AI 의견 · 비공식')}</span><div class="ans">${low&&O.ans!=null?'판단 불가 (확신 낮음)':a}</div><div class="why">${esc(O.summary||'')}</div>${(O.refs||[]).length?`<div class="sub">근거로 본 자료:<ul style="margin:4px 0 0 18px;padding:0">${O.refs.map(r=>{const id=String(r.id||'');
+    if(id[0]==='Q'&&QA[r.ref]){const q=QA[r.ref];return `<li>공식 Q&amp;A · ${esc(q.card)} ${esc(cname(q.card)||'')}: ${esc(q.q.slice(0,120))} → <b>${esc(String(q.a||'').replace(/\s+/g,' ').slice(0,90))}</b></li>`}
+    if(id[0]==='R')return `<li>종합 룰 ${esc(String(r.ref))}</li>`;if(id[0]==='C')return `<li>카드 ${esc(String(r.ref))} ${esc(cname(String(r.ref))||'')}</li>`;return ''}).join('')}</ul></div>`:''}<div class="sub">공식 판정이 아닙니다. 대회에서는 심판에게 확인하세요.</div></div>`}
 async function askAiOpinion(){const q=ST.q,cards=ST.cards.map(c=>c.no);ST.aiop={wait:1};renderResult();
   try{const r=await fetch(SRV+'ai',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({q,cards})});const j=await r.json().catch(()=>({}));
     ST.aiop=r.ok?j:{err:j.message||'AI 의견을 지금 받을 수 없습니다.'}}catch(e){ST.aiop={err:'AI 의견을 지금 받을 수 없습니다.'}}
