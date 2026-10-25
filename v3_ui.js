@@ -434,6 +434,18 @@ if(SEM_ON&&!SRV)QEMB.init(n=>fetch(window.__QEMB_BASE+n).then(r=>{if(!r.ok)throw
 const SEM_THR=0.885;
 function semDecide(){if(!SRV||!ST.res)return null;const L=semQA(ST.q,10);const top=L.find(x=>x.q.y>=0);if(!top||top.s<SEM_THR)return null;const myneg=ST.sl.has(NEGI)?1:0;
   return {q:top.q,s:top.s,ans:top.q.y^(top.q.neg^myneg)}}
+// E54: same-grammar evidence — official Q&A of effects that share the construct the question is about (any card); shown as a tab, not used to decide
+const GCX=[["slash", "(?:[가-힣」》】])/(?:[「《【가-힣])", "한쪽|어느 쪽|둘 중|어느 하나|둘 다|양쪽|/", "「A/B」 선택"], ["multi_slot", "1장과|1마리와|1장씩|1마리씩", "1장씩|각각|둘 다|모두|한 장만|1장만|하나만", "여러 칸(1장씩)"], ["deck_open", "오픈한다|오픈하고", "오픈", "덱 오픈"], ["optional", "할 수 있다|시킬 수 있다|놓을 수 있다|추가할 수 있다", "않아도|안 해도|하지 않|선택하지|않고|안 하고|하지 않을", "임의(~할 수 있다)"], ["then", "그 후", "그 후", "「그 후」"], ["cost", "것으로", "것으로|조건|못 하면|못하면|일부", "「~것으로」 조건"], ["if", "라면[,，]|다면[,，]", "라면|다면|조건|만족", "「~라면」 조건"], ["opp_choose", "상대는", "상대가 (?:고|선택)|상대는", "상대가 고름"], ["per", "마다", "마다|만큼|매수|장수", "「~마다」"], ["count", "(?:\\d+|N)장 이상|(?:\\d+|N)장 이하|매수 이상|매수 이하", "0장|없|장 이상|장 이하|매수", "매수 비교"], ["leave", "벗어날 때|떠날 때", "벗어날|떠날|벗어나", "벗어날 때"], ["instead", "대신", "대신", "「대신」"], ["limit", "\\[턴(?:에)? ?1회\\]", "턴에 1회|턴 1회|\\[턴|한 번|두 번|다시", "[턴 1회]"], ["under", "진화원 아래에|아래에 놓", "아래에|진화원으로", "아래에 놓기"], ["from_trash", "트래시에서", "트래시", "트래시에서"], ["no_cost", "코스트를 지불하지 않고", "코스트", "코스트 없이"], ["order", "나머지는|원하는 순서", "순서|나머지", "나머지·순서"], ["all", "전부|모든", "전부|모두|모든|전체", "전부"]].map(([k,a,b,n])=>({k,ea:new RegExp(a),qb:new RegExp(b),n}));const GEC={};
+const gcons=t=>GCX.filter(c=>c.ea.test(t||'')).map(c=>c.k);
+const gecOf=u=>{if(u==null||u<0||!U[u])return [];if(!(u in GEC))GEC[u]=gcons(U[u].text);return GEC[u]};
+let GIDF=null;
+function gramQA(k){const u=mainUnit();if(!u)return {fc:[],list:[]};const ec=gecOf(u.i);const fc=GCX.filter(c=>ec.includes(c.k)&&c.qb.test(ST.q)).map(c=>c.k);if(!fc.length)return {fc,list:[]};
+  if(!GIDF){const df={};let n=0;QA.forEach(q=>{const e=gecOf(q.unit);if(!e.length)return;n++;e.forEach(c=>df[c]=(df[c]||0)+1)});GIDF={};GCX.forEach(c=>GIDF[c.k]=Math.log((n+1)/((df[c.k]||0)+1))+0.1)}
+  const EXP=window.__exProducts;const out=[];
+  for(const q of QA){if(q.it!==ST.it||q.unit==null||q.unit<0||q.unit===u.i)continue;if(EXP&&EXP.has((q.card.match(/^([A-Z]+\d*)-/)||[])[1]))continue;
+    const e=gecOf(q.unit);if(!fc.every(c=>e.includes(c)))continue;const fj=GCX.filter(c=>e.includes(c.k)&&c.qb.test(q.q)).map(c=>c.k);
+    const sc=fc.reduce((a,c)=>a+GIDF[c],0)*(0.5+fc.filter(c=>fj.includes(c)).length/fc.length)*(0.3+simQ(ST.q,q.q));out.push({q,s:sc})}
+  out.sort((a,b)=>b.s-a.s);return {fc,list:out.slice(0,k)}}
 function semQA(text,k){const EXP=window.__exProducts;const key=dealias(text).trim();if(!SEM_ON||!key)return [];
   if(SRV){const c=SEMC.get(key);if(c)return c.slice(0,k);if(!SEMC.has('#'+key)){SEMC.set('#'+key,1);
       api('search',{method:'POST',body:JSON.stringify({q:key,k:Math.max(k,10)})}).then(j=>{SEMC.set(key,(j.hits||[]).filter(h=>QA[h.i]&&!(EXP&&EXP.has((QA[h.i].card.match(/^([A-Z]+\d*)-/)||[])[1]))).map(h=>({q:QA[h.i],s:h.cos!=null?h.cos:h.s})));
@@ -561,6 +573,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
   const tabs=[(R.issues||[]).length?['issue','같은 룰 쟁점',R.issues.reduce((s,x)=>s+x.qa.length+x.rules.length,0)]:null,['prec','같은 상황 선례',R.list.length],['sim','쟁점별 비슷한 질문',(R.groups||[]).length],['own',involved().length>1?'고른 카드 Q&A':'이 카드 Q&A',own.length],extras().length?['combo','조합 Q&A',R.combo.length]:null,trigOf(u)?['trig','같은 유발 조건 Q&A',triggerQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['struct','룰북 구조',strOf(u)?strOf(u)[4].length:0],strOf(u)&&strOf(u)[6]>=0?['clu','같은 효과 무리 Q&A',clusterQA(u,40,ST.cards[0]&&ST.cards[0].no).length]:null,['rule','룰 조항',u.rules.length],['pat','같은 패턴 Q&A',patternQA(u,30,ST.cards[0]&&ST.cards[0].no).length],A&&A.ev?['ai','Claude 근거',A.ev.length]:null].filter(Boolean);
   const crl=CR.list.filter(r=>involved().includes(r.card));if(crl.length)tabs.splice(1,0,['cr','확인된 판정',crl.length]);
   const sem=semQA(ST.q,10);if(sem.length)tabs.splice(2,0,['sem','의미 검색',sem.length]);
+  const gram=gramQA(10);if(gram.list.length)tabs.push(['gram','같은 문법 구조',gram.list.length]);
   if(!tabs.some(t=>t&&t[0]===ST.tab))ST.tab=tabs.find(Boolean)[0];
   let body='';const myneg=ST.sl.has(NEGI)?1:0;
   if(ST.tab==='issue')body=(R.issues||[]).map(x=>`<div class="empty" style="padding:0 2px"><b>${esc(x.name)}</b> — ${esc(x.desc)}</div>`+x.rules.map(itemRule).join('')+x.qa.map(i=>itemQA(QA[i],'<span>· 같은 룰 쟁점</span>')).join('')).join('');
@@ -575,6 +588,7 @@ function tabsHTML(){const R=ST.res,A=ST.ai;if(!R)return '';const u=mainUnit();
     body=`<div class="empty" style="padding:0 2px">${esc(t.replace('유발 · ','유발 조건: '))} · 같은 조건으로 발동하는 효과 ${n}개</div>`+(l.length?l.map(q=>itemQA(q,'')).join(''):'<div class="empty">같은 유발 조건 효과에 연결된 Q&amp;A가 없습니다.</div>')}
   else if(ST.tab==='combo')body=R.combo.length?R.combo.map(q=>itemQA(q,'')).join(''):'<div class="empty">함께 고른 카드 이름이 같이 나오는 Q&amp;A가 없습니다.</div>';
   else if(ST.tab==='cr')body=crl.slice().sort((a,b)=>String(b.at).localeCompare(String(a.at))).map(r=>`<div class="item"><div class="src"><span class="cno">${esc(r.card)}</span><span>${esc(cname(r.card))}</span>${r.others?`<span>+ ${esc(r.others)}</span>`:''}<span class="yn">답: ${yn(r.ans)}</span><span>· ${esc(SRCN[r.src]||'')}${r.agreed===false?' → 바로잡음':''}</span><span>${esc(String(r.at||'').slice(0,10))}</span></div><div class="q"><b>Q</b><span>${esc(r.q||'')}</span></div>${r.note?`<div class="a"><b>메모</b><span>${esc(r.note)}</span></div>`:''}</div>`).join('');
+  else if(ST.tab==='gram')body=`<div class="empty" style="padding:0 2px">질문이 다루는 문법 구조(${gram.fc.map(k=>esc((GCX.find(c=>c.k===k)||{}).n||k)).join(' · ')})를 가진 다른 카드 효과의 공식 Q&amp;A입니다. 카드가 달라도 같은 문구 구조에 대한 공식 판단이라 원칙을 찾는 데 씁니다(판정에는 쓰지 않음).</div>`+gram.list.map(x=>itemQA(x.q,`<span>· ${esc(x.q.card)}</span>${x.q.y>=0?`<span class="yn">답: ${yn(x.q.y^(x.q.neg^(ST.sl.has(NEGI)?1:0)))}</span>`:''}`)).join('');
   else if(ST.tab==='sem')body=`<div class="empty" style="padding:0 2px">문장 뜻이 가까운 공식 Q&amp;A입니다(학습한 검색 모델, 판정에는 쓰지 않음). 상황이 같은지 직접 확인하세요.</div>`+sem.map(x=>itemQA(x.q,`<span>· 의미 유사 ${Math.round(x.s*100)}%</span>${x.q.y>=0?`<span class="yn">답: ${yn(x.q.y^(x.q.neg^(ST.sl.has(NEGI)?1:0)))}</span>`:''}`)).join('');
   else if(ST.tab==='struct')body=structHTML(u);
   else if(ST.tab==='clu'){const l=clusterQA(u,40,ST.cards[0]&&ST.cards[0].no);const c=CLU[strOf(u)[6]];

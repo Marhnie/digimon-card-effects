@@ -1,0 +1,36 @@
+{
+ "test": 557,
+ "with_family": 211,
+ "recall: with reason group": {
+  "n": 155,
+  "text_top10": 0.555,
+  "family_top10": 0.226,
+  "family_only": 0,
+  "union": 0.555
+ },
+ "recall: page-undecided with reason group": {
+  "n": 54,
+  "text_top10": 0.167,
+  "family_top10": 0.056,
+  "family_only": 0,
+  "union": 0.167
+ },
+ "undecided_with_family": 113,
+ "vote_acc_all": 0.593,
+ "decision_honest": [
+  {
+   "rule": null,
+   "n": 0,
+   "ok": 0
+  },
+  {
+   "rule": [
+    0.9,
+    1,
+    9
+   ],
+   "n": 1,
+   "ok": 0
+  }
+ ]
+}
