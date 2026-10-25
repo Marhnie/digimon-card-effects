@@ -53,16 +53,33 @@ def backend():
     return b if (b == 'api' and key_ready()) or (b == 'local' and local_ready()) else None
 
 
+def model_tag():
+    b = backend()
+    if b != 'local': return MODEL
+    try:
+        return 'local:' + json.load(open(os.path.join(LOCAL_DIR, 'gen_info.json'), encoding='utf-8'))['name']
+    except Exception:
+        return 'local'
+
+
 class LocalGen:
     """CPU inference of the fine-tuned model; the same prompt as training (gen_prompt.py). Loaded on first use."""
     def __init__(self):
-        self.tok = self.model = None; self.lock = threading.Lock()
+        self.tok = self.model = None; self.lock = threading.RLock()
+        self.k, self.max_len = 4, 1280   # overwritten from gen_info.json: inference must use the training run's evidence count and length
 
     def load(self):
+        with self.lock:
+            self._load()
+
+    def _load(self):
         if self.model is None:
             import torch
             from transformers import AutoTokenizer, AutoModelForCausalLM
             self.torch = torch
+            info = os.path.join(LOCAL_DIR, 'gen_info.json')
+            if os.path.exists(info):
+                gi = json.load(open(info, encoding='utf-8')); self.k = int(gi.get('k', 4)); self.max_len = int(gi.get('max_len', 1280))
             is_adapter = os.path.exists(os.path.join(LOCAL_DIR, 'adapter_config.json'))
             base_id = None
             if is_adapter:
@@ -85,7 +102,7 @@ class LocalGen:
         with self.lock:
             self.load(); torch = self.torch
             p = self.tok.apply_chat_template([{'role': 'system', 'content': system}, {'role': 'user', 'content': user}], tokenize=False, add_generation_prompt=True)
-            ids = self.tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -1280:]
+            ids = self.tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -self.max_len:]
             with torch.no_grad():
                 pr = self.model(input_ids=ids).logits[0, -1].float().softmax(-1)
                 py, pn = float(pr[self.yes].sum()), float(pr[self.no].sum())
@@ -161,7 +178,7 @@ class AiOpinion:
     # ---------- main ----------
     def ask(self, q, card_nos, ip='-'):
         q = q.strip()[:600]
-        key = q + '|' + ','.join(card_nos[:4])
+        key = q + '|' + ','.join(card_nos[:4]) + '|' + model_tag()   # a swapped model must not serve the old model's answers
         with self._db() as c:
             row = c.execute('select doc from ai_cache where key=?', (key,)).fetchone()
         if row:
@@ -202,16 +219,26 @@ def _ask_local(self, q, card_nos, key, ip):
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from gen_prompt import SYSTEM as GSYS, prompt as gprompt
     c = self.cards.get(card_nos[0]) if card_nos else None
-    nb = [{'id': i, 'card': self.QA[i][0], 'question': self.QA[i][1]} for i in [i for i in self.search(q, 8) if self.QA[i][0]][:4]]
+    LOCAL.load()   # k (evidence count) comes from the installed model's gen_info.json
+    nb = [{'id': i, 'card': self.QA[i][0], 'question': self.QA[i][1]} for i in [i for i in self.search(q, 8) if self.QA[i][0]][:LOCAL.k]]
     x = {'question': q, 'card': card_nos[0] if card_nos else '', 'card_name': (c or {}).get('name', ''), 'effect': '',
          'card_text': ((c or {}).get('상단 텍스트', '') + ' / 진화원: ' + ((c or {}).get('하단 텍스트', '') or '-')) if c else '', 'neighbours': nb}
-    out, p = LOCAL.answer(GSYS, gprompt(x, self.QA))
-    conf = max(p, 1 - p); thr = float(os.environ.get('LOCAL_CONF', '0.9'))
+    out, p = LOCAL.answer(GSYS, gprompt(x, self.QA, LOCAL.k))
+    conf = max(p, 1 - p)
+    # E52: default threshold = the one the training run chose on valid for 97 % (gen_info.json), else 0.9; LOCAL_CONF overrides
+    thr = os.environ.get('LOCAL_CONF')
+    if thr is None:
+        try:
+            thr = json.load(open(os.path.join(LOCAL_DIR, 'gen_info.json'), encoding='utf-8'))['metrics']['at']['0.97']['thr']
+            thr = thr if thr <= 1 else 0.9
+        except Exception:
+            thr = 0.9
+    thr = float(thr)
     head = out[:6]
     ans = 1 if head.startswith(('네', '예')) else 0 if head.startswith('아니') else None
     doc = {'ans': ans if conf >= thr else None, 'confidence': 'high' if conf >= 0.97 else 'medium' if conf >= thr else 'low',
            'summary': out[:1500], 'refs': [{'id': f'Q{n + 1}', 'ref': d['id']} for n, d in enumerate(nb)],
-           'model': 'local:' + os.path.basename(os.path.normpath(LOCAL_DIR)), 'label': 'AI 의견 (자체 모델) · 비공식', 'p_yes': round(p, 3)}
+           'model': model_tag(), 'label': 'AI 의견 (자체 모델) · 비공식', 'p_yes': round(p, 3)}
     with self._db() as cdb:
         cdb.execute('insert or replace into ai_cache values (?,?,?)', (key, json.dumps(doc, ensure_ascii=False), time.time()))
         cdb.execute('insert into ai_spend (at, ip, usd, key) values (?,?,?,?)', (time.time(), ip, 0.0, key))
@@ -248,5 +275,5 @@ def register(app, ctx):
     def api_ai_usage():
         b = backend()
         return {'ready': b is not None, 'backend': b, 'spent_today_usd': round(ai.spent_today(), 3), 'daily_cap_usd': DAILY_USD,
-                'model': MODEL if b == 'api' else ('local:' + os.path.basename(os.path.normpath(LOCAL_DIR)) if b == 'local' else None)}
+                'model': model_tag() if b else None}
     return ai

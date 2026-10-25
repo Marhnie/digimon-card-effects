@@ -1,6 +1,7 @@
 """E51 smoke test with a fake Claude client (no network, no key): cache, budget cap, per-IP cap, JSON parsing, refs filtering."""
 import json, os, sys, tempfile, types
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'server')); sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+os.environ['AI_BACKEND'] = 'api'; os.environ.setdefault('ANTHROPIC_API_KEY', 'fake-for-test')   # the fake client, not the local model on this PC
 import ai_opinion as A
 T = json.load(open('test_data4.json', encoding='utf-8')); QA = T['qa']
 cards = {c['no']: c for c in json.load(open('cards.json', encoding='utf-8'))}

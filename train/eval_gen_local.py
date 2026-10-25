@@ -15,8 +15,8 @@ if N: test, valid = test[:N], valid[:N]
 
 @torch.no_grad()
 def p_yes(x):
-    p = L.tok.apply_chat_template([{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt(x, QA)}], tokenize=False, add_generation_prompt=True)
-    ids = L.tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -1280:]
+    p = L.tok.apply_chat_template([{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt(x, QA, L.k)}], tokenize=False, add_generation_prompt=True)
+    ids = L.tok(p, add_special_tokens=False, return_tensors='pt')['input_ids'][:, -L.max_len:]
     pr = L.model(input_ids=ids).logits[0, -1].float().softmax(-1)
     py, pn = float(pr[L.yes].sum()), float(pr[L.no].sum())
     return py / ((py + pn) or 1)
