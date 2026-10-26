@@ -66,7 +66,7 @@ class LocalGen:
     """CPU inference of the fine-tuned model; the same prompt as training (gen_prompt.py). Loaded on first use."""
     def __init__(self):
         self.tok = self.model = None; self.lock = threading.RLock()
-        self.k, self.max_len = 4, 1280   # overwritten from gen_info.json: inference must use the training run's evidence count and length
+        self.k, self.max_len, self.layout = 4, 1280, 1   # overwritten from gen_info.json: inference must use the training run's evidence count and length
 
     def load(self):
         with self.lock:
@@ -79,7 +79,7 @@ class LocalGen:
             self.torch = torch
             info = os.path.join(LOCAL_DIR, 'gen_info.json')
             if os.path.exists(info):
-                gi = json.load(open(info, encoding='utf-8')); self.k = int(gi.get('k', 4)); self.max_len = int(gi.get('max_len', 1280))
+                gi = json.load(open(info, encoding='utf-8')); self.k = int(gi.get('k', 4)); self.max_len = int(gi.get('max_len', 1280)); self.layout = int(gi.get('layout', 1))
             is_adapter = os.path.exists(os.path.join(LOCAL_DIR, 'adapter_config.json'))
             base_id = None
             if is_adapter:
@@ -98,7 +98,8 @@ class LocalGen:
             self.yes = list({t('네', add_special_tokens=False)['input_ids'][0], t('예', add_special_tokens=False)['input_ids'][0]})
             self.no = list({t('아니요', add_special_tokens=False)['input_ids'][0], t('아니', add_special_tokens=False)['input_ids'][0]})
 
-    def answer(self, system, user):
+    def answer(self, system, user, min_conf=0.0):
+        """-> (generated text or None, P(네)). Below min_conf nothing is generated: the first-token check takes seconds, generating a minute."""
         with self.lock:
             self.load(); torch = self.torch
             p = self.tok.apply_chat_template([{'role': 'system', 'content': system}, {'role': 'user', 'content': user}], tokenize=False, add_generation_prompt=True)
@@ -106,8 +107,10 @@ class LocalGen:
             with torch.no_grad():
                 pr = self.model(input_ids=ids).logits[0, -1].float().softmax(-1)
                 py, pn = float(pr[self.yes].sum()), float(pr[self.no].sum())
+                p_yes = py / ((py + pn) or 1)
+                if max(p_yes, 1 - p_yes) < min_conf: return None, p_yes
                 g = self.model.generate(input_ids=ids, max_new_tokens=200, do_sample=False, pad_token_id=self.tok.pad_token_id or self.tok.eos_token_id)
-            return self.tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True).strip(), py / ((py + pn) or 1)
+            return self.tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True).strip(), p_yes
 
 
 LOCAL = LocalGen()
@@ -223,8 +226,6 @@ def _ask_local(self, q, card_nos, key, ip):
     nb = [{'id': i, 'card': self.QA[i][0], 'question': self.QA[i][1]} for i in [i for i in self.search(q, 8) if self.QA[i][0]][:LOCAL.k]]
     x = {'question': q, 'card': card_nos[0] if card_nos else '', 'card_name': (c or {}).get('name', ''), 'effect': '',
          'card_text': ((c or {}).get('상단 텍스트', '') + ' / 진화원: ' + ((c or {}).get('하단 텍스트', '') or '-')) if c else '', 'neighbours': nb}
-    out, p = LOCAL.answer(GSYS, gprompt(x, self.QA, LOCAL.k))
-    conf = max(p, 1 - p)
     # E52: default threshold = the one the training run chose on valid for 97 % (gen_info.json), else 0.9; LOCAL_CONF overrides
     thr = os.environ.get('LOCAL_CONF')
     if thr is None:
@@ -234,6 +235,10 @@ def _ask_local(self, q, card_nos, key, ip):
         except Exception:
             thr = 0.9
     thr = float(thr)
+    out, p = LOCAL.answer(GSYS, gprompt(x, self.QA, LOCAL.k, LOCAL.layout), thr)
+    conf = max(p, 1 - p)
+    if out is None:   # not sure enough: say so instead of showing an unreliable 「네/아니요」 sentence
+        out = f'자체 모델이 확신하지 못해 판단하지 않았습니다(확신도 {conf:.0%}, 기준 {thr:.0%}). 아래 가까운 공식 Q&A를 참고해 주세요.'
     head = out[:6]
     ans = 1 if head.startswith(('네', '예')) else 0 if head.startswith('아니') else None
     doc = {'ans': ans if conf >= thr else None, 'confidence': 'high' if conf >= 0.97 else 'medium' if conf >= thr else 'low',

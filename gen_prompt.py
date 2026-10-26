@@ -7,15 +7,20 @@ SYSTEM = ('당신은 디지몬 카드게임(한국판)의 룰 판정 보조입�
 clean = lambda s: re.sub(r'\s*\d{4}/\d{2}/\d{2}\s*업데이트\s*', ' ', s or '').strip()
 
 
-def prompt(x, QA, k=4):
-    """x: {question, card, card_name, effect, card_text, neighbours:[{id, card, question}]}; QA: test_data4 qa rows (answers by id)"""
+def prompt(x, QA, k=4, layout=1):
+    """x: {question, card, card_name, effect, card_text, neighbours:[{id, card, question}]}; QA: test_data4 qa rows (answers by id)
+    layout 1: question first (q05_e1, q15_light). layout 2: question last, so trimming an over-long prompt's head never cuts it
+    (q15_light at 768 tokens lost the head of 30 % of test prompts, the question itself on 43/597)."""
     card = f"{x.get('card', '')} {x.get('card_name', '')}\n효과: {x.get('effect') or ''}\n카드 전체: {(x.get('card_text') or '')[:700]}"
     nb = []
     for n in (x.get('neighbours') or [])[:k]:
         i = n['id']
         ans = clean(QA[i][2])[:300] if 0 <= i < len(QA) else ''
         nb.append(f"- [{n.get('card', '')}] Q: {n['question'][:260]}\n  A: {ans}")
-    return f"질문: {x['question']}\n\n카드:\n{card}\n\n가까운 공식 Q&A:\n" + ('\n'.join(nb) if nb else '(없음)')
+    ev = '\n'.join(nb) if nb else '(없음)'
+    if layout == 2:
+        return f"카드:\n{card}\n\n가까운 공식 Q&A:\n{ev}\n\n질문: {x['question']}"
+    return f"질문: {x['question']}\n\n카드:\n{card}\n\n가까운 공식 Q&A:\n" + ev
 
 
 # E53: question translator — community wording -> official Q&A wording (the judge engine is most accurate on official wording)

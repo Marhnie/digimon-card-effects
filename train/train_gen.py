@@ -31,6 +31,8 @@ ap.add_argument('--bs', type=int, default=1)
 ap.add_argument('--grad_accum', type=int, default=16)
 ap.add_argument('--max_len', type=int, default=1280)
 ap.add_argument('--k', type=int, default=4, help='nearest older official Q&A (with answers) in the prompt')
+ap.add_argument('--layout', type=int, default=2, choices=[1, 2], help='prompt layout (gen_prompt.py); 2 = question last')
+ap.add_argument('--rulings_file', default=None, help='confirmed rulings as jsonl (train/export_rulings.py), for a PC without judge.db')
 ap.add_argument('--lora_r', type=int, default=16)
 ap.add_argument('--no_4bit', action='store_true', help='plain LoRA in fp16/fp32 (CPU, or a GPU with room)')
 ap.add_argument('--rulings', action='store_true', help='add confirmed rulings from server/judge.db to train')
@@ -50,7 +52,7 @@ RUN = os.path.join(HERE, 'runs', 'gen_' + NAME); os.makedirs(RUN, exist_ok=True)
 import sys; sys.path.insert(0, ROOT)
 from gen_prompt import SYSTEM, clean, prompt as _prompt, TSYSTEM, tprompt
 T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8')); QA = T['qa']
-prompt = lambda x: _prompt(x, QA, a.k)
+prompt = lambda x: _prompt(x, QA, a.k, a.layout)
 
 
 def load(split):
@@ -74,6 +76,9 @@ if a.task == 'judge' and a.rulings and os.path.exists(os.path.join(ROOT, 'server
         head = '네, ' if d.get('ans') == 1 else '아니요, ' if d.get('ans') == 0 else ''
         train.append({'card': d.get('card'), 'card_name': '', 'question': d['q'], 'effect': '', 'card_text': '',
                       'neighbours': [], 'answer': head + d['summary'], 'kind': 'ruling'})
+if a.task == 'judge' and a.rulings_file:
+    rf = [json.loads(l) for l in open(a.rulings_file, encoding='utf-8')]
+    train += [dict(r, kind='ruling') for r in rf]; print('rulings from file', len(rf))
 if a.tiny: train, valid = train[:24], ([x for x in valid if x.get('kind') == 'yesno'] if a.task == 'judge' else valid)[:6]
 print('train', len(train), 'valid', len(valid), 'test (yes/no)', len(test), 'device', dev)
 
@@ -165,7 +170,7 @@ def scored(items):
     rows = []
     for x in items:
         p, _ = judge(x)
-        ans = int(p >= 0.5); rows.append({'p': p, 'conf': max(p, 1 - p), 'ok': int(ans == x['label']), 'product': x.get('product')})
+        ans = int(p >= 0.5); rows.append({'id': x.get('id'), 'p': round(p, 4), 'conf': max(p, 1 - p), 'ok': int(ans == x['label']), 'product': x.get('product')})
     return rows
 
 
@@ -214,7 +219,9 @@ if vrows is not None:
 import hashlib, shutil, zipfile
 AD = os.path.join(RUN, 'adapter')
 model.save_pretrained(AD); tok.save_pretrained(AD)
-json.dump({'base_model': a.model, 'name': NAME, 'task': a.task, 'k': a.k, 'max_len': a.max_len, 'metrics': res, 'trained_at': time.strftime('%Y-%m-%d %H:%M')},
+if trows is not None:   # per-question test predictions travel with the adapter: the server PC compares them with the page's own judging
+    json.dump(trows, open(os.path.join(AD, 'test_preds.json'), 'w', encoding='utf-8'))
+json.dump({'base_model': a.model, 'name': NAME, 'task': a.task, 'k': a.k, 'max_len': a.max_len, 'layout': a.layout, 'metrics': res, 'trained_at': time.strftime('%Y-%m-%d %H:%M')},
           open(os.path.join(AD, 'gen_info.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 ZIP = os.path.join(RUN, f'gen_{NAME}_adapter.zip')
 with zipfile.ZipFile(ZIP, 'w', zipfile.ZIP_DEFLATED) as z:
