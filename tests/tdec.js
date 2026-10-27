@@ -1,7 +1,7 @@
 // Distribution build, no Claude: share of newest-product yes/no questions answered decisively, and accuracy (older products only as evidence)
 const {JSDOM}=require('jsdom');const fs=require('fs');
 const html=fs.readFileSync('card-effect-dist.html','utf8');const T=JSON.parse(fs.readFileSync('test_data4.json','utf8'));
-const NEW=new Set(['BT22','BT23','BT24','EX9','EX10','ST21','ST22']);const prod=c=>((c||'').match(/^([A-Z]+\d*)-/)||[])[1];
+const NEW=new Set(process.env.TDEC_NEW?process.env.TDEC_NEW.split(','):['BT22','BT23','BT24','EX9','EX10','ST21','ST22']);  // TDEC_NEW=BT25: pre-registered test (R1, R2)const prod=c=>((c||'').match(/^([A-Z]+\d*)-/)||[])[1];
 let items=T.qa.map((r,i)=>({i,card:r[0],q:r[1],unit:r[3],y:r[8]})).filter(x=>x.y>=0&&NEW.has(prod(x.card))&&x.unit!=null&&x.unit>=0);
 // E53: TDEC_SET=official|colloquial — the colloquial test set (same newest-product questions), asked in official or colloquial wording
 if(process.env.TDEC_SET){const CS=JSON.parse(fs.readFileSync('paper/results/colloquial_test.json','utf8')).items;

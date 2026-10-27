@@ -16,9 +16,10 @@ Outputs (train/data/):
 import json, os, re, random, collections
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, 'train', 'data')
+OUT = os.environ.get('EXPORT_OUT') or os.path.join(ROOT, 'train', 'data')
 K = int(os.environ.get('K', 8))
-NEW = {'BT22', 'BT23', 'BT24', 'EX9', 'EX10', 'ST21', 'ST22'}
+# EXPORT_NEW=BT25 (comma list): the pre-registered test (paper/results/preregistered_rules.json R2) — that set is the test, everything older the pool
+NEW = set(os.environ['EXPORT_NEW'].split(',')) if os.environ.get('EXPORT_NEW') else {'BT22', 'BT23', 'BT24', 'EX9', 'EX10', 'ST21', 'ST22'}
 
 T = json.load(open(os.path.join(ROOT, 'test_data4.json'), encoding='utf-8'))
 QA, UN, CARDS = T['qa'], T['units'], T['cards']

@@ -6,6 +6,13 @@
    "applies_to": "questions the page leaves undecided (no precedent, ruling, issue, engine-sure, semantic-decide)",
    "rule": "engine probability max(p, 1-p) >= 0.8 AND semantic top-1 cosine >= 0.8 AND both give the same answer -> answer it",
    "source": "E46 combo_search.py reference rule (14/14 on BT22-ST22 undecided, chosen among 1,793 rules: biased)",
-   "test": "BT25 (or the next set) official yes/no Q&A, evidence = all older products; success if accuracy >= 97% with n >= 10"}
+   "test": "BT25 (or the next set) official yes/no Q&A, evidence = all older products; success if accuracy >= 97% with n >= 10"},
+  {"id": "R2-own-model-held",
+   "registered": "2026-10-27",
+   "applies_to": "questions the page leaves undecided (same definition as R1: tests/tdec.js with TDEC_NEW=BT25, decision by == null)",
+   "rule": "own model q15_v2 (adapter zip sha256 8C0894D6B363119A9078C7C9F215043CA7F577A19BCC11EFCE4605BC70FCE6BC, private repo digimon-judge-models adapters/q15_v2; Qwen2.5-1.5B-Instruct, prompt layout 2, k 2, max_len 1024) gives max(P(yes), 1-P(yes)) >= 0.9873 at the first token -> answer yes if P(yes) >= 0.5 else no",
+   "inputs": "items from train/export_dataset.py with EXPORT_NEW=BT25 (neighbours from older products only); scored by train/prereg_r2.py",
+   "source": "threshold chosen on valid for a 98% target by train_gen.py; on BT22-ST22 held questions it added 20/294 at 20/20 (complement_eval.py) — measured after the threshold was fixed, but the training recipe (layout 2) was chosen after seeing q15_light results on the same test",
+   "test": "BT25 (or the next set) official yes/no Q&A held by the page; success if accuracy >= 97% with n >= 10; only then the page may show it as an automatic judgment"}
  ]
 }
