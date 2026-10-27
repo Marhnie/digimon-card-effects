@@ -226,11 +226,12 @@ def _ask_local(self, q, card_nos, key, ip):
     nb = [{'id': i, 'card': self.QA[i][0], 'question': self.QA[i][1]} for i in [i for i in self.search(q, 8) if self.QA[i][0]][:LOCAL.k]]
     x = {'question': q, 'card': card_nos[0] if card_nos else '', 'card_name': (c or {}).get('name', ''), 'effect': '',
          'card_text': ((c or {}).get('상단 텍스트', '') + ' / 진화원: ' + ((c or {}).get('하단 텍스트', '') or '-')) if c else '', 'neighbours': nb}
-    # E52: default threshold = the one the training run chose on valid for 97 % (gen_info.json), else 0.9; LOCAL_CONF overrides
+    # E52: default threshold = the strictest one the training run chose on valid (98 % target, gen_info.json), else 0.9; LOCAL_CONF overrides.
+    # Strictest because the opinion is asked where the page held: there q15_v2 at the 97 % threshold was right on only 36/42 (complement_eval.py)
     thr = os.environ.get('LOCAL_CONF')
     if thr is None:
         try:
-            thr = json.load(open(os.path.join(LOCAL_DIR, 'gen_info.json'), encoding='utf-8'))['metrics']['at']['0.97']['thr']
+            thr = json.load(open(os.path.join(LOCAL_DIR, 'gen_info.json'), encoding='utf-8'))['metrics']['at']['0.98']['thr']
             thr = thr if thr <= 1 else 0.9
         except Exception:
             thr = 0.9

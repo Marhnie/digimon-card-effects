@@ -1,0 +1,32 @@
+{
+ "model": "q15_v2",
+ "joined": 557,
+ "page_decided": 263,
+ "page_acc": 0.9848,
+ "at": {
+  "0.95": {
+   "thr": 0.9396,
+   "added_on_held": 42,
+   "added_acc": 0.8571,
+   "combined_share": 0.5476,
+   "combined_acc": 0.9672,
+   "model_vs_page_agree": 0.9955
+  },
+  "0.97": {
+   "thr": 0.9502,
+   "added_on_held": 42,
+   "added_acc": 0.8571,
+   "combined_share": 0.5476,
+   "combined_acc": 0.9672,
+   "model_vs_page_agree": 1.0
+  },
+  "0.98": {
+   "thr": 0.9873,
+   "added_on_held": 20,
+   "added_acc": 1.0,
+   "combined_share": 0.5081,
+   "combined_acc": 0.9859,
+   "model_vs_page_agree": 1.0
+  }
+ }
+}
