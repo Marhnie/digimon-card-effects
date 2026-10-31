@@ -11,7 +11,7 @@
 | `04_연구주제.md` | 연구 주제, 연구 질문(RQ1~4), 실험 대응, 잠정 주장, 목차 초안, 남은 일 |
 | 저장소 루트 | 재현 스크립트와 데이터(2026-10-17 E15부터 작업 루트, 예전 `repro/` 스냅샷 대체) |
 | `results/` | LLM 비교 시험 100문항(시험지·근거·채점), 네트워크(GEXF·JSON) |
-| `figures/` | 논문 그림. fig1~4는 `make_figures.py`, fig5(정확도-범위 운용점, 곡선 아님)는 `make_fig5_coverage.py` |
+| `figures/` | 논문 그림. fig1~4는 `make_figures.py`, fig5(정확도-범위 운용점, 곡선 아님)는 `make_fig5_coverage.py`, fig6(파이프라인)은 `make_fig6_pipeline.py` |
 
 ## 실행 환경
 Python 3.11.9 · scikit-learn 1.9.1 · numpy 2.4.6 · scipy 1.17.1 · networkx 3.6.1 · openpyxl 3.1.5 · python-docx 1.2.0
