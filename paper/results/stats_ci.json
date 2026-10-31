@@ -1,0 +1,74 @@
+{
+ "BT25 dry run, R2 colloquial (E55)": {
+  "k": 16,
+  "n": 16,
+  "acc": 1.0,
+  "wilson95": [
+   0.8064,
+   1
+  ]
+ },
+ "BT25 dry run, R2 official (E55)": {
+  "k": 2,
+  "n": 2,
+  "acc": 1.0,
+  "wilson95": [
+   0.3424,
+   1
+  ]
+ },
+ "BT25 dry run, R1 colloquial (E55)": {
+  "k": 7,
+  "n": 7,
+  "acc": 1.0,
+  "wilson95": [
+   0.6457,
+   1
+  ]
+ },
+ "BT25 dry run, page official (E55)": {
+  "k": 84,
+  "n": 85,
+  "acc": 0.9882,
+  "wilson95": [
+   0.9363,
+   0.9979
+  ]
+ },
+ "BT25 dry run, page colloquial (E55)": {
+  "k": 20,
+  "n": 21,
+  "acc": 0.9524,
+  "wilson95": [
+   0.7733,
+   0.9915
+  ]
+ },
+ "q15_v2 on held, target 0.95": {
+  "k": 36,
+  "n": 42,
+  "acc": 0.8571,
+  "wilson95": [
+   0.7216,
+   0.9328
+  ]
+ },
+ "q15_v2 on held, target 0.97": {
+  "k": 36,
+  "n": 42,
+  "acc": 0.8571,
+  "wilson95": [
+   0.7216,
+   0.9328
+  ]
+ },
+ "q15_v2 on held, target 0.98": {
+  "k": 20,
+  "n": 20,
+  "acc": 1.0,
+  "wilson95": [
+   0.8389,
+   1
+  ]
+ }
+}
