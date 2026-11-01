@@ -17,6 +17,14 @@
       "inputs": "items from train/export_dataset.py with EXPORT_NEW=BT25 (neighbours from older products only); scored by train/prereg_r2.py",
       "source": "threshold chosen on valid for a 98% target by train_gen.py; on BT22-ST22 held questions it added 20/294 at 20/20 (complement_eval.py) — measured after the threshold was fixed, but the training recipe (layout 2) was chosen after seeing q15_light results on the same test",
       "test": "BT25 (or the next set) official yes/no Q&A held by the page; success if accuracy >= 97% with n >= 10; only then the page may show it as an automatic judgment"
+    },
+    {
+      "id": "R3-own-model-no",
+      "registered": "2026-11-01",
+      "applies_to": "questions the page leaves undecided (tests/tdec.js decision by == null)",
+      "rule": "same frozen q15_v2 model as R2: P(yes) <= 0.05 at the first token -> answer no. No rule for the yes side.",
+      "source": "after-the-fact pattern: on held items at this cut the model's no answers were 9/9 in test T, 13/13 colloquial E55, 12/12 E56 (those two overlap), while yes answers at the mirrored cut were 46/67 in T. Chosen after seeing these sets, so it is a hypothesis.",
+      "test": "official Korean yes/no Q&A of a set not used in E55 or test T, evidence = all older products; success if accuracy >= 97% with n >= 10. Official Q&A of BT25 and the test T sets may be reported as sensitivity only, because their translations were seen when this rule was written."
     }
   ],
   "notes": [
