@@ -37,6 +37,11 @@
       "date": "2026-11-01",
       "about": "translated next-sets test, declared before any of these sets were scored; user instruction to translate and test rather than wait for official Korean Q&A; R1, R2 text, thresholds, model and criteria are unchanged",
       "note": "Test T: official-style unofficial translations (final_u.json) of yes/no Q&A from BT26, EX11, EX12, EX13, AD1, ST23, ST24, LM1, LM3, LM4, with card text translated from Japanese for cards that have Q&A. BT25 is not in the test (already seen in E55). Held = tests/tdec.js by == null with TDEC_NEW set to those ten sets; evidence excludes all ten; unofficial BT25 stays in the pool. Scoring by the same r1_score logic and train/prereg_r2.py. Success numbers n >= 10 and accuracy >= 97% are reported per rule. This does not replace the official test: because the wording is unofficial, a pass here does not itself allow automatic display; that remains the user's decision."
+    },
+    {
+      "date": "2026-11-02",
+      "about": "test A, declared before conversion; exploratory, not a registered rule test; R1, R2, R3 unchanged",
+      "note": "Test A: the 209 held items of test T are converted to Aegis engine scenarios by subagents that do not receive the answers (commit 0e007d73, MIT repo vinicius3333/aegis-digimon-tcg). Primary number: accuracy over items where every step runs without rejection and the converter did not mark the item unsure. Reported alongside: all converted items, coverage out of 209, yes and no accuracy separately, and agreement with R2 on the 28 items it answered. Conversions are fixed before scoring and are not edited after scoring."
     }
   ]
 }
