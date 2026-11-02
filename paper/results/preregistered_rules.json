@@ -42,6 +42,11 @@
       "date": "2026-11-02",
       "about": "test A, declared before conversion; exploratory, not a registered rule test; R1, R2, R3 unchanged",
       "note": "Test A: the 209 held items of test T are converted to Aegis engine scenarios by subagents that do not receive the answers (commit 0e007d73, MIT repo vinicius3333/aegis-digimon-tcg). Primary number: accuracy over items where every step runs without rejection and the converter did not mark the item unsure. Reported alongside: all converted items, coverage out of 209, yes and no accuracy separately, and agreement with R2 on the 28 items it answered. Conversions are fixed before scoring and are not edited after scoring."
+    },
+    {
+      "date": "2026-11-02",
+      "about": "test B, declared before conversion; exploratory; registered rules unchanged",
+      "note": "Test B validates the improved Aegis pipeline (adapter v2, SPEC v2 with control conditions, local rule fixes if any) on the 139 BT25 unofficial items that were never run on Aegis; test A answers were used for development, so test A is no longer a measure. Converters do not receive answers. Primary: items not rejected, control true, not unsure, reported for the 54 page-held items and for all 139. Success for use as a reviewer-facing opinion is accuracy >= 90% with n >= 20 on held-or-all primary items; automatic judgment still needs the 97% criterion on official wording."
     }
   ]
 }
