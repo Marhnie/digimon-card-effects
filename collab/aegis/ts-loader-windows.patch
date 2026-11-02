@@ -1,0 +1,22 @@
+diff --git a/apps/api/test-support/ts-loader.mjs b/apps/api/test-support/ts-loader.mjs
+index 8d402a0b..c1942f7c 100644
+--- a/apps/api/test-support/ts-loader.mjs
++++ b/apps/api/test-support/ts-loader.mjs
+@@ -51,6 +51,9 @@ function transformedSource(path) {
+ registerHooks({
+   // Source imports use the emitted `.js` specifier; point it at the `.ts` file when only that exists.
+   resolve(specifier, context, nextResolve) {
++    const bs = String.fromCharCode(92);
++    if (/^[a-zA-Z]:/.test(context.parentURL ?? "")) context = { ...context, parentURL: "file:///" + context.parentURL.split(bs).join("/") };
++    if (/^[a-zA-Z]:/.test(specifier)) specifier = "file:///" + specifier.split(bs).join("/");
+     if (specifier.startsWith(".") && specifier.endsWith(".js") && context.parentURL?.startsWith("file:")) {
+       const tsUrl = new URL(specifier.slice(0, -3) + ".ts", context.parentURL);
+       if (existsSync(fileURLToPath(tsUrl))) return nextResolve(tsUrl.href, context);
+@@ -58,6 +61,7 @@ registerHooks({
+     return nextResolve(specifier, context);
+   },
+   load(url, context, nextLoad) {
++    if (/^[a-zA-Z]:/.test(url)) url = "file:///" + url.split(String.fromCharCode(92)).join("/");
+     if (!url.startsWith("file:") || !url.endsWith(".ts") || url.includes("/node_modules/"))
+       return nextLoad(url, context);
+     const path = fileURLToPath(url);

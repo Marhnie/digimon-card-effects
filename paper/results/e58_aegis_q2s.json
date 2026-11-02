@@ -1,0 +1,424 @@
+[
+{
+"id": 41,
+"card": "BT24-034",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}",
+"optional:{\"ok\":true}"
+],
+"note": "필드에 BT24-085 테이머와 엘레크몬, 시큐리티 1장, 패에 BT24-034와 BT25-086. 엘레크몬에서 BT24-034로 진화해 등장 효과로 BT25-086 등장 여부 관측(후보 하나라 선택 자명)"
+},
+{
+"id": 56,
+"card": "BT24-041",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "패에 등장시킬 카드 없이 BT24-041 등장, 상대 필드에 2장 스택 디지몬, 퇴화 로그 관측"
+},
+{
+"id": 79,
+"card": "BT24-073",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "상대 트래시 7장, Lv4 진화로 BT24-073 진화 시; 트래시의 BT2-074 등장 여부 관측"
+},
+{
+"id": 80,
+"card": "BT24-073",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "상대 트래시 11장(3장 파기 조건 불충족), 이후 처리로 BT2-074 등장 여부"
+},
+{
+"id": 125,
+"card": "BT24-093",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"play:{\"ok\":false,\"reason\":\"wrong-phase\"}"
+],
+"note": "시큐리티 0장에서 BT24-093 사용, 리커버리로 시큐리티가 생기면 네"
+},
+{
+"id": 148,
+"card": "BT24-101",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "시큐리티 0장에서 BT24-101 등장, 상대 Lv4 1마리(-13000으로 소멸)가 대상; 소멸하면 DP 마이너스 발휘됨"
+},
+{
+"id": 213,
+"card": "ST22-14",
+"gold": "아니요",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "상대 패5/트래시5(합계 10이지만 각각 10 미만)에서 메모리 7로 패의 ST22-14(코스트12)를 등장. 코스트 -5가 적용되면 등장 성공, 아니면 등장 불가. 질문의 '첫 번째 효과'는 코스트 경감 효과로 해석(불확실)"
+},
+{
+"id": 217,
+"card": "BT23-008",
+"gold": "아니요",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"activate:{\"ok\":false,\"reason\":\"no activatable\"}"
+],
+"note": "진화원 없는 상태에서 메인 효과 발휘, 패에 파피몬"
+},
+{
+"id": 218,
+"card": "BT23-008",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"activate:{\"ok\":true}"
+],
+"note": "진화원이 디지타마뿐, 패에 파피몬"
+},
+{
+"id": 240,
+"card": "BT23-018",
+"gold": "아니요",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"activate:{\"ok\":false,\"reason\":\"no activatable\"}"
+],
+"note": "진화원 없는 상태에서 메인 효과 발휘, 패에 아구몬"
+},
+{
+"id": 241,
+"card": "BT23-018",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"activate:{\"ok\":true}"
+],
+"note": "진화원이 디지타마뿐, 패에 아구몬"
+},
+{
+"id": 279,
+"card": "BT23-031",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "시큐리티 0장, 패의 BT23-031을 등장"
+},
+{
+"id": 349,
+"card": "BT23-070",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "레스트 상태의 벨페몬: 레이지 모드를 패의 BT23-070으로 진화, 소스에 벨페몬 있음. 어택 로그 형식 불확실"
+},
+{
+"id": 360,
+"card": "BT23-074",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "테이머 BT23-084를 패의 BT23-074로 진화 후 진화 드로우 로그 확인"
+},
+{
+"id": 361,
+"card": "BT23-074",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "테이머 BT23-084를 패의 BT23-074로 진화 후 스택에 테이머가 진화원으로 남는지 확인"
+},
+{
+"id": 414,
+"card": "EX10-028",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "다른 디지몬(BT1-014)의 진화원에 EX10-028이 있고 랜드라몬 본인은 진화원 없음; 파기되면 네(불확실: 다른 디지몬 진화원도 후보인지)"
+},
+{
+"id": 428,
+"card": "EX10-009",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "상대 디지몬 없음에서 BT2-075 위에 EX10-009 진화; 덱 5장 파기(상대 트래시 5장 이상)가 되면 조건 충족"
+},
+{
+"id": 438,
+"card": "EX10-010",
+"gold": "네",
+"aegis": "네",
+"dcgo": "아니요",
+"rej": false,
+"steps": [
+"attack:{\"ok\":true}"
+],
+"note": "상대 BT5-112만 레스트로 두고 EX10-010(DP15000)으로 어택해 소멸시킴; 소멸 시 대상은 EX10-010뿐. 불확실: 어택 처리 여부"
+},
+{
+"id": 442,
+"card": "EX10-011",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "자신 액티브 디지몬 1(ST1-05)+상대 1(BT1-014)뿐인 상태에서 등장; 양쪽 모두 소멸하면 네"
+},
+{
+"id": 500,
+"card": "EX10-025",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "트래시에 광물형 카드(EX10-028) 1장만, 등장한 샌드리자몬 자신이 유일한 대상"
+},
+{
+"id": 503,
+"card": "EX10-032",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "다른 디지몬(BT1-014 위, 아래 EX10-003 광석형)의 진화원이 유일한 파기 후보인 상태에서 EX10-032 등장. 진화원이 파기되면 stack 1장"
+},
+{
+"id": 505,
+"card": "EX10-033",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "아니요",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "트래시에 광석형 디지타마 EX10-003만 있는 상태에서 EX10-032 위에 EX10-033 진화. 후속 파기 효과가 다시 트래시로 보낼 수 있어 불확실"
+},
+{
+"id": 547,
+"card": "EX10-050",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"attack:{\"ok\":false,\"reason\":\"illegal-target\"}"
+],
+"note": "트래시 6장(베르제브몬 BT2-111 포함)에서 EX10-050이 배틀로 소멸. 10장 미만이므로 등장 여부로 판정"
+},
+{
+"id": 550,
+"card": "EX10-053",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"play:{\"ok\":true}"
+],
+"note": "트래시 비어 있어 진화원에 놓을 카드가 없는 상태에서 레굴루스몬 등장, 상대 DP4000 디지몬 1마리. 소멸 여부로 판정"
+},
+{
+"id": 555,
+"card": "EX10-055",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "Lv5 스택(진화원 2장)에 택티몬 진화, 자신 디지몬은 택티몬 1마리뿐이라 자기 선택이 자명. 상대 ST1-04 소멸 후 택티몬 대체 효과(진화원 2장 파기)로 필드에 남으면 네. 불확실성: 선택/발동 자동 판단"
+},
+{
+"id": 578,
+"card": "EX10-059",
+"gold": "아니요",
+"aegis": "아니요",
+"dcgo": "아니요",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "트래시에 바그라군 2장만 둠, 상대 패 1장·상대 디지몬 1마리. 진화 후 스택이 4장(2장 추가)이 되면 2장만 놓은 것으로 판정. 불확실성: 엔진이 3장 미만을 허용하지 않을 가능성"
+},
+{
+"id": 584,
+"card": "EX10-059",
+"gold": "아니요",
+"aegis": "아니요",
+"dcgo": "아니요",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "트래시에 바그라몬 포함 바그라군 3장, 상대 패 1장·디지몬 1마리·시큐리티 1장. 진화 시 효과 처리 후 EX10-056 효과 발휘 로그 여부로 판정. 불확실성 있음"
+},
+{
+"id": 585,
+"card": "EX10-059",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "아니요",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "트래시에 리리스몬 포함 바그라군 3장 + 퍼플 임프몬(리리스몬 효과 대상), 상대 디지몬 1마리가 소멸. EX10-058 효과 발휘 로그 여부로 판정. 불확실성 있음"
+},
+{
+"id": 593,
+"card": "EX10-061",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "어둠의 4천왕 Lv6 메탈시드라몬(BT15-031) 위에 아포카리몬 진화, 진화원은 메탈시드라몬 1장뿐. 등장 로그로 판정"
+},
+{
+"id": 710,
+"card": "BT22-074",
+"gold": "네",
+"aegis": "네",
+"dcgo": "아니요",
+"rej": true,
+"steps": [
+"activate:{\"ok\":true}",
+"attack:{\"ok\":false,\"reason\":\"wrong-phase\"}"
+],
+"note": "상대 Lv4 디지몬 BT1-014 1마리 대상, 메인 효과 발휘 후 어택 가능 여부(어택 로그 불확실성 있음)"
+},
+{
+"id": 715,
+"card": "BT22-074",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"activate:{\"ok\":true}"
+],
+"note": "상대 필드 없음에서 메인 효과 발휘"
+},
+{
+"id": 799,
+"card": "EX9-021",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"attack:{\"ok\":true}"
+],
+"note": "진화원에 그레이몬(BT12-062) 1장만 있는 상태로 어택(상대 시큐리티 3장), 어택 종료 시 그레이몬 등장 여부 관측. 어택 로그 불확실성 있음"
+},
+{
+"id": 815,
+"card": "EX9-029",
+"gold": "네",
+"aegis": "네",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"digivolve:{\"ok\":true}"
+],
+"note": "파피몬(EX9-014, DM Lv3) 위로 유니몬 진화, 시큐리티 3장(진화원 뒷면 1장 이상 이상 상황), 패에 보조 카드 1장. 효과 후 스택 3장이면 패 1장이 진화원에 놓인 것"
+},
+{
+"id": 842,
+"card": "EX9-055",
+"gold": "네",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": true,
+"steps": [
+"digivolve:{\"ok\":false,\"reason\":\"invalid-evolution\"}"
+],
+"note": "트래시 네가몬 2장+진화원 네가몬 2장(EX9-005)인 Lv5 디지몬을 아바도몬으로 진화, 육성 에어리어 비어 있고 트래시에 아바도몬 코어 둠. 코어 등장 여부로 조건 판정"
+},
+{
+"id": 850,
+"card": "EX9-057",
+"gold": "아니요",
+"aegis": "아니요",
+"dcgo": "네",
+"rej": false,
+"steps": [
+"attack:{\"ok\":true}"
+],
+"note": "트래시에 네가몬 기술 Lv5 카드 2장만 두고 EX9-057로 어택, 상대 Lv4 소멸 여부로 판정(3장 조건 미충족 시 효과 처리 안 됨)"
+}
+]
