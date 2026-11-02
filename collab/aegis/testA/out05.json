@@ -1,0 +1,1400 @@
+[
+ {
+  "id": 171,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "메가로그라우몬(AD1-003)+오유민(BT21-089)만 진화원인 듀크몬(EX13-015)이 내 턴 어택에서 시큐리티 BT12-112(DP17000)에게 져 배틀로 소멸(내 효과 아님, 상대 필드에 DP9000 이하 없어 듀크몬 자체 방지 불가). 길몬은 진화원에 없음. 오유민만 등장하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-015",
+       "AD1-003",
+       "BT21-089"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT12-112",
+     "BT12-112"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: BT21-089 seat0"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 180,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "샤우트몬X7(AD1-006)이 어택으로 시큐리티 BT12-112(17000)에게 져 소멸. 내 필드에 테이머 없음, 진화원은 크로스하트 BT10-008. 진화원 카드가 등장하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "AD1-006",
+       "BT10-008"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT12-112"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: BT10-008 seat0"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 233,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "AD1-021과 최건우(BT21-086) 테이머, 아구몬(옐로) 필드. 라이즈그레이몬 플레이로 메모리가 상대 쪽이 됨. 어택이 로그에 2회 이상 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 3,
+    "hand": [
+     "BT21-044"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT21-040"
+      ]
+     },
+     {
+      "cards": [
+       "AD1-021"
+      ]
+     },
+     {
+      "cards": [
+       "BT21-086"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT21-044"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: AD1-021 seat0 \\[End of Your Turn\\]"
+     },
+     {
+      "op": "log_has",
+      "re": "Effect: AD1-021 seat0 ＜Alliance"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 248,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "푸치메라몬(EX13-004)을 진화원으로 가진 캔들몬이 어택→진화원 효과로 패의 플레임위자몬(EX13-029)으로 진화. 진화 직후(시큐리티 체크 전) 플레임위자몬 【진화 시】가 로그에 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX13-029"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-025",
+       "EX13-004"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Evolution: EX13-029"
+     },
+     {
+      "op": "log_has",
+      "re": "Effect: EX13-029 seat0 \\[When Digivolving\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 281,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "듀크몬(EX13-015) 진화원에 워그로우몬(BT19-011, 상속: 자신의 DP 소멸 효과 상한 +3000). 상대 턴에 상대가 메테오 윙으로 듀크몬 소멸 시도. 상대 필드엔 DP10000 레드 디지몬(BT1-024)뿐(기본 상한 9000이면 방지 불가, +3000이면 가능). 듀크몬이 남으면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-015",
+       "BT19-011"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT15-089"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "EX13-015"
+   ],
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT15-089"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "field_has",
+      "side": "you",
+      "card": "EX13-015"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 307,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "캔들몬(EX13-025)이 시큐리티 2장으로 시작: 메인 개시 시 첫 처리(3장 이상 조건)는 불가한 상태에서 '그 후' 처리(패의 윗체르니 카드 EX13-025를 시큐리티 아래로)가 이뤄지는지 관측. 시큐리티가 3장이 되고 패가 0장이면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX13-025"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-025"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "end_turn"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "security_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 3
+     },
+     {
+      "op": "hand_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 0
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 332,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "내 치린몬이 어택해 상대 치린몬에 '진화 시 효과 발휘 불가'를 부여하고, 상대 턴에 그 치린몬이 어택. 상대 치린몬의 【진화 시】【어택 시】 효과(seat1)가 로그에 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-032"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-032"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX13-032 seat1"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 356,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "듀나스몬(EX13-037) 어택 시 효과: 내 시큐리티 4→3, '그 후' 처리로 상대 시큐리티 파기(seat1 security->trash)가 일어나면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-037"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "\"from\":\"security\",\"to\":\"trash\".*\"seat\":1"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 406,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "프린스마메몬(BT13-074)을 패에서 진화(블랙 Lv5 마메몬 BT11-068 위)시켜 【진화 시】로 덱 위 3장 공개 중 명칭에 마메몬 포함 디지몬을 등장. 덱 위에 번개콩알몬(EX13-053, 〈룰〉로 마메몬 취급)만 놓음. 번개콩알몬이 등장하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT13-074"
+    ],
+    "deck": [
+     "BT1-009",
+     "EX13-053"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT11-068"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "BT13-074",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: EX13-053 seat0"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 429,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "간쿠몬(EX13-061) 등장(메모리 15)→히누카무이 토큰+상대 디지몬 효과 무효 부여→상대 턴에 플레임위자몬 【어택 시】 -4000까지 돌렸으나 보호 대상이 간쿠몬/토큰 중 어느 쪽인지 자동 선택이 불분명하고, 실행 결과 json에 DP가 기록되지 않아 효과 부여 여부를 판정할 수 없음."
+ },
+ {
+  "id": 463,
+  "status": "unsupported",
+  "reason": "multi_step",
+  "unsure": false,
+  "note": "시스터몬 느와르(각성)(EX13-066)는 카드 DB에 그 이름의 Option 면만 있고, 【등장 시】 효과를 가진 일반 「시스터몬 느와르」 카드가 DB에 없어 미키 불릿로 등장→아츠 진화 시퀀스를 만들 수 없음(이름 검색 5건 확인)."
+ },
+ {
+  "id": 495,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "황제드라몬: 팔라딘 모드(EX13-076)가 어택하며 상대 디지몬(진화원 2장)의 진화원을 덱 아래로 되돌린 뒤 배틀하지 않을 수 있는지 관측. 엔진은 효과를 받으면 항상 배틀하고(일부 거절 불가, decline:true는 되돌리기 자체를 안 함) 배틀이 없었으면 네.",
+  "job": {
+   "you": {
+    "memory": 20,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-076",
+       "BT12-112"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024",
+       "BT1-009",
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX13-076 seat0 \\[On Play\\]"
+     },
+     {
+      "op": "log_not",
+      "re": "battleCompared"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 535,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "시리우스몬(EX12-018, 진화원 캐노와이스몬 VB)이 어택하며 【어택 시】로 패의 가브몬(EX12-021, 진화원 상속 【어택 시】 드로우)을 진화원에 놓음. 가브몬의 상속 【어택 시】(Effect: EX12-021)가 로그에 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX12-021"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-018",
+       "EX12-014"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX12-021 seat0 \\[When Attacking\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 572,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "메탈가루몬(EX12-035) 진화원에 가브몬(EX12-021, VB Lv3). 상대 턴에 상대가 메테오 윙(BT15-089)으로 소멸 시도 → 《회피》로 회피(일시정지)되면 《디코드》가 발휘되어 가브몬이 등장하는지 관측. 등장하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-035",
+       "EX12-021"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT15-089"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "EX12-035"
+   ],
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT15-089"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: EX12-021 seat0"
+     },
+     {
+      "op": "field_has",
+      "side": "you",
+      "card": "EX12-035"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 599,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "삼장몬(EX12-045) 2장(필드 1장+패에서 진화한 1장)이 있는 상태에서 진화 시 시큐리티를 패에 추가해 시큐리티가 줄어들면 두 장의 【자신의 턴】 효과 유발. 패에는 SW 카드 가와파몬(EX12-025, 등장코스트 5) 1장. 메모리 10에서 진화코스트 3 지불 후 7; -2면 3 지불로 메모리 4, 합계 -4면 1 지불로 메모리 6. 메모리 >=6이면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX12-045",
+     "EX12-025"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-043"
+      ]
+     },
+     {
+      "cards": [
+       "EX12-045"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "EX12-045",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "memory",
+      "cmp": ">=",
+      "n": 6
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 647,
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "unsure": false,
+  "note": "탁탑몬(EX12-057) 필드, 상대 턴 어택까지 돌렸으나 어택이 해결 없이 끝나고 【카운터】가 발동하지 않음(카운터 타이밍 개입 단계 없음). 파이슈 등장 후 블록 여부를 관측할 수 없음."
+ },
+ {
+  "id": 683,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "메탈 엠파이어(EX12-072)를 메인으로 시큐리티 아래에 앞면으로 놓은 뒤 상대 턴에 상대가 메테오 윙으로 와그레이몬(EX12-017, ME, 디코드 보유) 소멸 시도. 디코드로 ME 토이아구몬(EX12-008)이 등장하지만 수호로 와그레이몬이 살아남지 못함(수호 로그 없음, 와그레이몬 트래시행). 와그레이몬이 남으면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX12-072"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-017",
+       "EX12-008"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT15-089"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "EX12-017"
+   ],
+   "steps": [
+    {
+     "do": "play",
+     "card": "EX12-072"
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT15-089"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "field_has",
+      "side": "you",
+      "card": "EX12-017"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 703,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "야몬(EX11-005)을 진화원으로 가진 가즈몬(BT10-071)이 두 번째 내 턴 메인 페이즈 개시 시 트래시의 다크리자몬(BT11-079, 사룡형)으로 진화하는지 관측. 패 0장으로 시작(턴 드로우로 1장). 진화(Evolution: BT11-079)하면 네. 비교: 패 3장일 때도 동일 진화.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [],
+    "trash": [
+     "BT11-079"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT10-071",
+       "EX11-005"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "end_turn"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Evolution: BT11-079"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 752,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "그랑게일몬 {패}【메인】은 steps에서 발동 불가(activate는 frame=필드만, 패 카드 지정 시 오류, digivolve는 프테로몬이 Lv3라 invalid-evolution). 카자마 쇼토(EX7-064)·프테로몬(EX7-031)·트래시 게일몬(EX7-032) 구성까지 시도했으나 진화 코스트 비교 불가."
+ },
+ {
+  "id": 792,
+  "status": "unsupported",
+  "reason": "multi_step",
+  "unsure": false,
+  "note": "모킹버드몬(EX11-042)·마키나몬(EX11-027) 조회까지 했으나 자신의 디지몬에 마이너스 DP를 시드/부여할 수단(자기 DP 감소 효과)이 없고 링크 DP 보정 구성도 재현 불가."
+ },
+ {
+  "id": 819,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "네크로몬(EX11-051) 진화원에 데미메라몬(BT20-006). 같은 필드에 팬텀몬(BT20-072, 고스트 Lv5). 상대 메테오 윙으로 네크로몬 소멸 → BT20-006 효과로 패로 돌아간 뒤 패의 【소멸 시】로 팬텀몬을 네크로몬으로 진화시키는지 관측(Evolution: EX11-051). 진화하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX11-051",
+       "BT20-006"
+      ]
+     },
+     {
+      "cards": [
+       "BT20-072"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT15-089"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "EX11-051",
+    "BT20-072"
+   ],
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT15-089"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Evolution: EX11-051"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 850,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "아루바 도쿠손(EX11-067) 플레이(코스트 5) 후 【등장 시】로 루체몬(BT18-034)을 패의 루체몬: 카오스 모드(BT18-082)로 진화. 진화로 【자신의 턴】 효과(테이머 레스트로 메모리 +1)가 유발되면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "EX11-067",
+     "BT18-082"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT18-034"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "BT18-082"
+   ],
+   "steps": [
+    {
+     "do": "play",
+     "card": "EX11-067"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Evolution: BT18-082"
+     },
+     {
+      "op": "log_has",
+      "re": "Effect: EX11-067 seat0 \\[Your Turn\\]"
+     },
+     {
+      "op": "memory",
+      "cmp": "==",
+      "n": 6
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 877,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "용궁몬(EX11-018) 진화원에 돌핀몬(BT1-033, 시애니멀 Lv4). 상대 턴 메테오 윙으로 소멸 시도 → 《회피》 후 《디코드》로 돌핀몬이 등장하는지 관측. 등장하면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX11-018",
+       "BT1-033"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT15-089"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "EX11-018"
+   ],
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT15-089"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: BT1-033 seat0"
+     },
+     {
+      "op": "field_has",
+      "side": "you",
+      "card": "EX11-018"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 891,
+  "status": "unsupported",
+  "reason": "multi_step",
+  "unsure": false,
+  "note": "모니몬(BT26-006) 진화원 효과 + 노유빈&노유라(EX10-064) 디지크로스 재료 추가 선택 + 「진화원에서 효과로 파기되었을 때」 카드의 조합은 디지크로스 재료 선택 단계를 steps로 지정할 수 없어 재현 불가. 바그라 군 디지크로스 카드 DB 조회까지 시도."
+ },
+ {
+  "id": 919,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "332와 동일 구조(내 치린몬이 상대 치린몬에 진화 시 효과 발휘 불가 부여 후 상대 턴 어택). 원 카드 메딕몬의 링크 부여 대신 치린몬으로 대체 재현. 상대 치린몬 【진화 시】【어택 시】 효과가 발휘되면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-032"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-032"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX13-032 seat1"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 982,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "BT26-048(블룸로드몬)+모니몬(BT26-006)+바그라군 트루프몬 구성을 돌려 모니몬 【어택 시】가 진화원을 동시에 파기(실제 3장 파기)하는 것까지는 재현했으나 블룸로드몬의 【서로의 턴】 로그가 한 번도 안 나옴. 시드된 진화원은 앞면이라 「뒷면의 진화원」 조건을 충족시킬 방법이 없어 판정 불가."
+ },
+ {
+  "id": 1009,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "플루토몬(BT26-059)이 어택해 패 1장 파기 후 트래시의 그랜쿠가몬(BT26-045, 등장코스트 11)을 코스트 -7로 등장. 내 패(파기 후 0)가 상대 패(3)보다 적어 그랜쿠가몬 자체 -4가 겹치면 합계 -11로 0코스트 → 메모리 20 유지, -7만이면 16. 메모리 20이면 네.",
+  "job": {
+   "you": {
+    "memory": 20,
+    "hand": [
+     "BT1-009"
+    ],
+    "trash": [
+     "BT26-045"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT26-059"
+      ]
+     },
+     {
+      "cards": [
+       "BT10-055"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "hand": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "memory",
+      "cmp": ">=",
+      "n": 20
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1043,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "트래시/패 발동 효과를 steps로 낼 수 없음: play는 'not in hand'(트래시 카드), 패에서 play하면 어셈블리 선언 없이 코스트 12-0=그대로 처리됨. {트래시}【메인】과 어셈블리 -2 선언을 모두 재현할 수단이 없음."
+ },
+ {
+  "id": 1085,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "쿠로이 쇼타(BT26-092, TS 테이머)가 유일한 TS 테이머, 필드에 TS 디지몬 그랜쿠가몬(BT26-045). 상대 턴에 상대 어택 시 자기 자신을 덱 아래로 되돌려 어택 대상을 디지몬으로 변경하는지 관측. 쇼타가 필드에서 사라지고 효과 로그가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT26-092"
+      ]
+     },
+     {
+      "cards": [
+       "BT26-045"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-024"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT26-092 seat0 \\[Opponent's Turn\\]"
+     },
+     {
+      "op": "field_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 1
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1121,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "세븐코드 PAD를 메딕몬(BT26-028) 필드, 트래시 세븐코드 6장, 패에 단테몬(BT26-086) 없이 사용. 비용 처리(6장을 진화원 아래에 놓음)는 되고 진화는 일어나지 않는지 관측(단테못 있을 때는 자동 진화함을 확인). 진화원 7장이면서 단테몬이 필드에 없으면 네. 「진화 안 하기를 선택」은 일부 거절 불가라 재현 못해 근사.",
+  "job": {
+   "you": {
+    "memory": 20,
+    "hand": [
+     "BT26-102"
+    ],
+    "trash": [
+     "BT26-010",
+     "BT26-019",
+     "BT26-051",
+     "BT26-010",
+     "BT26-019",
+     "BT26-051"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT26-028"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT26-102"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "stack_size",
+      "side": "you",
+      "idx": 0,
+      "cmp": ">=",
+      "n": 7
+     },
+     {
+      "op": "trash_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 1
+     }
+    ]
+   }
+  }
+ }
+]

@@ -1,0 +1,1349 @@
+[
+ {
+  "id": 172,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried via lookup: engine data for AD1-004 has no inherited effect text, so the source effect cannot be reproduced."
+ },
+ {
+  "id": 193,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Turn end: Blitz+MetalGarurumon jogress into Alter-S; yes if Alter-S When Digivolving effect resolves before the Attack of the 'then' part.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX4-060"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "AD1-009"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-044"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "end_turn"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX4-060[\\s\\S]*Attack"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 235,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Mandatory End-of-turn effect; decline:true; yes (can skip) if no Effect log for AD1-021 at turn end. Contrast: forced effect still firing means no.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "AD1-021"
+      ]
+     },
+     {
+      "cards": [
+       "BT11-035"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "decline": true,
+   "steps": [
+    {
+     "do": "end_turn"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_not",
+      "re": "Effect: AD1-021"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 249,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried: engine EX13-004 is a DigiEgg (deleted on field) and no Lv3 Witchelny digimon with a security-decrease trigger exists to evolve into."
+ },
+ {
+  "id": 289,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "your trash red(1), opp trash blue+yellow; play Magnamon; if both trashes referenced DP>=10000 else 8000. Contrast: Effect log fires.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX13-020"
+    ],
+    "trash": [
+     "BT1-009"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [
+     "BT1-029",
+     "BT1-059"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "EX13-020"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "dp",
+      "side": "you",
+      "idx": 0,
+      "cmp": ">=",
+      "n": 9000
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 313,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Kudamon played; deck top3 = Kudamon(Holy Beast) + 2 Monodramon (non-designated); DATA SQUAD tamer on field. Yes if a non-designated card is also placed under the tamer.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX13-026"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "AD1-021"
+      ]
+     }
+    ],
+    "memory": 10,
+    "deck": [
+     "EX13-026",
+     "BT1-009",
+     "BT1-009"
+    ]
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "EX13-026"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_not",
+      "re": "deckBottom.*\"cardIds\":\\[\"BT1-009\",\"BT1-009\"\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 336,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Chirinmon (no stack) attacks suspended WarGreymon and loses; yes if it goes to security instead of just deleted (security count rises). decline:true avoids security-trash cost.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-032"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-025"
+      ],
+      "suspended": true
+     }
+    ]
+   },
+   "decline": true,
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "security_count",
+      "side": "you",
+      "cmp": ">",
+      "n": 1
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 359,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried: digivolve step on Dynasmon only does normal evolution; Assembly can't be invoked, so per-card condition isn't testable."
+ },
+ {
+  "id": 407,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Raptordramon evolves into Grademon on attack (Alphamon in hand as an evolve candidate); yes if Grademon End of Attack effect fires. Contrast: Grademon When Digivolving effect fired.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX13-057",
+     "EX13-060"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-055"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: EX13-057 seat0 \\[End of Attack\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 433,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Gankoomon with Sistermon Sisters Training Gym (white cost2 Huckmon option) in its stack attacks (white suspends); yes if the option left the stack. Contrast: Effect log of ST12-14.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX13-061",
+       "BT23-099"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "stack_size",
+      "side": "you",
+      "idx": 0,
+      "cmp": "==",
+      "n": 1
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 464,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Agumon->Greymon; two Nokia tamers each may play Gabumon; yes if two Gabumon played.",
+  "job": {
+   "you": {
+    "hand": [
+     "BT1-015",
+     "BT1-029",
+     "BT1-029"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-010"
+      ]
+     },
+     {
+      "cards": [
+       "EX13-067"
+      ]
+     },
+     {
+      "cards": [
+       "EX13-067"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "BT1-015",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: BT1-029[\\s\\S]*Play on field: BT1-029"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 505,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Evolve Omnimon into Merciful Mode; 4 colors -> both effects; opp Amaterasumon (On Deletion) battled and deleted, then its card returned to deck. Yes if its On Deletion does not activate.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX13-077"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-084",
+       "BT1-010",
+       "BT1-029",
+       "BT11-035"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [
+     "EX12-009"
+    ],
+    "trash": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-047"
+      ],
+      "suspended": true
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "EX13-077",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_not",
+      "re": "Effect: EX12-047 seat1 \\[On Deletion\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 536,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried lookup: engine EX12-018 has only the Digimon text, no Option/Art Main effect or Art evolution step to run."
+ },
+ {
+  "id": 576,
+  "status": "unsupported",
+  "reason": "multi_step",
+  "unsure": false,
+  "note": "Tried design: no way found to force DP 0 deletion on Ryugumon on a loop with Evade then Decode in steps."
+ },
+ {
+  "id": 603,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Shishimamon attacks player; its Your Turn effect evolves it into Amaterasumon when opp security is removed; check inherited End of Attack (Shishimamon now source) plays Wankomon.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX12-047",
+     "EX12-009"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-046"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: EX12-009"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 655,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Machinedramon(Fragment) with Megadramon in stack attacks; End of Attack unsuspends & deletes lowest-cost own digimon (itself). Yes if Fragment keeps it on field.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-059",
+       "EX12-064",
+       "BT1-010",
+       "BT1-009"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-084"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "field_has",
+      "side": "you",
+      "card": "EX12-059"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 690,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Evolve WarGreymon(VB) into Proximamon; hand has one VB card and trash has one VB card (only way to place 2); yes if the delete (which requires placing 2) happens.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX12-077",
+     "EX12-005"
+    ],
+    "trash": [
+     "EX12-007"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX12-017"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-015"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "EX12-077",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Delete: BT1-015"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 708,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Dynamon attacks to become rested; opp Marsmon (can attack unsuspended) then attacks active Agumon: yes if step accepted.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX11-011"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-010"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT8-018"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": 1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "step_ok",
+      "i": 2
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 753,
+  "status": "unsupported",
+  "reason": "no_observable",
+  "unsure": false,
+  "note": "Tried design: Hand Main effect and the option's evolve are separate steps; simultaneous activation can't be expressed."
+ },
+ {
+  "id": 802,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Oblivimon evolves into Invisimon (flips security, gains S Attack +1), attacks 1-card security; first face-up check places Oblivimon; yes if Oblivimon is checked as 2nd check.",
+  "job": {
+   "you": {
+    "hand": [
+     "EX11-043"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX11-041"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "EX11-043",
+     "frame": 0
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "revealedCardId\\\":\\\"EX11-041"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 820,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Loudmon gives Evil Dragon Scapegoat (hand<=4). Opp Omnimon attacks suspended HeavyMetaldramon; Scapegoat prevents deletion; yes if HM's leave trigger still trashes opp top security.",
+  "job": {
+   "you": {
+    "hand": [
+     "BT1-009"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "EX11-052"
+      ],
+      "suspended": true
+     },
+     {
+      "cards": [
+       "EX11-050"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-084"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "security_count",
+      "side": "opp",
+      "cmp": "<",
+      "n": 2
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 854,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried lookup: engine EX11-069 has no [Security] play effect nor [Both turns end] text, so the Security appearance can't be reproduced."
+ },
+ {
+  "id": 880,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Dracmon plays: hand Tamer to deck bottom then draw per card (deck both decreases and increases). Chronomon Destroy Mode (delete when your effects add to decks) on field; yes if its trigger fires.",
+  "job": {
+   "you": {
+    "hand": [
+     "BT12-048",
+     "EX13-067"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT26-060"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-010"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT12-048"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT26-060 seat0 \\[All Turns\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 896,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Two Manekimon, hand has one TB card Seasarmon (cost5). Each effect -2; yes if both reductions applied to one card (memory ends >=9 from 10 means cost 1).",
+  "job": {
+   "you": {
+    "hand": [
+     "EX12-011"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT26-012"
+      ]
+     },
+     {
+      "cards": [
+       "BT26-012"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "activate",
+     "frame": 0,
+     "skill": 0
+    },
+    {
+     "do": "activate",
+     "frame": 1,
+     "skill": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "memory",
+      "cmp": ">=",
+      "n": 9
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 924,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried: Medicmon with linked Roleplaymon lost the battle but no deletion, Barrier or Detach event appeared and nothing observable resolved."
+ },
+ {
+  "id": 988,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Opp turn: BlitzGreymon evolves (our effects don't affect it) and attacks at turn end; our digimon with Andromon inherited effect; yes if the target change activates and the battle hits our digimon.",
+  "job": {
+   "you": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-044"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-010",
+       "BT26-054"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [
+     "AD1-009"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-021"
+      ]
+     }
+    ]
+   },
+   "prefer": [
+    "BT1-044"
+   ],
+   "steps": [
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "digivolve",
+     "card": "AD1-009",
+     "frame": 0
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT26-054"
+     },
+     {
+      "op": "log_has",
+      "re": "Delete: BT1-010"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1018,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Evolve WarGreymon into Chronomon Destroy Mode; its On Play returns opp stacked cards to opp deck (your effect adds to opp deck). Yes if the All Turns delete effect triggers.",
+  "job": {
+   "you": {
+    "hand": [
+     "BT26-060"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-025"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-015",
+       "BT1-010",
+       "BT1-009"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-021",
+       "BT1-015",
+       "BT1-010"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-023",
+       "BT1-015",
+       "BT1-010"
+      ]
+     },
+     {
+      "cards": [
+       "BT1-014"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "BT26-060",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT26-060 seat0 \\[All Turns\\]"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1048,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "Evolve Minervamon into Mervamon with no Iliad cards in hand/trash; yes if opp digimon DP still reduced (Mervamon itself is Iliad/TS).",
+  "job": {
+   "you": {
+    "hand": [
+     "BT26-081"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "P-207"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-025"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "BT26-081",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "dp",
+      "side": "opp",
+      "idx": 0,
+      "cmp": "<",
+      "n": 11000
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1104,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "Play option with 3 security: cost 2+3=5; memory 10 -> 5 if applied (8 otherwise).",
+  "job": {
+   "you": {
+    "hand": [
+     "BT26-097"
+    ],
+    "trash": [],
+    "security": [
+     "BT1-009",
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT11-035"
+      ]
+     }
+    ],
+    "memory": 10
+   },
+   "opp": {
+    "hand": [],
+    "trash": [],
+    "security": [
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT26-097"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "memory",
+      "cmp": "<=",
+      "n": 6
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 1125,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "Tried: Marcus end-of-turn attack into Genshi Continent security; Genshi's evolve effect never fired and Kunlun's end effect didn't trigger, so the Q isn't reproduced."
+ }
+]
