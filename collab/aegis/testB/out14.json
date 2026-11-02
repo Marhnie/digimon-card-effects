@@ -1,0 +1,1369 @@
+[
+ {
+  "id": 6,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-014 메라몬 메인: 상대 필드가 비어 소멸 대상이 없어도 activate가 받아들여지고 효과(손패 TS 파기 후 2드로우)가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-048"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-014"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "activate",
+     "frame": 0,
+     "skill": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "step_ok",
+      "i": 0
+     },
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-014 seat0"
+     },
+     {
+      "op": "hand_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 2
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "field_has",
+    "side": "you",
+    "card": "BT25-014"
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-016 그랩레오몬 필드, 패에 BT25-058 칼리스몬. 어택하는 BT25-020 마스몬은 DP12000(13000 미만)이고 [어택 시]로 +3000. 어택 선언 후 DP가 13000 이상이 된 뒤 BT25-016의 [서로의 턴] 효과가 로그에 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-058"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-020"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-016"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ],
+   "prefer": [
+    "BT25-020"
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-016 seat0"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-020 seat0"
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "status": "unsupported",
+  "reason": "no_observable",
+  "unsure": false,
+  "note": "면역 카드를 '선택'하는 것과 '효과가 적용'되는 것을 로그에서 분리해 관측할 수 없음(선택 후 효과 없음 로그 effectHadNoEffect가 안 나옴, 상대 효과가 선택했는지 불명). 세레스몬 면역으로 시험했으나 선택 여부 판독 불가."
+ },
+ {
+  "id": 38,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-026 크레세몬, 트래시에 BT25-028. step0 레드 아닌 BT25-047 등장, step1 레드 BT25-009 등장. step0 등장과 step1 등장 사이에 BT25-026 효과 로그가 있으면 네(레드 아닌 등장에도 유발). 대조: step1(레드)에서는 유발.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-047",
+     "BT25-009"
+    ],
+    "trash": [
+     "BT25-028"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-026"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-047"
+    },
+    {
+     "do": "play",
+     "card": "BT25-009"
+    }
+   ],
+   "decline": false
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Play on field: BT25-047 seat0[\\s\\S]*?Effect: BT25-026[\\s\\S]*?Play on field: BT25-009 seat0"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Play on field: BT25-009 seat0[\\s\\S]*Effect: BT25-026"
+   }
+  ]
+ },
+ {
+  "id": 44,
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "unsure": false,
+  "note": "진화 시 효과만 거절하고 어택 시 효과를 쓰는 부분 거절이 불가(decline_prompts 'When Digivolving'로는 거절되지 않고 진화 시 효과가 그대로 발휘됨)."
+ },
+ {
+  "id": 50,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-036 크래프트몬 등장 시, 내 시큐리티 0장. 효과가 발휘되어(Effect 로그) 리커버리로 시큐리티가 1장 생기면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-036"
+    ],
+    "security": [],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-036"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-036 seat0"
+     },
+     {
+      "op": "security_count",
+      "side": "you",
+      "cmp": ">=",
+      "n": 1
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Play on field: BT25-036 seat0"
+   }
+  ]
+ },
+ {
+  "id": 64,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "육성 에어리어 카드를 배치하는 job 키가 없음(breeding/raising 등 시험했으나 무시됨). 배틀 에어리어 대용은 대리 금지라 불가."
+ },
+ {
+  "id": 86,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-055 데라몬 2장을 연속 등장(각각 [등장 시] 1마리 레스트). prefer로 상대 BT25-066과 내 BT1-009만 후보로 우선. 두 번 레스트가 일어나면(이미 레스트된 쪽은 못 고르므로 양쪽이 각각 레스트됨) 네. 별도 시험에서 상대가 없으면 내 디지몬, 둘 다 있으면 prefer대로 상대를 레스트함도 확인.",
+  "job": {
+   "you": {
+    "memory": 15,
+    "hand": [
+     "BT25-055",
+     "BT25-055"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-066"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-055"
+    },
+    {
+     "do": "play",
+     "card": "BT25-055"
+    }
+   ],
+   "prefer": [
+    "BT25-066",
+    "BT1-009"
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "\"to\":\"suspended\"[\\s\\S]*\"to\":\"suspended\""
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-055 seat0"
+   }
+  ]
+ },
+ {
+  "id": 94,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-019(DP13000) 어택 → BT25-016 효과로 패의 BT25-058 칼리스몬으로 효과 진화. 칼리스몬 자신의 [서로의 턴] 효과 로그가 나오면 네(자신이 효과로 진화한 경우만 재현, 효과로 등장하는 경우는 미재현).",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-058"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-019"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-016"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-066",
+       "BT25-062"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-058 seat0 \\[All Turns\\]"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Evolution: BT25-058"
+   }
+  ]
+ },
+ {
+  "id": 101,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-059 세레스몬(레스트 상태의 자신이 상대 디지몬 효과를 받지 않음). 상대 턴 BT22-056 등장 효과의 DP -3000(효과 부여의 대용: 지속 효과 부여)이 세레스몬에 적용되어 DP가 12000 미만이 되면 네. 디지몬 효과로 '효과 부여'(예: 키워드 부여)를 직접 관측하진 못해 DP 감소로 대체.",
+  "job": {
+   "you": {
+    "memory": 15,
+    "hand": [
+     "BT25-059"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "opp": {
+    "hand": [
+     "BT22-056"
+    ],
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-059"
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "play",
+     "card": "BT22-056"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "dp",
+      "side": "you",
+      "idx": 0,
+      "cmp": "<",
+      "n": 12000
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT22-056 seat1"
+   }
+  ]
+ },
+ {
+  "id": 114,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-069 라레몬 등장 시 트래시의 BT25-091(TS 테이머, 링크 키워드 없음)을 코스트 없이 링크. 링크 로그/스택에 BT25-091이 들어가면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-069"
+    ],
+    "trash": [
+     "BT25-091"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-069"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "trash_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 0
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-069 seat0"
+   }
+  ]
+ },
+ {
+  "id": 120,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-075 벌컨스몬 자신이 BT25-101 링크 단계(코스트 3)로 링크됨. 링크 단계가 받아들여지고 [Your Turn] 링크 시 어택 효과가 발휘되면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-101"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-075"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "link",
+     "card": "BT25-101",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-075 seat0 \\[Your Turn\\]"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "step_ok",
+    "i": 0
+   }
+  ]
+ },
+ {
+  "id": 126,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-077 바쿠스몬 필드. step0 BT25-062 일반 등장(효과 아님)으로 1회 발휘 → step1 BT10-053 아자타몬 메인으로 BT25-047을 효과로 등장. 두 번째(효과 등장)에서 상대 BT25-066이 소멸되면 네(재발휘).",
+  "job": {
+   "you": {
+    "memory": 15,
+    "hand": [
+     "BT25-062",
+     "BT25-047"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-077"
+      ]
+     },
+     {
+      "cards": [
+       "BT10-053"
+      ]
+     },
+     {
+      "cards": [
+       "BT26-034"
+      ]
+     },
+     {
+      "cards": [
+       "BT26-034"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-066"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-062"
+    },
+    {
+     "do": "activate",
+     "frame": 1,
+     "skill": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Delete: BT25-066"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-077 seat0"
+   }
+  ]
+ },
+ {
+  "id": 133,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-080 위치몬 등장 시: 패 1장(BT26-069, 패에서 파기 시 드로우 효과)을 비용으로 파기하고 그 카드를 트래시에서 패로 되돌림. 그 뒤 BT26-069의 파기 효과 로그가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-080",
+     "BT26-069"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-080"
+    }
+   ],
+   "prefer": [
+    "BT26-069"
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT26-069 seat0"
+     },
+     {
+      "op": "hand_has",
+      "side": "you",
+      "card": "BT26-069"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-080 seat0"
+   }
+  ]
+ },
+ {
+  "id": 139,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "육성 에어리어 카드를 배치하는 job 키가 없음(시험했으나 무시됨)."
+ },
+ {
+  "id": 146,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-083 레이디데비몬 스택에 BT25-085. 어택 시 옵션 카드(BT25-085)를 진화원에서 파기하고 트래시의 삼총사 옵션 BT25-085를 사용(코스트 -3). BT25-085 사용 효과 로그가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-083",
+       "BT25-085"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-085 seat0"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-083 seat0"
+   }
+  ]
+ },
+ {
+  "id": 151,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-084 티타몬 필드, 손패 파기를 2번 실행(BT25-080 등장 시 코스트 파기 + BT25-014 메인 코스트 파기). 상대 필드 BT25-066(5000)/BT25-080(6000)이 둘 다 사라지면(티타몬 효과 2회, 메라몬은 4000 이하만 소멸) 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-080",
+     "BT25-048",
+     "BT25-062"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-084"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-014"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-066"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-080"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-080"
+    },
+    {
+     "do": "activate",
+     "frame": 1,
+     "skill": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "field_count",
+      "side": "opp",
+      "cmp": "==",
+      "n": 0
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-084 seat0"
+   }
+  ]
+ },
+ {
+  "id": 166,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-087 토마스 2장(각각 테이머 아래 카드 보유). BT25-023 → BT25-027(DATA SQUAD) 진화 코스트 3. 2장 모두 발휘해 합계 -2이면 메모리 9. 합계 -2가 되면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-027"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-023"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-087",
+       "BT1-009",
+       "BT1-009"
+      ]
+     },
+     {
+      "cards": [
+       "BT25-087",
+       "BT1-009",
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "digivolve",
+     "card": "BT25-027",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "memory",
+      "cmp": "==",
+      "n": 9
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-087 seat0"
+   }
+  ]
+ },
+ {
+  "id": 182,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-091 모니카 등장 시 트래시의 TS 옵션(BT25-093)을 되돌리지 않고(decline) 드로우. 옵션이 트래시에 남고 BT1-009가 패에 들어오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-091"
+    ],
+    "trash": [
+     "BT25-093"
+    ],
+    "security": [
+     "BT1-009"
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-091"
+    }
+   ],
+   "decline": true
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "trash_has",
+      "side": "you",
+      "card": "BT25-093"
+     },
+     {
+      "op": "hand_has",
+      "side": "you",
+      "card": "BT1-009"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-091 seat0"
+   }
+  ]
+ },
+ {
+  "id": 189,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-093 이그니션 플레어(TS 디지몬 사용 조건 충족), 상대 디지몬 BT25-066 존재. 메인은 선택 없이 DP 최저 전부 소멸. 소멸이 일어나지 않는 경우(=선택 안 하고 '소멸 안 함' 조건 충족 가능)만 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-093"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-048"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-066"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-093"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_not",
+      "re": "Delete: BT25-066"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "Effect: BT25-093 seat0"
+   }
+  ]
+ },
+ {
+  "id": 195,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "육성 에어리어 카드를 배치하는 job 키가 없음(시험했으나 무시됨)."
+ },
+ {
+  "id": 203,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-095 시큐리티 0장에서 메인 사용. 사용이 받아들여지고 이 카드가 시큐리티 맨 아래에 놓여(시큐리티 1장) 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-095"
+    ],
+    "security": [],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-095"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "step_ok",
+      "i": 0
+     },
+     {
+      "op": "security_count",
+      "side": "you",
+      "cmp": "==",
+      "n": 1
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 213,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-097을 메인으로 써서 시큐리티 맨 아래에 앞면으로 둠(시큐리티 이 카드 1장), 상대 턴에 어택으로 체크됨. 체크 때 BT25-097의 효과 로그가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-097"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-097"
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-097 seat0 \\[Security\\]"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "securityChecked[^\\n]*BT25-097"
+   }
+  ]
+ },
+ {
+  "id": 221,
+  "status": "ok",
+  "reason": null,
+  "unsure": true,
+  "note": "BT25-099를 메인으로 써서 시큐리티 맨 아래에 앞면으로 둠(시큐리티 이 카드 1장), 상대 턴에 어택으로 체크됨. 체크 때 BT25-099의 효과 로그가 나오면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-099"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-009"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT1-009"
+      ]
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-099"
+    },
+    {
+     "do": "end_turn"
+    },
+    {
+     "do": "attack",
+     "frame": 0,
+     "target": -1
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "log_has",
+      "re": "Effect: BT25-099 seat0 \\[Security\\]"
+     }
+    ]
+   }
+  },
+  "control": [
+   {
+    "op": "log_has",
+    "re": "securityChecked[^\\n]*BT25-099"
+   }
+  ]
+ },
+ {
+  "id": 229,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "상대에 BT8-057 시바몬(상대 디지몬 전부 레스트 중이라 내가 옵션 카드를 사용 불가). 내 BT25-075에 BT25-101을 링크 단계(코스트 3)로 링크. 링크 단계가 받아들여지면 네. 대조(별도 시험에서 확인): 같은 상황에서 BT25-101을 play하면 play-prohibited로 거부됨.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-101"
+    ],
+    "security": [
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT25-075"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": [
+     {
+      "cards": [
+       "BT8-057"
+      ],
+      "suspended": true
+     }
+    ]
+   },
+   "steps": [
+    {
+     "do": "link",
+     "card": "BT25-101",
+     "frame": 0
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "step_ok",
+      "i": 0
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 234,
+  "status": "ok",
+  "reason": null,
+  "unsure": false,
+  "note": "BT25-102 시큐리티 0장일 때 색 조건을 무시하고(필드는 블루 디지몬뿐) 옵션이 사용되면 네.",
+  "job": {
+   "you": {
+    "memory": 10,
+    "hand": [
+     "BT25-102"
+    ],
+    "security": [],
+    "field": [
+     {
+      "cards": [
+       "BT25-022"
+      ]
+     }
+    ]
+   },
+   "opp": {
+    "security": [
+     "BT1-009",
+     "BT1-009"
+    ],
+    "field": []
+   },
+   "steps": [
+    {
+     "do": "play",
+     "card": "BT25-102"
+    }
+   ]
+  },
+  "verdict": {
+   "yes_if": {
+    "all": [
+     {
+      "op": "step_ok",
+      "i": 0
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": 246,
+  "status": "unsupported",
+  "reason": "needs_choice",
+  "unsure": false,
+  "note": "상대 턴 어택 시 내 [카운터] 효과(BT25-103 단독, EX12-052 단독 모두 시험) 선택 단계에서 어택이 'Attack' 로그에서 멈추고 카운터 효과가 자동 발휘/처리되지 않아 관측 불가."
+ },
+ {
+  "id": 261,
+  "status": "unsupported",
+  "reason": "other",
+  "unsure": false,
+  "note": "상대의 'DP -X 후 퇴화 X' 효과로 최건우(12000DP 디지몬 취급)를 DP 0으로 만드는 카드/조합을 구성할 수 없음(후보 Guardromon BT22-056은 -3000뿐). 시험 불가."
+ }
+]

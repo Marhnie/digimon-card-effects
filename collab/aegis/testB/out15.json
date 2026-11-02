@@ -1,0 +1,1405 @@
+[
+{
+"id": 7,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "Meramon 메인(BT25-014): 상대 DP3000 디지몬 존재, 엔진은 대상을 자동 선택(소멸시킴). 방향: 소멸 없이(상대 디지몬 생존) 2드로우가 일어나면 네; 소멸하면 아니요. 대조: 효과 발동.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-001"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-014",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "activate",
+"frame": 0,
+"skill": 0
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "field_count",
+"side": "opp",
+"cmp": "==",
+"n": 1
+},
+{
+"op": "log_has",
+"re": "Draw 2"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-014 seat0"
+}
+]
+}
+},
+{
+"id": 12,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "상대(seat1)의 13000DP BT25-019 어택 시 내 BT25-016이 패 BT25-058로 진화하는지. 방향: 상대 어택에도 진화가 일어나면 네(자신 어택만이면 아니요). 대조: 어택 발생.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-058"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-016",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-019",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "end_turn"
+},
+{
+"do": "attack",
+"frame": 0,
+"target": -1
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "Evolution: BT25-058"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Attack"
+}
+]
+}
+},
+{
+"id": 22,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "BT25-019의 면역(상대 디지몬 효과 무효)은 재현 가능하나, 면역 중인 카드에 효과를 부여하는 구체적 카드/효과가 질문에 특정되지 않아 관측 가능한 시나리오를 만들 수 없음(상대 디지몬 효과로 키워드를 부여하는 카드 미확인)."
+},
+{
+"id": 40,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "Dianamon(BT25-028)을 패에서 등장시킬 때 [서로의 턴] 효과(상대 진화원 4장 트래시)가 유발되는지. 진화로 자신이 되는 경우는 미재현. 방향: 자기 등장에 유발되어 진화원이 트래시되면 네.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-028"
+],
+"security": [
+"BT1-009"
+],
+"field": []
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-019",
+"BT1-009",
+"BT1-009",
+"BT1-009",
+"BT1-009"
+],
+"suspended": true
+},
+{
+"cards": [
+"BT25-019",
+"BT1-009",
+"BT1-009",
+"BT1-009",
+"BT1-009",
+"BT1-009"
+],
+"suspended": true
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-028"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "\"from\":\"digivolutionCards\",\"fromSeat\":1"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Play on field: BT25-028"
+}
+]
+}
+},
+{
+"id": 45,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "시큐리티 0장에서 Elecmon(BT25-030) 진화원 어택 시 효과: 패에 넣을 시큐리티가 없어도 Recovery+1이 되는지. 방향: 시큐리티가 1장 생기면 네. 대조: 효과 발동.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [],
+"security": [],
+"field": [
+{
+"cards": [
+"BT1-010",
+"BT25-030"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "attack",
+"frame": 0,
+"target": -1
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "security_count",
+"side": "you",
+"cmp": ">=",
+"n": 1
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-030 seat0"
+}
+]
+}
+},
+{
+"id": 52,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "자신 시큐리티 0장에서 Pegasusmon(BT25-037) 진화. 방향: 효과가 발휘(Effect 로그)되면 네. 대조: 진화 성립.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-037",
+"BT25-001"
+],
+"security": [],
+"field": [
+{
+"cards": [
+"BT25-031",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "digivolve",
+"card": "BT25-037",
+"frame": 0
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "Effect: BT25-037 seat0"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Evolution: BT25-037"
+}
+]
+}
+},
+{
+"id": 70,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "Kiwimon 진화, 후보는 자신의 디지몬과 상대 BT1-010(prefer 지정). 방향: 상대 디지몬이 레스트되면 네. 자신 쪽 레스트는 별도 관측 안 함(부분 재현).",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-050"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-047",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-010"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "digivolve",
+"card": "BT25-050",
+"frame": 0
+}
+],
+"prefer": [
+"BT1-010"
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "\"from\":\"unsuspended\",\"to\":\"suspended\""
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-050 seat0"
+}
+]
+}
+},
+{
+"id": 88,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "BT25-056로 시도: Social/Tool/Game(또는 Appmon) 트레잇 카드 링크(BT25-007/045/061/052/072, BT21-009, BT25-036)는 모두 성공했고 BT22-030(트레잇 불일치)만 거부됨. 그러나 lookup으로 링크 능력 보유 여부와 트레잇을 확인할 수 없어 링크 없는 카드를 특정·구성할 수 없음."
+},
+{
+"id": 95,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "BT25-058: BT25-077이 효과로 BT25-065를 등장시키면 [서로의 턴] 유발, 퇴화1 처리 여부. 방향: 퇴화(BT25-019 최상위 트래시)가 처리되면 네. 대조: 효과 발동. 그 후 배틀을 거절하는 부분은 프롬프트 문구를 알 수 없어 미재현.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-077",
+"BT25-065"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-058",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-019",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-077"
+}
+],
+"prefer": [
+"BT25-019"
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "\"cardIds\":\\[\"BT25-019\"\\].*\"from\":\"battleArea\""
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-058 seat0"
+}
+]
+}
+},
+{
+"id": 105,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "BT25-060로 시도: Social/Tool/Game(또는 Appmon) 트레잇 카드 링크(BT25-007/045/061/052/072, BT21-009, BT25-036)는 모두 성공했고 BT22-030(트레잇 불일치)만 거부됨. 그러나 lookup으로 링크 능력 보유 여부와 트레잇을 확인할 수 없어 링크 없는 카드를 특정·구성할 수 없음."
+},
+{
+"id": 115,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "BT25-070로 시도: Social/Tool/Game(또는 Appmon) 트레잇 카드 링크(BT25-007/045/061/052/072, BT21-009, BT25-036)는 모두 성공했고 BT22-030(트레잇 불일치)만 거부됨. 그러나 lookup으로 링크 능력 보유 여부와 트레잇을 확인할 수 없어 링크 없는 카드를 특정·구성할 수 없음."
+},
+{
+"id": 121,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "Ghoulmon(BT25-076) 등장. 엔진은 대상을 자동 선택(소멸). 방향: 소멸 없이 시큐리티 트래시가 일어나면 네(상대 시큐리티 2→1). 대조: 효과 발동. 대상 비선택을 직접 지정할 수단 없음.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-076"
+],
+"security": [
+"BT1-009"
+],
+"field": []
+},
+"opp": {
+"security": [
+"BT1-009",
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-076"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "field_count",
+"side": "opp",
+"cmp": "==",
+"n": 1
+},
+{
+"op": "security_count",
+"side": "opp",
+"cmp": "<",
+"n": 2
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-076 seat0"
+}
+]
+}
+},
+{
+"id": 127,
+"status": "unsupported",
+"reason": "needs_choice",
+"unsure": true,
+"note": "BT25-077의 [서로의 턴](BT25-065 효과 등장으로 유발) 재현은 가능하나, 이 효과만 거절하는 decline_prompts 문구 5종이 모두 매칭되지 않고 decline:true는 유발 원인인 등장 효과까지 거절해 부분 거절 불가."
+},
+{
+"id": 134,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "Witchmon(BT25-080) 어택 시 BT25-068 트래시 후 패로 되돌림. 방향: 되돌린 뒤에도 [서로의 턴] 효과로 상대 디지몬이 소멸하면 네(되돌림이 소멸보다 먼저).",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-068"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-080",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT25-068",
+"BT25-080"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "attack",
+"frame": 0,
+"target": -1
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "before",
+"a": "\"from\":\"trash\",\"fromSeat\":0,\"to\":\"hand\"",
+"b": "Delete: BT1-009"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-080 seat0 \\[All Turns\\]"
+}
+]
+}
+},
+{
+"id": 140,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "BlackGatomon(BT25-082)이 3총사 테이머(BT25-092)가 있을 때 진화 조건 무시로 BT25-085(Lv6)로 진화 가능한지. 방향: 진화가 성립하면 네. 대조: 테이머가 필드에 존재.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-085",
+"BT25-001"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-082",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT25-092"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "digivolve",
+"card": "BT25-085",
+"frame": 0
+}
+],
+"prefer": [
+"BT25-001"
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "Evolution: BT25-085"
+}
+]
+},
+"control": [
+{
+"op": "field_has",
+"side": "you",
+"card": "BT25-092"
+}
+]
+}
+},
+{
+"id": 147,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "진화원에서 효과로 파기될 때 유발되는 3총사/TS 옵션 카드를 lookup(BT24~BT26, EX11~12 범위)에서 찾지 못해 해당 옵션을 구성할 수 없음."
+},
+{
+"id": 152,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "Titamon(BT25-084)이 상대 GraceNovamon에 소멸될 때 패 2장 트래시로 잔류. 패 파기 시 효과(상대 최저 DP 소멸)가 2번이면 상대 BT1-009 2마리 모두 소멸(남은 필드 1), 1번이면 2. 방향: 2번 유발되어 상대 필드가 1이면 네.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT1-009",
+"BT1-009"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-084",
+"BT1-009"
+],
+"suspended": true
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-103",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "end_turn"
+},
+{
+"do": "attack",
+"frame": 0,
+"target": 0
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "field_count",
+"side": "opp",
+"cmp": "==",
+"n": 1
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-084 seat0 \\[All Turns\\] When your hand is trashed"
+}
+]
+}
+},
+{
+"id": 173,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "Kyo Sawashiro 2장: 상대 어택으로 내 시큐리티가 줄면 각 테이머가 덱 위 2장을 아래에 둠. 내 턴에 BT25-046(코스트3) 등장. 방향: 코스트 -2(최종 메모리 2; 대조 실험: Kyo 0장=0, 1장=1)면 네; -1이면 아니요.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-046",
+"BT1-009"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-088"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT25-088"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "end_turn"
+},
+{
+"do": "attack",
+"frame": 0,
+"target": -1
+},
+{
+"do": "end_turn"
+},
+{
+"do": "play",
+"card": "BT25-046"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "memory",
+"cmp": ">=",
+"n": 2
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Play on field: BT25-046"
+},
+{
+"op": "log_has",
+"re": "Effect: BT25-088"
+}
+]
+}
+},
+{
+"id": 183,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "Monica(BT25-091) 등장, 트래시가 비어 있음. 방향: 되돌릴 카드가 없어도 1드로우하면 네.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-091"
+],
+"security": [
+"BT1-009"
+],
+"trash": [],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-091"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "Draw 1 card"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-091 seat0"
+}
+]
+}
+},
+{
+"id": 190,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "Ignition Flare(BT25-093): 상대에 BT3-075(블로커 보유=상대 효과로 소멸 불가)만 있고 옵션 BT21-097이 배틀 에어리어에 있음. 방향: 소멸하지 않아 옵션이 트래시되면 네. 대조: 효과 발동.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-093"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-014",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT3-075",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT21-097"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-093"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "trash_has",
+"side": "opp",
+"card": "BT21-097"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-093 seat0"
+}
+]
+}
+},
+{
+"id": 196,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "시큐리티 0장, 필드에 녹색 디지몬만 있을 때 적/청 옵션 BT25-094 사용. 방향: 색 조건이 무시되어 사용이 성립하면 네(조건 충족).",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-094"
+],
+"security": [],
+"field": [
+{
+"cards": [
+"BT25-047",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-094"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "step_ok",
+"i": 0
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-094 seat0"
+}
+]
+}
+},
+{
+"id": 206,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "BT25-095를 사용해 앞면 시큐리티로 둔 뒤 상대 어택으로 체크됨. 방향: Security 효과 Effect 로그가 나오면 네. 대조: 체크 발생.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-095"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-047",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-095"
+},
+{
+"do": "end_turn"
+},
+{
+"do": "attack",
+"frame": 0,
+"target": -1
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "log_has",
+"re": "Effect: BT25-095 seat0 \\[Security\\]"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "securityChecked"
+}
+]
+}
+},
+{
+"id": 215,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "앞면 BT25-097 시큐리티 + BT25-044(유노몬)와 BT25-042 동시 소멸(상대 BT25-084). 엔진에서는 유노몬이 스케이프고트로 BT25-042를 소멸시켜 생존(역할이 질문과 반대). 방향: 스케이프고트 발휘 후 둘 중 하나라도 생존하면 네. 질문의 역할 배치와 정확히 같지는 않음.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-097"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-044",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT25-042",
+"BT1-009"
+],
+"suspended": false
+},
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-015",
+"BT1-009"
+],
+"suspended": false
+}
+],
+"hand": [
+"BT25-084",
+"BT1-009"
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-097"
+},
+{
+"do": "end_turn"
+},
+{
+"do": "digivolve",
+"card": "BT25-084",
+"frame": 0
+}
+],
+"prefer": [
+"BT25-044"
+]
+},
+"verdict": {
+"yes_if": {
+"any": [
+{
+"op": "field_has",
+"side": "you",
+"card": "BT25-044"
+},
+{
+"op": "field_has",
+"side": "you",
+"card": "BT25-042"
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "deletionPrevented.*Scapegoat"
+}
+]
+}
+},
+{
+"id": 224,
+"status": "ok",
+"reason": null,
+"unsure": true,
+"note": "상대가 EX1-072로 내가 옵션을 못 쓰게 한 뒤 내 턴에 BT25-100을 링크(링크 코스트 지불). 방향: 링크 단계가 받아들여지면 네. 대조: 같은 상황에서 옵션 사용(BT25-099)은 거부됨.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-100",
+"BT25-099"
+],
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT25-065",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT12-086"
+],
+"suspended": false
+}
+],
+"hand": [
+"EX1-072"
+]
+},
+"steps": [
+{
+"do": "end_turn"
+},
+{
+"do": "play",
+"card": "EX1-072"
+},
+{
+"do": "end_turn"
+},
+{
+"do": "link",
+"card": "BT25-100",
+"frame": 0
+},
+{
+"do": "play",
+"card": "BT25-099"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "step_ok",
+"i": 3
+}
+]
+},
+"control": [
+{
+"op": "step_ok",
+"i": 1
+},
+{
+"op": "step_rejected",
+"i": 4
+}
+]
+}
+},
+{
+"id": 230,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "육성 에어리어 디지몬을 필드에 배치할 방법이 없음(디지타마를 field에 두면 시작 시 배틀 에어리어에서 소멸 처리되고, BT25-101의 링크 대상 선택도 일어나지 않음)."
+},
+{
+"id": 235,
+"status": "ok",
+"reason": null,
+"unsure": false,
+"note": "시큐리티 0장에서 BT25-102 사용(흑 디지몬 BT25-065 보유). 방향: 메인 효과가 발휘되어 앞면 시큐리티가 1장 생기면 네.",
+"job": {
+"you": {
+"memory": 10,
+"hand": [
+"BT25-102"
+],
+"security": [],
+"field": [
+{
+"cards": [
+"BT25-065",
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"opp": {
+"security": [
+"BT1-009"
+],
+"field": [
+{
+"cards": [
+"BT1-009"
+],
+"suspended": false
+}
+]
+},
+"steps": [
+{
+"do": "play",
+"card": "BT25-102"
+}
+]
+},
+"verdict": {
+"yes_if": {
+"all": [
+{
+"op": "security_count",
+"side": "you",
+"cmp": "==",
+"n": 1
+}
+]
+},
+"control": [
+{
+"op": "log_has",
+"re": "Effect: BT25-102 seat0"
+}
+]
+}
+},
+{
+"id": 247,
+"status": "unsupported",
+"reason": "other",
+"unsure": true,
+"note": "lookup/엔진 데이터의 BT25-104에 버스트 진화 정의가 없어(통상 진화로만 처리됨) 버스트 진화·종료 시 파기를 재현할 수 없음."
+}
+]
