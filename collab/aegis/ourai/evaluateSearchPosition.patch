@@ -1,0 +1,14 @@
+diff --git a/apps/api/src/bot/evolution/evaluateSearchPosition.ts b/apps/api/src/bot/evolution/evaluateSearchPosition.ts
+index b750ef77..facf5338 100644
+--- a/apps/api/src/bot/evolution/evaluateSearchPosition.ts
++++ b/apps/api/src/bot/evolution/evaluateSearchPosition.ts
+@@ -1,7 +1,9 @@
+ import type { TrainingObservation } from "#api/bot/training/observation";
+ import { DEFAULT_BOT_PROFILE, type BotProfile } from "#api/bot/profiles";
++import { ourValue } from "#api/ourai/ourValue";
+ 
+ export function evaluateSearchPosition(observation: TrainingObservation, profile = DEFAULT_BOT_PROFILE): number {
++  if ((profile as { ourValue?: boolean }).ourValue === true && process.env.OURAI_VALUE) return ourValue(observation);
+   function getMaterial(player: TrainingObservation["players"][number], weights: BotProfile["weights"]): number {
+     const permanents = player.breeding === undefined ? player.board : [...player.board, player.breeding];
+     const baseline = DEFAULT_BOT_PROFILE.weights;
