@@ -1,0 +1,55 @@
+diff --git a/apps/api/src/bot/evolution/evaluateSearchPosition.ts b/apps/api/src/bot/evolution/evaluateSearchPosition.ts
+index b750ef77..facf5338 100644
+--- a/apps/api/src/bot/evolution/evaluateSearchPosition.ts
++++ b/apps/api/src/bot/evolution/evaluateSearchPosition.ts
+@@ -1,7 +1,9 @@
+ import type { TrainingObservation } from "#api/bot/training/observation";
+ import { DEFAULT_BOT_PROFILE, type BotProfile } from "#api/bot/profiles";
++import { ourValue } from "#api/ourai/ourValue";
+ 
+ export function evaluateSearchPosition(observation: TrainingObservation, profile = DEFAULT_BOT_PROFILE): number {
++  if ((profile as { ourValue?: boolean }).ourValue === true && process.env.OURAI_VALUE) return ourValue(observation);
+   function getMaterial(player: TrainingObservation["players"][number], weights: BotProfile["weights"]): number {
+     const permanents = player.breeding === undefined ? player.board : [...player.board, player.breeding];
+     const baseline = DEFAULT_BOT_PROFILE.weights;
+diff --git a/apps/api/src/bot/evolution/runReplayContinuation.ts b/apps/api/src/bot/evolution/runReplayContinuation.ts
+index 5fa23cf2..5eacd44f 100644
+--- a/apps/api/src/bot/evolution/runReplayContinuation.ts
++++ b/apps/api/src/bot/evolution/runReplayContinuation.ts
+@@ -353,6 +353,23 @@ export async function runReplayContinuation(input: Params) {
+         reason = "continuationLimit";
+         break;
+       }
++      if (
++        (input.profile as { ourLeafAtOpponentMain?: boolean } | undefined)?.ourLeafAtOpponentMain === true &&
++        state.turnCount > rootTurn &&
++        state.turnSeat !== input.seat &&
++        state.phase === Phase.Main &&
++        state.pendingDecision === undefined &&
++        state.combatWindow === undefined &&
++        engine.mainPhase.isOpen
++      ) {
++        const leafStartedAt = performance.now();
++        terminalReward = evaluateSearchPosition(trainingObservation(state, input.seat), input.profile);
++        leafMs = performance.now() - leafStartedAt;
++        reason = "rolloutCutoff";
++        state.gameOver = true;
++        engine.mainPhase.abort();
++        break;
++      }
+       if (
+         input.rolloutTurns !== undefined &&
+         state.turnCount >= rootTurn + input.rolloutTurns * 2 &&
+diff --git a/apps/api/src/bot/search/runBotSearchTask.ts b/apps/api/src/bot/search/runBotSearchTask.ts
+index 8416291e..8f0422e4 100644
+--- a/apps/api/src/bot/search/runBotSearchTask.ts
++++ b/apps/api/src/bot/search/runBotSearchTask.ts
+@@ -39,7 +39,7 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
+           rolloutPolicy: createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + task.seat * 7919 }),
+           rootWindow: task.root,
+           choose: () => action,
+-          rolloutTurns: 1,
++          rolloutTurns: (task.profile as { ourRolloutTurns?: number }).ourRolloutTurns ?? 1,
+           maxRolloutDecisions: 128,
+           maxDurationMs: Math.max(1, task.deadlineEpochMs - currentEpochMs()),
+           signal: simulationSignal,

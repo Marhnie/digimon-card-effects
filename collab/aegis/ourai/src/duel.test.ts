@@ -17,6 +17,7 @@ const OUT = process.env.OURAI_OUT ?? "duel.jsonl";
 const LEVEL = (process.env.OURAI_LEVEL ?? BotDifficulty.MASTER.value) as BotDifficulty;
 
 it("duel: our value vs aegis value on the same search", async () => {
+  console.log("CONFIG", process.env.OURAI_DEPTH, process.env.OURAI_SIMS, process.env.OURAI_CAND);
   const decks = digilabDecks.decks.flatMap((d) => {
     try {
       return [evolutionDeck(d.deckVersion)];
@@ -34,6 +35,7 @@ it("duel: our value vs aegis value on the same search", async () => {
     const result = await runBotMatch({
       seed,
       firstSeat: 0,
+      measureDecisionLatencies: true,
       seats: [0, 1].map((s) => ({
         deck: pick[s]!.deck,
         label: s === oursSeat ? "ours" : "aegis",
@@ -54,6 +56,7 @@ it("duel: our value vs aegis value on the same search", async () => {
     const row = {
       seed, g, level: LEVEL, oursSeat, decks: pick.map((d) => d.name), winner: result.winnerSeat,
       oursWon: result.winnerSeat === undefined ? null : result.winnerSeat === oursSeat,
+      lat: result.seats.map((x) => { const v = [...x.decisionLatenciesMs].sort((a, b) => a - b); return v.length ? Math.round(v[Math.floor(v.length / 2)]!) : null; }),
       turns: result.turnCount, errors: result.errors.length, ms: Date.now() - t0,
       fallbacks: result.seats.map((x) => [x.inferenceFallbacks, x.searchFallbacks, x.searchErrors]),
     };
