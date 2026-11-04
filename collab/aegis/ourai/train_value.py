@@ -8,8 +8,11 @@ import glob, json, math, sys
 import numpy as np
 import torch
 
+KEY = sys.argv[3] if len(sys.argv) > 3 else 'x'
+PRIOR = sys.argv[4] if len(sys.argv) > 4 else None
 rows = [json.loads(l) for f in sorted(glob.glob(sys.argv[1])) for l in open(f, encoding='utf-8') if l.strip()]
-X = np.array([r['x'] for r in rows], dtype=np.float32)
+rows = [r for r in rows if KEY in r]
+X = np.array([r[KEY] for r in rows], dtype=np.float32)
 y = np.array([r['y'] for r in rows], dtype=np.float32)
 B = np.array([r.get('b', 0.5) for r in rows], dtype=np.float64)
 g = np.array([r['g'] for r in rows])
@@ -48,14 +51,21 @@ def fit(hidden, epochs=60, wd=1e-4, seed=0):
 
 print('aegis evaluateSearchPosition', metrics(B[te], y[te]))
 print('constant 0.5', metrics(np.full(int(te.sum()), .5), y[te]))
+if PRIOR:
+    P = json.load(open(PRIOR))
+    h = (np.array([r['x'] for r in rows], dtype=np.float64) - np.array(P['features_mean'])) / np.array(P['features_std'])
+    for k, L in enumerate(P['layers']):
+        h = h @ np.array(L['W']).T + np.array(L['b'])
+        if k < len(P['layers']) - 1: h = np.maximum(h, 0)
+    print('prior model', PRIOR.split('/')[-1], metrics(1 / (1 + np.exp(-h[te, 0])), y[te]))
 best = None
-for name, hidden in (('logistic', []), ('mlp64', [64, 64])):
-    net, p = fit(hidden)
+for name, hidden, ep in (('logistic', [], 60), ('mlp32', [32], 15), ('mlp64', [64, 64], 8)):
+    net, p = fit(hidden, epochs=ep)
     m = metrics(p, y[te]); print(name, m)
     if best is None or m['logloss'] < best[2]['logloss']: best = (name, net, m)
 name, net, m = best
 lin = [l for l in net if isinstance(l, torch.nn.Linear)]
-json.dump({'model': name, 'features_mean': mu.tolist(), 'features_std': sd.tolist(),
+json.dump({'model': name, 'key': KEY, 'features_mean': mu.tolist(), 'features_std': sd.tolist(),
            'layers': [{'W': l.weight.detach().numpy().tolist(), 'b': l.bias.detach().numpy().tolist()} for l in lin],
            'test': m, 'positions': len(rows)}, open(sys.argv[2], 'w'))
 print('saved', name, '->', sys.argv[2])

@@ -1,14 +1,14 @@
 import { appendFileSync, readFileSync } from "node:fs";
 import type { TrainingObservation } from "#api/bot/training/observation";
-import { positionFeatures } from "#api/ourai/features";
+import { positionFeatures, positionFeatures2 } from "#api/ourai/features";
 
-type Model = { features_mean: number[]; features_std: number[]; layers: { W: number[][]; b: number[] }[] };
+type Model = { key?: string; features_mean: number[]; features_std: number[]; layers: { W: number[][]; b: number[] }[] };
 let model: Model | undefined;
 
 export function ourValue(observation: TrainingObservation): number {
   if (process.env.OURAI_TRACE) appendFileSync(process.env.OURAI_TRACE, "1");
   model ??= JSON.parse(readFileSync(process.env.OURAI_VALUE!, "utf8")) as Model;
-  let h = positionFeatures(observation).map((x, i) => (x - model!.features_mean[i]!) / model!.features_std[i]!);
+  let h = (model.key === "x2" ? positionFeatures2(observation) : positionFeatures(observation)).map((x, i) => (x - model!.features_mean[i]!) / model!.features_std[i]!);
   model.layers.forEach((layer, k) => {
     h = layer.W.map((row, j) => row.reduce((s, w, i) => s + w * h[i]!, layer.b[j]!));
     if (k < model!.layers.length - 1) h = h.map((v) => Math.max(0, v));

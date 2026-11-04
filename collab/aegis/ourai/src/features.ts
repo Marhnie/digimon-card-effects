@@ -42,3 +42,26 @@ export function positionFeatures(o: TrainingObservation): number[] {
 
   return [...a.flatMap((x, i) => [x, b[i]!]), mine ? 1 : 0, mine ? o.memory / 5 : -o.memory / 5, Math.min(o.turn, 30) / 10];
 }
+
+const KW = ["Blocker", "Piercing", "Rush", "Jamming", "Retaliation", "Reboot", "Raid", "SecurityAttack", "Barrier", "Evade", "Decoy", "Fortitude", "Alliance", "Collision"];
+
+function side2(p: Player, own: boolean): number[] {
+  const digimon = p.board.filter((x) => (x.top.level ?? 0) > 0);
+  const kw = KW.map((k) => digimon.filter((x) => x.keywords.some((y) => String(y).startsWith(k))).length);
+  const tamers = p.board.filter((x) => x.top.kinds?.includes("Tamer")).length;
+  const sick = digimon.filter((x) => x.statuses["summoningSick"]).length;
+  const immune = digimon.filter((x) => x.statuses["immuneToOpponentDigimonEffects"] || x.statuses["protectedFromEffectDeletion"]).length;
+  const lv6 = digimon.filter((x) => (x.top.level ?? 0) >= 6).length;
+  const handOpt = own ? p.hand.filter((c) => c.kinds?.includes("Option")).length : 0;
+  const handHigh = own ? p.hand.filter((c) => (c.level ?? 0) >= 5).length : 0;
+  const trashDig = p.trash.filter((c) => c.kinds?.includes("Digimon")).length / 5;
+  return [...kw, tamers, sick, immune, lv6, handOpt, handHigh, trashDig];
+}
+
+export function positionFeatures2(o: TrainingObservation): number[] {
+  const me = o.players.find((p) => p.seat === o.seat)!;
+  const op = o.players.find((p) => p.seat !== o.seat)!;
+  const a = side2(me, true);
+  const b = side2(op, false);
+  return [...positionFeatures(o), ...a.flatMap((x, i) => [x, b[i]!])];
+}
