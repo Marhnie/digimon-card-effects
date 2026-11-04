@@ -41,11 +41,35 @@ index 5fa23cf2..5eacd44f 100644
          input.rolloutTurns !== undefined &&
          state.turnCount >= rootTurn + input.rolloutTurns * 2 &&
 diff --git a/apps/api/src/bot/search/runBotSearchTask.ts b/apps/api/src/bot/search/runBotSearchTask.ts
-index 8416291e..8f0422e4 100644
+index 8416291e..d60404d3 100644
 --- a/apps/api/src/bot/search/runBotSearchTask.ts
 +++ b/apps/api/src/bot/search/runBotSearchTask.ts
-@@ -39,7 +39,7 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
-           rolloutPolicy: createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + task.seat * 7919 }),
+@@ -1,5 +1,7 @@
++import { appendFileSync } from "node:fs";
+ import { informationKey } from "#api/bot/evolution/mcts";
+ import { runReplayContinuation } from "#api/bot/evolution/runReplayContinuation";
++import { createBaselinePolicy } from "#api/bot/baselinePolicy";
+ import { createEvaluationPolicy } from "#api/bot/policy";
+ import { mainActionReady } from "#api/bot/training/actions";
+ import type { BotSearchResult, BotSearchTask } from "#api/bot/search/BotSearchTask";
+@@ -19,7 +21,10 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
+   if (!(remainingMs > 0)) throw new Error("Bot search deadline passed before the search started");
+   const simulationSignal = AbortSignal.any([signal, AbortSignal.timeout(Math.ceil(remainingMs))]);
+   const expectedInformation = informationKey(task.root);
+-  return searchPairedRoot({
++  const searchLog = (task.profile as { ourValue?: boolean }).ourValue === true ? process.env.OURAI_SEARCHLOG : undefined;
++  const cheapRollout = (task.profile as { ourRolloutBaseline?: boolean }).ourRolloutBaseline === true;
++  const phaseTotals: Record<string, number> = {};
++  const out = await searchPairedRoot({
+     priors: task.rootPriors,
+     candidateLimit: task.candidateLimit,
+     simulations: task.simulations,
+@@ -36,10 +41,10 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
+           sampleSeed,
+           program: task.program,
+           opponentProgram: task.opponentProgram,
+-          rolloutPolicy: createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + task.seat * 7919 }),
++          rolloutPolicy: cheapRollout ? createBaselinePolicy() : createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + task.seat * 7919 }),
            rootWindow: task.root,
            choose: () => action,
 -          rolloutTurns: 1,
@@ -53,3 +77,28 @@ index 8416291e..8f0422e4 100644
            maxRolloutDecisions: 128,
            maxDurationMs: Math.max(1, task.deadlineEpochMs - currentEpochMs()),
            signal: simulationSignal,
+@@ -47,11 +52,12 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
+           profile: task.profile,
+           opponent: {
+             policyFactory: (_engine, seat) =>
+-              createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + seat * 7919 }),
++              cheapRollout ? createBaselinePolicy() : createEvaluationPolicy({ profile: task.profile, seed: sampleSeed + seat * 7919 }),
+             canChooseMainAction: mainActionReady,
+           },
+         });
+         const valid = isSearchLeaf(result);
++        if (searchLog) for (const [k, v] of Object.entries(result.phasesMs ?? {})) phaseTotals[k] = (phaseTotals[k] ?? 0) + (v as number);
+         onRollout?.({
+           action,
+           sample,
+@@ -68,4 +74,10 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
+       }
+     },
+   });
++  if (searchLog)
++    appendFileSync(
++      searchLog,
++      JSON.stringify({ n: task.rootPriors.length, attempted: out.report.attempted, completed: out.report.completed, ms: Math.round(out.report.timeBudget!.elapsedMs), exhausted: out.report.timeBudget!.exhausted, phases: phaseTotals }) + "\n",
++    );
++  return out;
+ }

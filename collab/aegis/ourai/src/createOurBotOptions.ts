@@ -88,7 +88,7 @@ export function createOurBotOptions({
           policy: config.usesResidual ? seenResidualPolicy : seenStandardPolicy,
           fallbackPolicy: seenStandardPolicy,
           profile,
-          searchProfile: { ...createLevelProfile({ difficulty, style: config.searchStyle }), ourValue: useOurValue, ...(useOurValue && process.env.OURAI_DEPTH ? { ourRolloutTurns: Number(process.env.OURAI_DEPTH) } : {}), ...(useOurValue && process.env.OURAI_HALF ? { ourLeafAtOpponentMain: true } : {}) } as never,
+          searchProfile: { ...createLevelProfile({ difficulty, style: config.searchStyle }), ourValue: useOurValue, ...(useOurValue && process.env.OURAI_DEPTH ? { ourRolloutTurns: Number(process.env.OURAI_DEPTH) } : {}), ...(useOurValue && process.env.OURAI_HALF ? { ourLeafAtOpponentMain: true } : {}), ...(useOurValue && process.env.OURAI_CHEAP ? { ourRolloutBaseline: true } : {}) } as never,
           program,
           seed,
           simulations: useOurValue && process.env.OURAI_SIMS ? Number(process.env.OURAI_SIMS) : config.searchSimulations,
