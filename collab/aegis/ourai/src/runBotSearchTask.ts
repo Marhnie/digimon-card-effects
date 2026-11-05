@@ -74,10 +74,16 @@ export async function runBotSearchTask({ task, signal, onRollout }: Params): Pro
       }
     },
   });
+  const margin = (task.profile as { ourMargin?: number }).ourMargin;
+  if (margin !== undefined && out.action !== 0) {
+    const base = out.report.root.find((r) => r.action === 0);
+    const pick = out.report.root.find((r) => r.action === out.action);
+    if (base !== undefined && base.visits > 0 && pick !== undefined && pick.meanReward - base.meanReward < margin) out.action = 0;
+  }
   if (searchLog)
     appendFileSync(
       searchLog,
-      JSON.stringify({ n: task.rootPriors.length, attempted: out.report.attempted, completed: out.report.completed, ms: Math.round(out.report.timeBudget!.elapsedMs), exhausted: out.report.timeBudget!.exhausted, phases: phaseTotals }) + "\n",
+      JSON.stringify({ n: task.rootPriors.length, attempted: out.report.attempted, completed: out.report.completed, ms: Math.round(out.report.timeBudget!.elapsedMs), exhausted: out.report.timeBudget!.exhausted, phases: phaseTotals, chosen: out.action, priors: task.rootPriors, root: out.report.root, kinds: task.root.actions.map((a) => a.intent.type) }) + "\n",
     );
   return out;
 }

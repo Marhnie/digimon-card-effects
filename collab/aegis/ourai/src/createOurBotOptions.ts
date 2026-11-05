@@ -41,7 +41,8 @@ export function createOurBotOptions({
   useOurValue,
 }: Params): BotOptions {
   const config = resolveLevelConfig({ difficulty, style });
-  const profile = createLevelProfile({ difficulty, style });
+  const baseProfile = createLevelProfile({ difficulty, style });
+  const profile = useOurValue && process.env.OURAI_PRIOR_W ? { ...baseProfile, weights: JSON.parse(readFileSync(process.env.OURAI_PRIOR_W, "utf8")) } : baseProfile;
   const seenCards = createSeenOpponentCardsTracker({ observer: seat });
   const program = defaultBotProgram({ deck }).program;
   const standardPolicy: BotPolicy<Intent | Promise<Intent>> = createEvaluationPolicy({
@@ -89,7 +90,7 @@ export function createOurBotOptions({
           policy: config.usesResidual ? seenResidualPolicy : seenStandardPolicy,
           fallbackPolicy: seenStandardPolicy,
           profile,
-          searchProfile: { ...createLevelProfile({ difficulty, style: config.searchStyle }), ourValue: useOurValue, ...(useOurValue && process.env.OURAI_DEPTH ? { ourRolloutTurns: Number(process.env.OURAI_DEPTH) } : {}), ...(useOurValue && process.env.OURAI_HALF ? { ourLeafAtOpponentMain: true } : {}), ...(useOurValue && process.env.OURAI_CHEAP ? { ourRolloutBaseline: true } : {}), ...(useOurValue && process.env.OURAI_ROLLOUT_W ? { weights: JSON.parse(readFileSync(process.env.OURAI_ROLLOUT_W, "utf8")) } : {}) } as never,
+          searchProfile: { ...createLevelProfile({ difficulty, style: config.searchStyle }), ourValue: useOurValue, ...(useOurValue && process.env.OURAI_DEPTH ? { ourRolloutTurns: Number(process.env.OURAI_DEPTH) } : {}), ...(useOurValue && process.env.OURAI_HALF ? { ourLeafAtOpponentMain: true } : {}), ...(useOurValue && process.env.OURAI_MARGIN ? { ourMargin: Number(process.env.OURAI_MARGIN) } : {}), ...(useOurValue && process.env.OURAI_CHEAP ? { ourRolloutBaseline: true } : {}), ...(useOurValue && process.env.OURAI_ROLLOUT_W ? { weights: JSON.parse(readFileSync(process.env.OURAI_ROLLOUT_W, "utf8")) } : {}) } as never,
           program,
           seed,
           simulations: useOurValue && process.env.OURAI_SIMS ? Number(process.env.OURAI_SIMS) : config.searchSimulations,
