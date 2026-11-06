@@ -7,7 +7,7 @@ const ITERS = Number(process.env.OURAI_ITERS ?? 60);
 const SEED = Number(process.env.OURAI_SEED ?? 1);
 const OUT = process.env.OURAI_OUT ?? "climb2.jsonl";
 const SEARCH_GAMES = 4;
-const CONFIRM_GAMES = 16;
+const CONFIRM_GAMES = Number(process.env.OURAI_CONFIRM_GAMES ?? 16);
 
 it("deck hill climb with paired fresh seeds", async () => {
   const opponents = gauntlet();
@@ -27,7 +27,7 @@ it("deck hill climb with paired fresh seeds", async () => {
     if (search[1] >= search[0] + 0.06) {
       seed += 10_000;
       confirm = [await gauntletScore(champion, opponents, CONFIRM_GAMES, seed), await gauntletScore(cand, opponents, CONFIRM_GAMES, seed)];
-      if (confirm[1] > confirm[0] + 0.03) {
+      if (confirm[1] > confirm[0] + Number(process.env.OURAI_ACCEPT ?? 0.03)) {
         champion = cand;
         accepted = true;
       }
