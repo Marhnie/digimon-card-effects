@@ -81,8 +81,29 @@ it("evolutionary deck search without a fixed boss", async () => {
     x.wins += (await gauntletScore(x.deck, opponents, GAMES, seed)) * opponents.length * GAMES;
     x.games += opponents.length * GAMES;
   };
+  const eggPool = allCards().filter((c) => !c.isToken && c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId)).map((c) => c.cardId);
+  const randomDeck = (): Deck => {
+    for (;;) {
+      const counts = new Map<string, number>();
+      const main: string[] = [];
+      while (main.length < 50) {
+        const id = fullPool[Math.floor(rnd() * fullPool.length)]!;
+        if ((counts.get(id) ?? 0) < 4) {
+          counts.set(id, (counts.get(id) ?? 0) + 1);
+          main.push(id);
+        }
+      }
+      const egg = eggPool[Math.floor(rnd() * eggPool.length)]!;
+      const d = { mainDeck: main.sort(), eggDeck: [egg, egg, egg, egg] };
+      if (deckLegal(d)) return d;
+    }
+  };
+  const RANDOM_START = Number(process.env.OURAI_RANDOM_START ?? 0);
   if (last) pop = last.state.pop as Ind[];
-  else {
+  else if (RANDOM_START > 0) {
+    pop = Array.from({ length: RANDOM_START }, (_, k) => ({ id: `r${k}`, deck: randomDeck(), wins: 0, games: 0, origin: "random" }));
+    for (const x of pop) await evaluate(x);
+  } else {
     const files = (process.env.OURAI_SEED_DECKS ?? "").split(";").filter((f) => f && existsSync(f));
     const seeds: { id: string; deck: Deck | undefined; origin: string }[] = [
       ...opponents.map((o) => ({ id: `meta:${o.name}`, deck: strip(o.deck), origin: "meta" })),
