@@ -2,7 +2,7 @@ import { appendFileSync, existsSync, readFileSync } from "node:fs";
 import { it } from "vitest";
 import { CardKind } from "@aegis/shared";
 import { allCards, getCardDefinition } from "@aegis/shared/cards/registry";
-import { colorPool, deckLegal, isPlayable, gauntlet, gauntletScore, legalMetaDecks, makeRandom, mutate, type Deck } from "#api/ourai/deckTools";
+import { colorPool, deckLegal, isPlayable, currentGauntlet, gauntlet, gauntletScore, legalMetaDecks, makeRandom, mutate, type Deck } from "#api/ourai/deckTools";
 
 const GENS = Number(process.env.OURAI_GENS ?? 40);
 const SEED = Number(process.env.OURAI_SEED ?? 1);
@@ -58,7 +58,7 @@ function mean(x: Ind): number {
 }
 
 it("evolutionary deck search without a fixed boss", async () => {
-  const opponents = gauntlet();
+  const opponents = process.env.OURAI_GAUNTLET === "current" ? currentGauntlet() : gauntlet();
   const fullPool = allCards().filter((c) => !c.isToken && !c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId) && !BAN.has(c.cardId)).map((c) => c.cardId);
   const deadline = Number(process.env.OURAI_DEADLINE_MS ?? Date.now() + 86_400_000);
   const peers = (process.env.OURAI_PEERS ?? "").split(";").filter((f) => f && f !== OUT);

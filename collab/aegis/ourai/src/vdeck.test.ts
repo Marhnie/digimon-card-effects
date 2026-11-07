@@ -1,9 +1,9 @@
 import { appendFileSync, readFileSync } from "node:fs";
 import { it } from "vitest";
-import { gauntlet, gauntletScore, legalMetaDecks, type Deck } from "#api/ourai/deckTools";
+import { currentGauntlet, gauntlet, gauntletScore, legalMetaDecks, type Deck } from "#api/ourai/deckTools";
 
 it("score deck files against the gauntlet on one seed", async () => {
-  const opponents = gauntlet();
+  const opponents = process.env.OURAI_GAUNTLET === "current" ? currentGauntlet() : gauntlet();
   const games = Number(process.env.OURAI_GAMES ?? 32);
   const seed = Number(process.env.OURAI_EVAL_SEED ?? 200_000_000);
   for (const spec of (process.env.OURAI_DECKS ?? "").split(";").filter(Boolean)) {
