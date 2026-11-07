@@ -11,6 +11,9 @@ const MU = Number(process.env.OURAI_MU ?? 6);
 const LAMBDA = Number(process.env.OURAI_LAMBDA ?? 6);
 const GAMES = Number(process.env.OURAI_GAMES ?? 4);
 
+const BAN = new Set((process.env.OURAI_BAN ?? "").split(";").filter(Boolean));
+const clean = (d: Deck): boolean => d.mainDeck.every((id) => !BAN.has(id));
+
 type Ind = { id: string; deck: Deck; wins: number; games: number; origin: string };
 
 function slotOf(id: string): string {
@@ -56,7 +59,7 @@ function mean(x: Ind): number {
 
 it("evolutionary deck search without a fixed boss", async () => {
   const opponents = gauntlet();
-  const fullPool = allCards().filter((c) => !c.isToken && !c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId)).map((c) => c.cardId);
+  const fullPool = allCards().filter((c) => !c.isToken && !c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId) && !BAN.has(c.cardId)).map((c) => c.cardId);
   const deadline = Number(process.env.OURAI_DEADLINE_MS ?? Date.now() + 86_400_000);
   const peers = (process.env.OURAI_PEERS ?? "").split(";").filter((f) => f && f !== OUT);
   const resume = existsSync(OUT) ? readFileSync(OUT, "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l)).filter((r) => r.state) : [];
@@ -65,6 +68,14 @@ it("evolutionary deck search without a fixed boss", async () => {
   let seed: number = last?.state.seed ?? 300_000_000 + SEED * 1_000_000;
   let serial: number = last?.state.serial ?? 0;
   let pop: Ind[];
+  const strip = (d: Deck): Deck | undefined => {
+    if (BAN.size === 0) return d;
+    for (let t = 0; t < 50; t++) {
+      const x = { mainDeck: fix(d.mainDeck.filter((id) => !BAN.has(id)), rnd), eggDeck: [...d.eggDeck] };
+      if (deckLegal(x)) return x;
+    }
+    return undefined;
+  };
   const evaluate = async (x: Ind) => {
     seed += 10_000;
     x.wins += (await gauntletScore(x.deck, opponents, GAMES, seed)) * opponents.length * GAMES;
@@ -73,10 +84,11 @@ it("evolutionary deck search without a fixed boss", async () => {
   if (last) pop = last.state.pop as Ind[];
   else {
     const files = (process.env.OURAI_SEED_DECKS ?? "").split(";").filter((f) => f && existsSync(f));
-    pop = [
-      ...opponents.map((o) => ({ id: `meta:${o.name}`, deck: o.deck, wins: 0, games: 0, origin: "meta" })),
-      ...files.map((f) => ({ id: f.split("/").pop()!.replace(".json", ""), deck: JSON.parse(readFileSync(f, "utf8")) as Deck, wins: 0, games: 0, origin: "file" })),
+    const seeds: { id: string; deck: Deck | undefined; origin: string }[] = [
+      ...opponents.map((o) => ({ id: `meta:${o.name}`, deck: strip(o.deck), origin: "meta" })),
+      ...files.map((f) => ({ id: f.split("/").pop()!.replace(".json", ""), deck: strip(JSON.parse(readFileSync(f, "utf8")) as Deck), origin: "file" })),
     ];
+    pop = seeds.filter((x) => x.deck !== undefined).map((x) => ({ id: x.id, deck: x.deck!, wins: 0, games: 0, origin: x.origin }));
     for (const x of pop) await evaluate(x);
   }
   for (let g = (last?.gen ?? 0) + 1; g <= GENS && Date.now() < deadline; g++) {
@@ -88,7 +100,7 @@ it("evolutionary deck search without a fixed boss", async () => {
       if (existsSync(f)) {
         const lines = readFileSync(f, "utf8").trim().split("\n").filter(Boolean);
         const peer = lines.length ? JSON.parse(lines.at(-1)!) : undefined;
-        if (peer?.best && deckLegal(peer.best)) kids.push({ id: `g${g}m${serial++}`, deck: peer.best, wins: 0, games: 0, origin: `migrant(${f.split("/").pop()})` });
+        if (peer?.best && deckLegal(peer.best) && clean(peer.best)) kids.push({ id: `g${g}m${serial++}`, deck: peer.best, wins: 0, games: 0, origin: `migrant(${f.split("/").pop()})` });
       }
     }
     for (let tries = 0; kids.length < LAMBDA && tries < 200; tries++) {
@@ -103,10 +115,10 @@ it("evolutionary deck search without a fixed boss", async () => {
       } else {
         deck = pa.deck;
         const steps = 1 + Math.floor(rnd() * 3);
-        for (let s = 0; s < steps; s++) deck = mutate(deck, rnd() < 0.25 ? fullPool : colorPool(deck), rnd);
+        for (let s = 0; s < steps; s++) deck = mutate(deck, rnd() < 0.25 ? fullPool : colorPool(deck).filter((id) => !BAN.has(id)), rnd);
         origin = `mut(${pa.id})`;
       }
-      if (!deckLegal(deck)) continue;
+      if (!deckLegal(deck) || !clean(deck)) continue;
       kids.push({ id: `g${g}k${serial++}`, deck, wins: 0, games: 0, origin });
     }
     for (const x of [...parents, ...kids]) await evaluate(x);
