@@ -82,6 +82,8 @@ function mean(x: Ind): number {
 
 it("evolutionary deck search without a fixed boss", async () => {
   const opponents = process.env.OURAI_GAUNTLET === "current" ? currentGauntlet() : gauntlet();
+  const selfFile = `${process.env.OURAI_PILOT_DIR}/self.json`;
+  const selfWeights = process.env.OURAI_PILOT_DIR && existsSync(selfFile) ? (JSON.parse(readFileSync(selfFile, "utf8")) as Record<string, number>) : undefined;
   const fullPool = allCards().filter((c) => !c.isToken && !c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId) && !BAN.has(c.cardId)).map((c) => c.cardId);
   const deadline = Number(process.env.OURAI_DEADLINE_MS ?? Date.now() + 86_400_000);
   const peers = (process.env.OURAI_PEERS ?? "").split(";").filter((f) => f && f !== OUT);
@@ -101,7 +103,7 @@ it("evolutionary deck search without a fixed boss", async () => {
   };
   const evaluate = async (x: Ind) => {
     seed += 10_000;
-    x.wins += (await gauntletScore(x.deck, opponents, GAMES, seed)) * opponents.length * GAMES;
+    x.wins += (await gauntletScore(x.deck, opponents, GAMES, seed, selfWeights)) * opponents.length * GAMES;
     x.games += opponents.length * GAMES;
   };
   const eggPool = allCards().filter((c) => !c.isToken && c.kinds.includes(CardKind.DigiEgg) && isPlayable(c.cardId)).map((c) => c.cardId);

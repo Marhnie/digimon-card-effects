@@ -92,9 +92,9 @@ export async function playSeries(a: Deck, b: Deck, games: number, seed: number, 
   return wins;
 }
 
-export async function gauntletScore(deck: Deck, opponents: Named[], gamesEach: number, seed: number): Promise<number> {
+export async function gauntletScore(deck: Deck, opponents: Named[], gamesEach: number, seed: number, selfWeights?: Record<string, number>): Promise<number> {
   let w = 0;
-  for (const [i, o] of opponents.entries()) w += await playSeries(deck, o.deck, gamesEach, seed + i * 1000, undefined, o.weights);
+  for (const [i, o] of opponents.entries()) w += await playSeries(deck, o.deck, gamesEach, seed + i * 1000, selfWeights, o.weights);
   return w / (opponents.length * gamesEach);
 }
 
