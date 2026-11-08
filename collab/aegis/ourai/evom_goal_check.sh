@@ -1,7 +1,7 @@
 #!/bin/bash
 D=C:/Users/Daewonmedia/ourai_data
 until grep -q "GEN 100 CHECK DONE" $D/evom_checkpoint.done 2>/dev/null; do sleep 300; done
-G=100
+G=$(grep -o "GEN [0-9]* CHECK DONE" $D/evom_checkpoint.done | tail -1 | awk '{print $2}')
 while [ ! -f $D/evom_STOP ]; do
   G=$((G+25))
   until python - $G <<'PY'
