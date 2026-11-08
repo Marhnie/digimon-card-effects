@@ -10,6 +10,7 @@ const OUT = process.env.OURAI_OUT ?? "evo.jsonl";
 const MU = Number(process.env.OURAI_MU ?? 6);
 const LAMBDA = Number(process.env.OURAI_LAMBDA ?? 6);
 const GAMES = Number(process.env.OURAI_GAMES ?? 4);
+const BLOCK = Number(process.env.OURAI_BLOCK ?? 0);
 
 const BAN = new Set((process.env.OURAI_BAN ?? "").split(";").filter(Boolean));
 const clean = (d: Deck): boolean => d.mainDeck.every((id) => !BAN.has(id));
@@ -51,6 +52,28 @@ function cross(a: Deck, b: Deck, rnd: () => number): Deck {
   if (take.size === 0) take.add(slots[Math.floor(rnd() * slots.length)]!);
   const main = [...a.mainDeck.filter((id) => !take.has(slotOf(id))), ...b.mainDeck.filter((id) => take.has(slotOf(id)))];
   return { mainDeck: fix(main, rnd), eggDeck: [...(rnd() < 0.5 ? a : b).eggDeck] };
+}
+
+function blockMut(deck: Deck, pool: string[], rnd: () => number): Deck {
+  const counts = new Map<string, number>();
+  for (const id of deck.mainDeck) counts.set(id, (counts.get(id) ?? 0) + 1);
+  const short = [...counts.keys()].filter((id) => counts.get(id)! < 4);
+  const target = rnd() < 0.55 && short.length > 0 ? short[Math.floor(rnd() * short.length)]! : pool[Math.floor(rnd() * pool.length)]!;
+  const need = 4 - (counts.get(target) ?? 0);
+  if (need <= 0) return deck;
+  const main = [...deck.mainDeck];
+  for (let n = 0; n < need; n++) {
+    const others = [...counts.keys()].filter((id) => id !== target && counts.get(id)! > 0);
+    if (others.length === 0) return deck;
+    const low = Math.min(...others.map((id) => counts.get(id)!));
+    const cands = others.filter((id) => counts.get(id) === low);
+    const out = cands[Math.floor(rnd() * cands.length)]!;
+    main.splice(main.indexOf(out), 1);
+    counts.set(out, counts.get(out)! - 1);
+    main.push(target);
+  }
+  counts.set(target, 4);
+  return { mainDeck: main.sort(), eggDeck: [...deck.eggDeck] };
 }
 
 function mean(x: Ind): number {
@@ -136,7 +159,10 @@ it("evolutionary deck search without a fixed boss", async () => {
       } else {
         deck = pa.deck;
         const steps = 1 + Math.floor(rnd() * 3);
-        for (let s = 0; s < steps; s++) deck = mutate(deck, rnd() < 0.25 ? fullPool : colorPool(deck).filter((id) => !BAN.has(id)), rnd);
+        for (let s = 0; s < steps; s++) {
+          const pool = rnd() < 0.25 ? fullPool : colorPool(deck).filter((id) => !BAN.has(id));
+          deck = BLOCK > 0 && rnd() < BLOCK ? blockMut(deck, pool, rnd) : mutate(deck, pool, rnd);
+        }
         origin = `mut(${pa.id})`;
       }
       if (!deckLegal(deck) || !clean(deck)) continue;
