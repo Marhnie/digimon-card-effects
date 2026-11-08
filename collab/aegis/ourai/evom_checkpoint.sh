@@ -1,6 +1,6 @@
 #!/bin/bash
 D=C:/Users/Daewonmedia/ourai_data
-for G in 25 50 75 100; do
+for G in ${EVOM_CHECKS:-25 50 75 100}; do
   until python - $G <<'PY'
 import json,sys,os
 G=int(sys.argv[1]);D='C:/Users/Daewonmedia/ourai_data'
