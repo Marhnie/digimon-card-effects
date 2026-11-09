@@ -86,4 +86,4 @@ it.skipIf(!process.env.OURAI_CHECK)("check the all-round policy on reserved seed
   const c = await rate(mine, field, cand, games, seed);
   const b = await rate(mine, field, base, games, seed);
   appendFileSync(OUT, JSON.stringify({ check: true, t: Date.now(), decks: mine.map((m) => m.name), cand: c, base: b, games: mine.length * field.length * games, seed }) + "\n");
-});
+}, 86_400_000);
