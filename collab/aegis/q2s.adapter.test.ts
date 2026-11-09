@@ -86,6 +86,14 @@ it("q2s", async () => {
         else if (st.do === "link") r = inHand() ? a({ type: "linkCard", instanceId: inHand().instanceId, targetPermanentId: me().battleArea[st.frame].permanentId }) : { ok: false, reason: "not in hand" };
         else if (st.do === "digivolve") r = inHand() ? a({ type: "digivolve", permanentId: me().battleArea[st.frame].permanentId, instanceId: inHand().instanceId }) : { ok: false, reason: "not in hand" };
         else if (st.do === "attack") r = a({ type: "attack", attackerPermanentId: me().battleArea[st.frame].permanentId, target: (st.target ?? -1) < 0 ? { kind: "player" } : { kind: "permanent", permanentId: foe().battleArea[st.target].permanentId } });
+        else if (st.do === "activate" && (st.from === "hand" || st.from === "trash")) {
+          // [Main] of a loose card (hand / trash): the projection lists it on the instance itself
+          (s.engine as any).projection.syncActivatableEffects();
+          const c = me()[st.from].find((x: any) => x.cardId === st.card);
+          const list = c && c.activatableEffectsJson ? JSON.parse(c.activatableEffectsJson) : [];
+          const ef = list[st.skill ?? 0];
+          r = !c ? { ok: false, reason: "not in " + st.from } : ef ? a({ type: "activateEffect", sourceInstanceId: ef.instanceId, effectKey: ef.effectKey }) : { ok: false, reason: "no activatable" };
+        }
         else if (st.do === "activate") { const p = me().battleArea[st.frame]; const ef = observe(s.engine).activatableEffects(p)[st.skill ?? 0]; r = ef ? a({ type: "activateEffect", sourceInstanceId: ef.instanceId ?? p.topCard.instanceId, effectKey: ef.effectKey }) : { ok: false, reason: "no activatable" }; }
         else r = { ok: false, reason: "unknown step" };
         steps.push({ do: st.do, ok: !!r.ok, reason: r.reason });
