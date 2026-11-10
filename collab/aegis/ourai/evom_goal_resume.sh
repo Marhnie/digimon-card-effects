@@ -3,8 +3,6 @@
 i=$1; D=C:/Users/Daewonmedia/ourai_data
 PEERS="$D/evom_1.jsonl;$D/evom_2.jsonl;$D/evom_3.jsonl;$D/evom_4.jsonl;$D/evom_5.jsonl"
 lastgen() { tail -1 $D/evom_$i.jsonl | python -c "import json,sys;print(json.loads(sys.stdin.read())['gen'])"; }
-runs() { grep -c 'Test Files' $D/evom_$i.log; }
-until [ $(runs) -gt $R0 ]; do sleep 30; done   # 진행 중이던 250세대 묶음 종료 대기
 cd /c/Users/Daewonmedia/aegis_engine/apps/api
 while [ ! -f $D/evom_STOP ]; do
   G=$(( $(lastgen) / 25 * 25 + 25 ))
