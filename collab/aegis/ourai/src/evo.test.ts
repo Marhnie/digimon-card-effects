@@ -131,10 +131,10 @@ it("evolutionary deck search without a fixed boss", async () => {
   } else {
     const files = (process.env.OURAI_SEED_DECKS ?? "").split(";").filter((f) => f && existsSync(f));
     const seeds: { id: string; deck: Deck | undefined; origin: string }[] = [
-      ...opponents.map((o) => ({ id: `meta:${o.name}`, deck: strip(o.deck), origin: "meta" })),
+      ...(process.env.OURAI_NO_META_SEED ? [] : opponents.map((o) => ({ id: `meta:${o.name}`, deck: strip(o.deck), origin: "meta" }))),
       ...files.map((f) => ({ id: f.split("/").pop()!.replace(".json", ""), deck: strip(JSON.parse(readFileSync(f, "utf8")) as Deck), origin: "file" })),
     ];
-    pop = seeds.filter((x) => x.deck !== undefined).map((x) => ({ id: x.id, deck: x.deck!, wins: 0, games: 0, origin: x.origin }));
+    pop = seeds.filter((x) => x.deck !== undefined && (!process.env.OURAI_NO_META_SEED || deckLegal(x.deck))).map((x) => ({ id: x.id, deck: x.deck!, wins: 0, games: 0, origin: x.origin }));
     for (const x of pop) await evaluate(x);
   }
   for (let g = (last?.gen ?? 0) + 1; g <= GENS && Date.now() < deadline; g++) {
